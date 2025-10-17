@@ -1,0 +1,806 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  font-family: "Segoe UI", "Cairo", sans-serif;
+  background: radial-gradient(circle at top, #f2f5ff 0%, #e8ecff 45%, #f8f8ff 100%);
+  color: #181846;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  --page-scale: clamp(0.2, calc((100vw - 440px) / 2048), 0.52);
+}
+
+@page {
+  size: A4 landscape;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px;
+  box-sizing: border-box;
+  background-image: linear-gradient(135deg, rgba(48, 43, 184, 0.08) 0%, rgba(48, 43, 184, 0) 40%), linear-gradient(225deg, rgba(104, 120, 255, 0.12) 0%, rgba(232, 236, 255, 0) 55%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.sidebar {
+  height: auto;
+  max-height: calc(100vh - 80px);
+  width: 420px;
+  padding: 28px 26px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(48, 43, 184, 0.12);
+  box-shadow: 0 28px 60px -32px rgba(15, 18, 84, 0.45);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+}
+
+.sidebar::before {
+  content: "إعداد خطة الرحلة";
+  font-size: 18px;
+  font-weight: 800;
+  color: #302bb8;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(48, 43, 184, 0.3);
+  border-radius: 999px;
+}
+
+.sidebar div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2a2a64;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.sidebar input,
+.sidebar select {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #181846;
+  border-radius: 12px;
+  border: 1px solid rgba(48, 43, 184, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  appearance: none;
+  box-shadow: inset 0 2px 4px rgba(24, 24, 70, 0.08);
+}
+
+.sidebar input[type="date"],
+.sidebar input[type="time"],
+.sidebar select {
+  direction: ltr;
+}
+
+.sidebar select {
+  padding-right: 44px;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(48, 43, 184, 0.55) 50%), linear-gradient(135deg, rgba(48, 43, 184, 0.55) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 3px), calc(100% - 13px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.select-with-add {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+}
+
+.select-with-add select {
+  flex: 1 1 auto;
+  padding-right: 92px;
+  background-position: calc(100% - 62px) calc(50% - 3px), calc(100% - 57px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.time-separator {
+  white-space: pre;
+}
+
+.sidebar input[type="time"]::-webkit-calendar-picker-indicator,
+.sidebar input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: sepia(40%) saturate(200%) hue-rotate(185deg);
+  opacity: 0.65;
+}
+
+.sidebar input:focus,
+.sidebar select:focus {
+  outline: none;
+  border-color: #302bb8;
+  box-shadow: 0 0 0 4px rgba(48, 43, 184, 0.16);
+  background-color: #fff;
+}
+
+.sidebar select + input[type="time"] {
+  margin-top: -4px;
+}
+
+.select-with-add + input[type="time"] {
+  margin-top: -4px;
+}
+
+.sidebar .select-add-btn {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  height: 100%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #302bb8;
+  border: 1px solid rgba(48, 43, 184, 0.25);
+  border-radius: 0px 14px 14px 0px;
+  background: rgba(48, 43, 184, 0.08);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sidebar .select-add-btn:hover {
+  background: rgba(48, 43, 184, 0.16);
+  box-shadow: 0 8px 16px -12px rgba(48, 43, 184, 0.55);
+}
+
+.sidebar .select-add-btn:active {
+  background: rgba(48, 43, 184, 0.26);
+}
+
+.sidebar-actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(48, 43, 184, 0.12);
+}
+
+.sidebar-actions button {
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #302bb8, #5e6bff);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 8px 16px -10px rgba(48, 43, 184, 0.65);
+}
+
+.sidebar-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px -12px rgba(48, 43, 184, 0.85);
+}
+
+.sidebar-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+  box-shadow: none;
+}
+
+#save-status {
+  min-height: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2a2a64;
+}
+
+#save-status.error {
+  color: #b82020;
+}
+
+#save-status.success {
+  color: #1a7f35;
+}
+
+.main{
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 30px;
+  border: 1px solid rgba(48, 43, 184, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 25px 55px -30px rgba(12, 18, 98, 0.65);
+  overflow: auto;
+  
+}
+
+.main{
+  display: flex;
+   justify-content: center;
+  align-items: center;
+}
+
+.page-shell {
+  position: relative;
+  scale: 0.5;
+  /* padding: -200px; */
+  margin: -250px;
+  flex: 0 0 auto;
+  width: calc(2048px * var(--page-scale));
+  height: calc(1441px * var(--page-scale));
+  border-radius: 28px;
+  border: 1px solid rgba(48, 43, 184, 0.35);
+  box-shadow: 0 32px 80px -48px rgba(22, 28, 99, 0.8);
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+  .page {
+    margin: 0;
+    border-radius: 28px;
+    width: 2048px;
+    height: 1441px;
+    aspect-ratio: 2048 / 1441;
+    background: url('./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg') no-repeat center top;
+    background-size: cover;
+    position: relative;
+    font-family: Arial, sans-serif;
+    color: #302bb8;
+    transform-origin: top left;
+    transform: scale(var(--page-scale));
+  }
+
+  .page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(48, 43, 184, 0.12) 100%);
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+  }
+  .field {
+    position: absolute;
+    font-size: 18px;
+    color: black;
+  }
+  input, textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: 18px;
+  }
+  textarea {
+    height: 100%;
+    resize: none;
+    border: 1px solid black;
+  }
+
+
+  .Journey-Plan-Number{
+    position: absolute;
+    font-weight: 800;
+    font-size: 35px;
+
+    height: 59px;
+    width: 220px;
+
+    left: 1750px;
+    top: 16px;
+  }
+
+
+
+  p{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: ltr;
+    /* border: 2px red  solid ; */
+  }
+
+  .page p span:first-child {
+    font-weight: 700;
+    color: #1c1c74;
+  }
+
+  .Departure-Date{
+   
+    font-size: 25px;
+    left: 75px;
+    top: 198px;
+    height: 52px;
+    width: 268px;
+
+  }
+
+  .Vehicle-Number{
+
+    font-size: 25px;
+    left: 345px;
+    top: 198px;
+    height: 52px;
+    width: 254px;
+  }
+
+
+  .Driver-Name{
+    
+    font-size: 25px;
+    left: 600px;
+    top: 198px;
+    height: 52px;
+    width: 580px;
+  }
+
+  .Passengers-1{
+    justify-content: start;
+    font-size: 25px;
+    left: 1182px;
+    top: 198px;
+   height: 52px;
+    width: 265px;
+    gap: 10px;
+    padding-left: 15px;
+  }
+
+  .Passengers-2{
+    justify-content: start;
+    font-size: 25px;
+    left: 1463px;
+    top: 198px;
+   height: 52px;
+    width: 254px;
+    gap: 10px;
+    padding-left: 15px;
+  }
+
+  .Passengers-3{
+    justify-content: start;
+    font-size: 25px;
+    left: 1733px;
+    top: 198px;
+   height: 52px;
+    width: 222px;
+    gap: 10px;
+    padding-left: 15px;
+  }
+
+  .Call-Journey-Manager{
+    font-weight: 800;
+    font-size: 25px;
+    left: 1608px;
+    top: 722px;
+   height: 31px;
+    width: 346px;
+    gap: 10px;
+    padding-left: 15px;
+  }
+
+  .Route-Place-Name-1{
+    font-size: 25px;
+    left: 82px;
+    top: 441px;
+   height: 40px;
+    width: 340px;
+  }
+
+
+  .Route-Place-Name-2{
+    font-size: 25px;
+    left: 82px;
+    top: 483px;
+    height: 37px;
+    width: 340px;
+  }
+
+  .Route-Place-Name-3{
+    font-size: 25px;
+    left: 82px;
+    top: 521px;
+    height: 36px;
+    width: 340px;
+  }
+
+
+  .Route-Place-Name-4{
+    font-size: 25px;
+    left: 82px;
+    top: 559px;
+    height: 36px;
+    width: 340px;
+  }
+
+  .Route-Place-Name-5{
+    font-size: 25px;
+    left: 82px;
+    top: 599px;
+    height: 36px;
+    width: 340px;
+  }
+  .Route-Place-Name-6{
+    font-size: 25px;
+    left: 82px;
+    top: 635px;
+    height: 36px;
+    width: 340px;
+  }
+  .Route-Place-Name-7{
+    font-size: 25px;
+    left: 82px;
+    top: 675px;
+    height: 36px;
+    width: 340px;
+  }
+  .Route-Place-Name-8{
+    font-size: 25px;
+    left: 82px;
+    top: 715px;
+    height: 36px;
+    width: 340px;
+  }
+  .Route-Place-Name-9{
+    font-size: 25px;
+    left: 82px;
+    top: 754px;
+    height: 36px;
+    width: 340px;
+  }
+  .Route-Place-Name-10{
+    font-size: 25px;
+    left: 82px;
+    top: 792px;
+    height: 41px;
+    width: 340px;
+  }
+
+
+
+  .Time-Arrive-Time-Depart-1{
+    font-size: 25px;
+    left: 425px;
+    top: 441px;
+    height: 40px;
+    width: 326px;
+  }
+
+
+  .Time-Arrive-Time-Depart-2{
+    font-size: 25px;
+    left: 425px;
+    top: 483px;
+    height: 37px;
+    width: 326px;
+  }
+
+  .Time-Arrive-Time-Depart-3{
+    font-size: 25px;
+    left: 425px;
+    top: 521px;
+    height: 37px;
+    width: 326px;
+  }
+
+
+
+
+  .Time-Arrive-Time-Depart-4{
+    font-size: 25px;
+    left: 425px;
+    top: 559px;
+    height: 36px;
+    width: 326px;
+  }
+
+  .Time-Arrive-Time-Depart-5{
+    font-size: 25px;
+    left: 425px;
+    top: 599px;
+    height: 36px;
+    width: 326px;
+  }
+  .Time-Arrive-Time-Depart-6{
+    font-size: 25px;
+    left:425px;
+    top: 635px;
+    height: 36px;
+    width: 326px;
+  }
+  .Time-Arrive-Time-Depart-7{
+    font-size: 25px;
+    left: 425px;
+    top: 675px;
+    height: 36px;
+    width: 326px;
+  }
+  .Time-Arrive-Time-Depart-8{
+    font-size: 25px;
+    left: 425px;
+    top: 715px;
+    height: 36px;
+    width: 326px;
+  }
+  .Time-Arrive-Time-Depart-9{
+    font-size: 25px;
+    left: 425px;
+    top: 754px;
+    height: 36px;
+    width: 326px;
+  }
+  .Time-Arrive-Time-Depart-10{
+    font-size: 25px;
+    left: 425px;
+    top: 792px;
+    height: 41px;
+    width: 326px;
+  }
+
+
+  .img-right-1{
+    position: absolute;
+    left: 290px;
+    top: 905px;
+  }
+  .img-right-2{
+    position: absolute;
+    left: 290px;
+    top: 940px;
+  }
+  .img-right-3{
+    position: absolute;
+    left: 290px;
+    top: 978px;
+  }
+
+  .signature{
+    position: absolute;
+    left: 300px;
+    top: 1000px;
+    width: 170px;
+  }
+  .Signature-with-name{
+    position: absolute;
+    left: 1040px;
+    top: 1160px;
+    width: 300px;
+  }
+
+
+  .Signature-date{
+    font-size: 25px;
+    left: 1140px;
+    top: 1220px;
+    width: 300px;
+   
+  }
+
+  .Rest-Tick-1{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 441px;
+    height: 40px;
+    width: 145px;
+  }
+
+  .Rest-Tick-2{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 482px;
+    height: 40px;
+    width: 145px;
+  }
+
+  .Rest-Tick-3{
+    
+    font-size: 25px;
+    left: 755px;
+     top: 522px;
+    height: 36px;
+    width: 145px;
+  }
+  
+  .Rest-Tick-3{
+    
+    font-size: 25px;
+    left: 755px;
+     top: 522px;
+    height: 36px;
+    width: 145px;
+  }
+  .Rest-Tick-4{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 560px;
+    height: 36px;
+    width: 145px;
+  }
+  .Rest-Tick-5{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 598px;
+    height: 36px;
+    width: 145px;
+  }
+  
+  .Rest-Tick-6{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 636px;
+    height: 36px;
+    width: 145px;
+  }
+
+  .Rest-Tick-7{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 675px;
+    height: 36px;
+    width: 145px;
+  }
+  .Rest-Tick-8{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 714px;
+    height: 36px;
+    width: 145px;
+  }
+  .Rest-Tick-9{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 754px;
+    height: 36px;
+    width: 145px;
+  }
+
+  .Rest-Tick-10{
+    
+    font-size: 25px;
+    left: 755px;
+    top: 792px;
+    height: 41px;
+    width: 145px;
+  }
+
+
+  @media (max-width: 1280px) {
+    :root {
+      --page-scale: clamp(0.14, calc((100vw - 80px) / 2048), 0.5);
+    }
+
+    body {
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 24px;
+    }
+
+    .sidebar {
+      width: 100%;
+      max-width: 520px;
+      max-height: none;
+    }
+
+    .main {
+     display: none !important;
+    }
+  }
+
+  @media (max-width: 720px) {
+    :root {
+      --page-scale: clamp(0.12, calc((100vw - 32px) / 2048), 0.32);
+    }
+
+    body {
+      padding: 20px 16px;
+    }
+
+    .sidebar {
+      padding: 22px 18px;
+      border-radius: 20px;
+      gap: 16px;
+    }
+
+    .main {
+      display: none !important;
+    }
+  }
+
+
+ 
+
+  @media print {
+    :root { --page-scale: 1; }
+
+    /* precise print colors */
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* A4 landscape canvas with no margins */
+    html, body {
+      width: 297mm; height: 210mm;
+      margin: 0; padding: 0; overflow: hidden; background: #fff;
+      display: block;
+    }
+
+    /* hide UI panels; keep the stage */
+    .sidebar { display: none !important; }
+    .main { display: block !important; border: none; box-shadow: none; padding: 0; margin: 0; background: none; overflow: visible; width: 297mm; height: 210mm; }
+
+    /* let the shell be a neutral container (no borders/shadows) */
+    .page-shell {
+      width: 297mm; height: 210mm;
+       scale: 1;
+      padding: 0%;
+      margin: 0 auto; border: none; border-radius: 0; box-shadow: none; overflow: hidden; padding: 0;
+    }
+
+    /* Pixel-canvas 2048×1441 mapped uniformly into A4 landscape and centered */
+    .page {
+      width: 2048px; height: 1441px;
+     
+
+      /* neutralize any screen transform */
+      transform: none !important;
+
+      /* compute uniform scale from physical sheet */
+      --sx: calc(297mm / 2048px);
+      --sy: calc(210mm / 1441px);
+      --s: min(var(--sx), var(--sy)); /* preserve aspect */
+
+      position: fixed; /* pin to printed sheet */
+      top: calc((210mm - 1441px * var(--s)) / 2);
+      left: calc((297mm - 2048px * var(--s)) / 2);
+      transform: scale(var(--s)) !important;
+      transform-origin: top left !important;
+
+      margin: 0 !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      background-size: 100% 100% !important; /* 1:1 content mapping */
+      background-position: center center !important;
+      aspect-ratio: auto; /* avoid print engine constraints */
+    }
+  }

@@ -63,6 +63,21 @@ create table if not exists public.settings (
 
 alter table public.settings enable row level security;
 
+create or replace function public.set_journey_plan_sequence(next_value bigint)
+returns void
+language plpgsql
+security definer
+as $$
+declare
+  seq_name text;
+begin
+  select pg_get_serial_sequence('public.journey_plans', 'journey_plan_number') into seq_name;
+  if seq_name is not null then
+    perform setval(seq_name, greatest(next_value, 1) - 1, false);
+  end if;
+end;
+$$;
+
 do $$
 begin
   if exists (

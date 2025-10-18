@@ -46,6 +46,14 @@ async function setSettingValue(key, value) {
   if (error) throw error;
 }
 
+async function setJourneySequence(nextValue) {
+  const parsed = Number(nextValue);
+  if (!Number.isFinite(parsed) || parsed < 1) return;
+  const { error } = await supabase
+    .rpc('set_journey_plan_sequence', { next_value: parsed });
+  if (error) throw error;
+}
+
 function parseNextValue(value) {
   if (value == null) return null;
   if (typeof value === 'number') return value;
@@ -67,6 +75,7 @@ async function recomputeNextJourneyNumberSeed() {
 
   const next = data?.length ? Number(data[0].journey_plan_number) + 1 : 1;
   await setSettingValue('next_journey_plan_number', { next });
+  await setJourneySequence(next);
   return next;
 }
 
@@ -76,6 +85,7 @@ async function ensureNextJourneyNumberSeed(latestNumber) {
   let stored = parseNextValue(await getSettingValue('next_journey_plan_number'));
   if (!stored || candidate > stored) {
     await setSettingValue('next_journey_plan_number', { next: candidate });
+    await setJourneySequence(candidate);
   }
 }
 
@@ -249,6 +259,7 @@ app.put('/api/settings/next-number', async (req, res) => {
     }
 
     await setSettingValue('next_journey_plan_number', { next: parsed });
+    await setJourneySequence(parsed);
     res.json({ nextNumber: parsed });
   } catch (error) {
     console.error('Error updating next journey number setting', error);

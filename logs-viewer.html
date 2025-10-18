@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Activity Logs - Journey Plan</title>
+    <link rel="icon" href="/128x128@2x.png" type="image/x-icon" />
+    <style>
+      body {
+        margin: 0;
+        padding: 32px;
+        font-family: "Segoe UI", sans-serif;
+        background: #f6f7ff;
+        color: #1f2147;
+      }
+      h1 {
+        margin-top: 0;
+        font-size: 28px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 45px -32px rgba(24, 24, 70, 0.4);
+      }
+      th,
+      td {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(31, 33, 71, 0.08);
+        text-align: left;
+        font-size: 14px;
+      }
+      th {
+        background: rgba(48, 43, 184, 0.08);
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .action-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .action-create {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .action-update {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .action-delete {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .action-login {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .btn {
+        padding: 8px 14px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #302bb8, #5966ff);
+        color: #fff;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        margin-bottom: 20px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📊 Activity Logs</h1>
+
+    <a href="dashboard.html" class="btn">← Back to Dashboard</a>
+
+    <div id="status" style="margin: 20px 0; font-size: 14px">
+      Loading logs...
+    </div>
+
+    <table id="logs-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>User</th>
+          <th>Action</th>
+          <th>Journey #</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script type="module">
+      const REMOTE_API_BASE = "";
+      const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+      const API_ORIGIN = LOCAL_HOSTS.includes(window.location.hostname)
+        ? ""
+        : REMOTE_API_BASE || window.location.origin;
+      window.API_BASE = API_ORIGIN;
+      const AUTH_STORAGE_KEY = "currentUser";
+
+      function authFetch(url, options = {}) {
+        const finalOptions = { ...options, credentials: "include" };
+        if (options.headers) {
+          finalOptions.headers = options.headers;
+        }
+        return fetch(url, finalOptions);
+      }
+
+      async function ensureAdmin() {
+        try {
+          const response = await fetch(`${API_ORIGIN}/api/auth/me`, {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            throw new Error("Unauthorized");
+          }
+          const { user } = await response.json();
+          if (!user) {
+            throw new Error("Unauthorized");
+          }
+          localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+          if (user.role !== "admin") {
+            throw new Error("FORBIDDEN");
+          }
+          return user;
+        } catch (error) {
+          if (error.message === "FORBIDDEN") {
+            alert("Access denied. Admin privileges required.");
+          }
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+          window.location.href = "login.html";
+          throw error;
+        }
+      }
+
+      let mustChangePassword = false;
+      let currentUser = null;
+
+      try {
+        currentUser = await ensureAdmin();
+        mustChangePassword = !!currentUser?.must_change_password;
+      } catch (error) {
+        throw error;
+      }
+
+      if (!mustChangePassword) {
+      async function loadLogs() {
+        const status = document.getElementById("status");
+        const tbody = document.querySelector("#logs-table tbody");
+
+        try {
+          const response = await authFetch(
+            `${window.API_BASE || ""}/api/logs?limit=200`
+          );
+          if (!response.ok) throw new Error("Failed to fetch logs");
+
+          const { data } = await response.json();
+          tbody.innerHTML = "";
+
+          if (!data || data.length === 0) {
+            status.textContent = "No activity logs found.";
+            return;
+          }
+
+          data.forEach((log) => {
+            const tr = document.createElement("tr");
+            const timestamp = new Date(log.created_at).toLocaleString();
+
+            const actionClass = `action-${log.action}`;
+            const details = log.details
+              ? Object.entries(log.details)
+                  .map(([k, v]) => `${k}: ${v}`)
+                  .join(", ")
+              : "-";
+
+            tr.innerHTML = `
+            <td>${timestamp}</td>
+            <td><strong>${log.user_name}</strong></td>
+            <td><span class="action-badge ${actionClass}">${
+              log.action
+            }</span></td>
+            <td>${log.journey_plan_number || "-"}</td>
+            <td style="font-size: 12px; color: #666;">${details}</td>
+          `;
+
+            tbody.appendChild(tr);
+          });
+
+          status.textContent = `Showing ${data.length} log entries.`;
+        } catch (error) {
+          console.error("Error loading logs:", error);
+          status.textContent = "Failed to load logs.";
+        }
+      }
+
+      loadLogs();
+    } else {
+      window.location.href = "change-password.html";
+    }
+    </script>
+  </body>
+</html>

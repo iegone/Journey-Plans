@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Management - Journey Plan</title>
+    <link rel="icon" href="/128x128@2x.png" type="image/x-icon" />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", sans-serif;
+        background: #f5f6ff;
+        color: #1f2147;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        padding: 24px 32px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+      header .actions {
+        display: flex;
+        gap: 12px;
+      }
+      .btn {
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        box-shadow: 0 12px 28px -24px rgba(31, 33, 71, 0.65);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #302bb8, #5966ff);
+        color: #fff;
+      }
+      .btn-secondary {
+        background: rgba(48, 43, 184, 0.08);
+        color: #302bb8;
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        gap: 24px;
+        padding: 0 32px 32px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 18px 44px -28px rgba(31, 33, 71, 0.45);
+      }
+      .card h2 {
+        margin: 0 0 12px;
+        font-size: 20px;
+      }
+      .form-card {
+        flex: 1 1 320px;
+        max-width: 380px;
+      }
+      .form-grid {
+        display: grid;
+        gap: 16px;
+      }
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #343672;
+      }
+      input,
+      select {
+        border: 1px solid rgba(48, 43, 184, 0.18);
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-size: 14px;
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #5d66f5;
+        box-shadow: 0 0 0 3px rgba(93, 102, 245, 0.15);
+      }
+      .status {
+        margin-top: 12px;
+        font-size: 13px;
+      }
+      .status.error {
+        color: #c53030;
+      }
+      .status.success {
+        color: #047857;
+      }
+      .table-card {
+        flex: 1 1 520px;
+        overflow: hidden;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+      th,
+      td {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid rgba(31, 33, 71, 0.08);
+        font-size: 13px;
+      }
+      th {
+        background: rgba(48, 43, 184, 0.07);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 11px;
+        color: #30346b;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+      .badge.pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge.active {
+        background: #dcfce7;
+        color: #065f46;
+      }
+      .badge.admin {
+        background: #e0e7ff;
+        color: #3730a3;
+      }
+      .hint {
+        margin: 0;
+        font-size: 12px;
+        color: #616389;
+      }
+      @media (max-width: 900px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+        main {
+          padding: 0 20px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>User Management</h1>
+        <p class="hint" id="default-password-label">
+          Default password: <strong id="default-password-value">ChangeMe123!</strong>
+        </p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary" id="back-dashboard">
+          ← Back to Dashboard
+        </button>
+        <button class="btn btn-secondary" id="logout-btn">Logout</button>
+      </div>
+    </header>
+    <main>
+      <section class="card form-card">
+        <h2>Create New User</h2>
+        <p class="hint">
+          New users start with the default password and must change it after
+          first login.
+        </p>
+        <form id="create-user-form">
+          <div class="form-grid">
+            <label>
+              Username
+              <input
+                type="text"
+                id="create-username"
+                name="username"
+                autocomplete="off"
+                required
+              />
+            </label>
+            <label>
+              Full name (optional)
+              <input
+                type="text"
+                id="create-fullname"
+                name="fullName"
+                autocomplete="off"
+              />
+            </label>
+            <label>
+              Role
+              <select id="create-role" name="role">
+                <option value="user">Employee</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
+          </div>
+          <button class="btn btn-primary" type="submit" id="create-user-btn">
+            Create User
+          </button>
+          <div class="status" id="create-user-status"></div>
+        </form>
+      </section>
+      <section class="card table-card">
+        <h2>Existing Users</h2>
+        <p class="hint" id="users-hint">
+          Resetting a password forces the user to change it on next login.
+        </p>
+        <div style="overflow-x: auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Password</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body"></tbody>
+          </table>
+        </div>
+        <div class="status" id="users-status"></div>
+      </section>
+    </main>
+
+    <script type="module">
+      const REMOTE_API_BASE = "";
+      const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+      const API_ORIGIN = LOCAL_HOSTS.includes(window.location.hostname)
+        ? ""
+        : REMOTE_API_BASE || window.location.origin;
+      window.API_BASE = API_ORIGIN;
+
+      const AUTH_STORAGE_KEY = "currentUser";
+      const defaultPasswordValueEl = document.getElementById(
+        "default-password-value"
+      );
+      const createUserForm = document.getElementById("create-user-form");
+      const createUserBtn = document.getElementById("create-user-btn");
+      const createUserStatus = document.getElementById("create-user-status");
+      const usersTableBody = document.getElementById("users-table-body");
+      const usersStatus = document.getElementById("users-status");
+      const createUsername = document.getElementById("create-username");
+      const createFullName = document.getElementById("create-fullname");
+      const createRole = document.getElementById("create-role");
+      const backDashboardBtn = document.getElementById("back-dashboard");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      let currentUser = null;
+      let defaultPassword = "ChangeMe123!";
+
+      function setStatus(el, message, tone = "") {
+        if (!el) return;
+        el.textContent = message || "";
+        el.classList.toggle("error", tone === "error");
+        el.classList.toggle("success", tone === "success");
+      }
+
+      function formatDate(value) {
+        if (!value) return "—";
+        try {
+          return new Date(value).toLocaleString();
+        } catch {
+          return value;
+        }
+      }
+
+      function authFetch(url, options = {}) {
+        const finalOptions = { ...options, credentials: "include" };
+        if (options.headers) {
+          finalOptions.headers = options.headers;
+        }
+        return fetch(url, finalOptions);
+      }
+
+      async function ensureAdmin() {
+        try {
+          const response = await fetch(`${API_ORIGIN}/api/auth/me`, {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            throw new Error("Unauthorized");
+          }
+          const { user } = await response.json();
+          if (!user) {
+            throw new Error("Unauthorized");
+          }
+          localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+          if (user.must_change_password) {
+            window.location.href = "change-password.html";
+            throw new Error("PASSWORD_CHANGE_REQUIRED");
+          }
+          if (user.role !== "admin") {
+            throw new Error("FORBIDDEN");
+          }
+          currentUser = user;
+          return user;
+        } catch (error) {
+          if (error.message === "FORBIDDEN") {
+            alert("Access denied. Admin privileges required.");
+          }
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+          window.location.href = "login.html";
+          throw error;
+        }
+      }
+
+      async function fetchDefaultPassword() {
+        try {
+          const response = await authFetch(
+            `${window.API_BASE || ""}/api/users/default-password`
+          );
+          if (!response.ok) return;
+          const data = await response.json();
+          if (data?.defaultPassword) {
+            defaultPassword = data.defaultPassword;
+            if (defaultPasswordValueEl) {
+              defaultPasswordValueEl.textContent = defaultPassword;
+            }
+          }
+        } catch (error) {
+          console.warn("Failed to get default password:", error);
+        }
+      }
+
+      function renderUsers(users = []) {
+        if (!usersTableBody) return;
+        usersTableBody.innerHTML = "";
+
+        if (!users.length) {
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+          cell.colSpan = 7;
+          cell.textContent = "No users found.";
+          cell.style.textAlign = "center";
+          row.appendChild(cell);
+          usersTableBody.appendChild(row);
+          return;
+        }
+
+        users.forEach((user) => {
+          const row = document.createElement("tr");
+
+          const statusBadge = user.must_change_password
+            ? '<span class="badge pending">Pending change</span>'
+            : '<span class="badge active">Active</span>';
+
+          const roleBadge =
+            user.role === "admin"
+              ? '<span class="badge admin">Admin</span>'
+              : "Employee";
+
+          const passwordInfo = user.must_change_password
+            ? `<code>${defaultPassword}</code>`
+            : "Updated";
+
+          row.innerHTML = `
+            <td>${user.username}</td>
+            <td>${user.full_name || "—"}</td>
+            <td>${roleBadge}</td>
+            <td>${statusBadge}</td>
+            <td>${formatDate(user.last_login)}</td>
+            <td>${passwordInfo}</td>
+            <td>
+              <button class="btn btn-secondary btn-small" data-action="reset" data-id="${
+                user.id
+              }">
+                Reset
+              </button>
+            </td>
+          `;
+
+          usersTableBody.appendChild(row);
+        });
+      }
+
+      async function loadUsers() {
+        setStatus(usersStatus, "Loading users...");
+        try {
+          const response = await authFetch(`${window.API_BASE || ""}/api/users`);
+          if (!response.ok) {
+            throw new Error("Failed to load users");
+          }
+          const data = await response.json();
+          renderUsers(data?.users || []);
+          setStatus(usersStatus, `Loaded ${data?.users?.length || 0} user(s).`);
+        } catch (error) {
+          console.error("Load users error:", error);
+          setStatus(usersStatus, error.message || "Failed to load users", "error");
+        }
+      }
+
+      if (usersTableBody) {
+        usersTableBody.addEventListener("click", async (event) => {
+          const button = event.target.closest("button[data-action='reset']");
+          if (!button) return;
+
+          const userId = Number(button.dataset.id);
+          if (!Number.isFinite(userId)) return;
+
+          if (
+            !confirm(
+              "Reset password to the default value? User will be forced to change it on next login."
+            )
+          ) {
+            return;
+          }
+
+          button.disabled = true;
+          setStatus(usersStatus, "Resetting password...");
+
+          try {
+            const response = await authFetch(
+              `${window.API_BASE || ""}/api/users/${userId}/reset-password`,
+              { method: "POST" }
+            );
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              throw new Error(data?.error || "Failed to reset password");
+            }
+            if (data?.defaultPassword) {
+              defaultPassword = data.defaultPassword;
+              if (defaultPasswordValueEl) {
+                defaultPasswordValueEl.textContent = defaultPassword;
+              }
+            }
+            setStatus(
+              usersStatus,
+              `Password reset for ${data?.user?.username || "user"}`
+            );
+            await loadUsers();
+          } catch (error) {
+            console.error("Reset password error:", error);
+            setStatus(
+              usersStatus,
+              error.message || "Failed to reset password",
+              "error"
+            );
+          } finally {
+            button.disabled = false;
+          }
+        });
+      }
+
+      if (createUserForm && createUserBtn) {
+        createUserForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const username = createUsername.value.trim();
+          const fullName = createFullName.value.trim();
+          const role = createRole.value;
+
+          if (!username) {
+            setStatus(createUserStatus, "Username is required.", "error");
+            createUsername.focus();
+            return;
+          }
+
+          if (username.length < 3) {
+            setStatus(
+              createUserStatus,
+              "Username must be at least 3 characters.",
+              "error"
+            );
+            createUsername.focus();
+            return;
+          }
+
+          createUserBtn.disabled = true;
+          setStatus(createUserStatus, "Creating user...");
+
+          try {
+            const response = await authFetch(
+              `${window.API_BASE || ""}/api/users`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  username,
+                  fullName: fullName || undefined,
+                  role,
+                }),
+              }
+            );
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+              throw new Error(data?.error || "Failed to create user");
+            }
+
+            defaultPassword = data?.defaultPassword || defaultPassword;
+            if (defaultPasswordValueEl) {
+              defaultPasswordValueEl.textContent = defaultPassword;
+            }
+
+            setStatus(
+              createUserStatus,
+              `User ${data.user?.username || username} created. Password: ${defaultPassword}`,
+              "success"
+            );
+            createUserForm.reset();
+            createUsername.focus();
+            await loadUsers();
+          } catch (error) {
+            console.error("Create user error:", error);
+            setStatus(
+              createUserStatus,
+              error.message || "Failed to create user",
+              "error"
+            );
+          } finally {
+            createUserBtn.disabled = false;
+          }
+        });
+      }
+
+      if (backDashboardBtn) {
+        backDashboardBtn.addEventListener("click", () => {
+          window.location.href = "dashboard.html";
+        });
+      }
+
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+          try {
+            await fetch(`${API_ORIGIN}/api/auth/logout`, {
+              method: "POST",
+              credentials: "include",
+            });
+          } finally {
+            localStorage.removeItem(AUTH_STORAGE_KEY);
+            window.location.href = "login.html";
+          }
+        });
+      }
+
+      await ensureAdmin();
+      await fetchDefaultPassword();
+      await loadUsers();
+    </script>
+  </body>
+</html>

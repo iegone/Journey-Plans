@@ -1,289 +1,814 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Journey Plans Dashboard</title>
-   <link rel="icon" href="/128x128@2x.png" type="image/x-icon" />
-  <style>
-    body {
-      margin: 0;
-      padding: 32px;
-      font-family: "Segoe UI", sans-serif;
-      background: #f6f7ff;
-      color: #1f2147;
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 28px;
-    }
-    .filters {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .controls {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 20px 45px -32px rgba(24, 24, 70, 0.4);
-    }
-    th, td {
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(31, 33, 71, 0.08);
-      text-align: left;
-      font-size: 14px;
-    }
-    th {
-      background: rgba(48, 43, 184, 0.08);
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    .muted {
-      color: #616389;
-      font-size: 12px;
-    }
-    #status {
-      margin-bottom: 12px;
-      font-size: 13px;
-    }
-    #status.error {
-      color: #b82020;
-    }
-    #status.success {
-      color: #1a7f35;
-    }
-    .btn {
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: none;
-      background: linear-gradient(135deg, #302bb8, #5966ff);
-      color: #fff;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 8px 18px -12px rgba(35, 39, 107, 0.6);
-    }
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 24px -14px rgba(35, 39, 107, 0.75);
-    }
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-    .btn-secondary {
-      background: rgba(48, 43, 184, 0.12);
-      color: #302bb8;
-      box-shadow: none;
-    }
-    .btn-secondary:hover {
-      background: rgba(48, 43, 184, 0.18);
-      box-shadow: none;
-    }
-    .btn-small {
-      padding: 6px 10px;
-      font-size: 12px;
-      border-radius: 8px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Journey Plans Dashboard</h1>
-  <div class="controls">
-    <button class="btn" id="set-next-number">Set Next Number</button>
-    <button class="btn btn-secondary" id="refresh-table">Refresh</button>
-  </div>
-  <div id="status">Loading...</div>
-  <table id="plans-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Created</th>
-        <th>Departure Date</th>
-        <th>Driver</th>
-        <th>Vehicle</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Passengers</th>
-        <th>Call</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Journey Plans Dashboard</title>
+    <link rel="icon" href="/128x128@2x.png" type="image/x-icon" />
+    <style>
+      body {
+        margin: 0;
+        padding: 32px;
+        font-family: "Segoe UI", sans-serif;
+        background: #f6f7ff;
+        color: #1f2147;
+      }
+      h1 {
+        margin-top: 0;
+        font-size: 28px;
+      }
+      .filters {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 45px -32px rgba(24, 24, 70, 0.4);
+      }
+      th,
+      td {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(31, 33, 71, 0.08);
+        text-align: left;
+        font-size: 14px;
+      }
+      th {
+        background: rgba(48, 43, 184, 0.08);
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .muted {
+        color: #616389;
+        font-size: 12px;
+      }
+      #status {
+        margin-bottom: 12px;
+        font-size: 13px;
+      }
+      #status.error {
+        color: #b82020;
+      }
+      #status.success {
+        color: #1a7f35;
+      }
+      .btn {
+        padding: 8px 14px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #302bb8, #5966ff);
+        color: #fff;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        box-shadow: 0 8px 18px -12px rgba(35, 39, 107, 0.6);
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px -14px rgba(35, 39, 107, 0.75);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .btn-secondary {
+        background: rgba(48, 43, 184, 0.12);
+        color: #302bb8;
+        box-shadow: none;
+      }
+      .btn-secondary:hover {
+        background: rgba(48, 43, 184, 0.18);
+        box-shadow: none;
+      }
+      .btn-small {
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 8px;
+      }
+      .card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 16px 32px -28px rgba(24, 24, 70, 0.45);
+        margin-bottom: 24px;
+      }
+      .form-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        margin-top: 12px;
+      }
+      .form-grid label {
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+        font-weight: 600;
+        color: #2f3367;
+        gap: 6px;
+      }
+      .form-grid input,
+      .form-grid select {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(48, 43, 184, 0.16);
+        font-size: 14px;
+      }
+      .card-footer {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      #create-user-status {
+        font-size: 13px;
+        white-space: pre-line;
+      }
+      #create-user-status.error {
+        color: #b82020;
+      }
+      #create-user-status.success {
+        color: #1a7f35;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      "
+    >
+      <h1 style="margin: 0">Journey Plans Dashboard</h1>
+      <div style="display: flex; gap: 12px; align-items: center">
+        <span id="current-user" style="font-size: 14px; color: #666"></span>
+        <button class="btn btn-secondary btn-small" id="logout-btn">
+          Logout
+        </button>
+        <button class="btn btn-secondary btn-small" id="view-logs-btn">
+          View Logs
+        </button>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn" id="manage-users">Manage Users</button>
+      <button class="btn" id="set-next-number">Set Next Number</button>
+      <button class="btn btn-secondary" id="refresh-table">Refresh</button>
+      <button
+        class="btn"
+        id="delete-selected"
+        style="
+          background: linear-gradient(135deg, #ef4444, #dc2626);
+          display: none;
+        "
+      >
+        Delete Selected (<span id="selected-count">0</span>)
+      </button>
+    </div>
 
-  <script>
-    const REMOTE_API_BASE = ''; // set to deployed API origin if different
-    const LOCAL_HOSTS = ['localhost', '127.0.0.1'];
-    window.API_BASE = LOCAL_HOSTS.includes(window.location.hostname)
-      ? ''
-      : (REMOTE_API_BASE || window.location.origin);
-    let cachedPlans = [];
+    <!-- Filters -->
+    <div class="filters">
+      <input
+        type="text"
+        id="filter-search"
+        placeholder="Search by number, driver, vehicle, location..."
+        style="
+          flex: 1;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 14px;
+        "
+      />
+      <input
+        type="date"
+        id="filter-date"
+        placeholder="Filter by date"
+        style="
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 14px;
+        "
+      />
+      <button
+        class="btn btn-secondary btn-small"
+        id="clear-filters"
+        style="white-space: nowrap"
+      >
+        Clear Filters
+      </button>
+    </div>
 
-    async function loadJourneyPlans() {
-      const status = document.getElementById('status');
-      const tbody = document.querySelector('#plans-table tbody');
-      status.textContent = 'Loading...';
-      status.className = '';
-      try {
-        const res = await fetch(`${window.API_BASE || ''}/api/journey-plans`);
-        if (!res.ok) throw new Error('Request failed');
-        const { data } = await res.json();
-        tbody.innerHTML = '';
+    <div id="status">Loading...</div>
+    <table id="plans-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="select-all" /></th>
+          <th>#</th>
+          <th>Created</th>
+          <th>Departure Date</th>
+          <th>Driver</th>
+          <th>Vehicle</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Passengers</th>
+          <th>Call</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-        cachedPlans = data || [];
+    <script type="module">
+      const REMOTE_API_BASE = ""; // set to deployed API origin if different
+      const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+      const API_ORIGIN = LOCAL_HOSTS.includes(window.location.hostname)
+        ? ""
+        : REMOTE_API_BASE || window.location.origin;
+      window.API_BASE = API_ORIGIN;
+      const AUTH_STORAGE_KEY = "currentUser";
+      let cachedPlans = [];
+      let currentUser = null;
 
-        if (!data || data.length === 0) {
-          status.textContent = 'No journey plans saved yet.';
-          status.className = 'muted';
-          return;
+      function authFetch(url, options = {}) {
+        const finalOptions = { ...options, credentials: "include" };
+        if (options.headers) {
+          finalOptions.headers = options.headers;
         }
+        return fetch(url, finalOptions);
+      }
 
-        data.forEach(plan => {
-          const tr = document.createElement('tr');
-          const departure = plan.departure_date ? new Date(plan.departure_date).toLocaleDateString() : '';
-          const passengers = (plan.passengers || [])
-            .map(p => p.name)
-            .filter(Boolean)
-            .join(', ');
-          const call = plan.call_journey_manager || plan?.route_snapshot?.driver?.gsm || '';
-          tr.innerHTML = `
+      async function ensureAdmin() {
+        try {
+          const response = await fetch(`${API_ORIGIN}/api/auth/me`, {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            throw new Error("Unauthorized");
+          }
+          const { user } = await response.json();
+          if (!user) {
+            throw new Error("Unauthorized");
+          }
+          localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+          if (user.role !== "admin") {
+            localStorage.removeItem(AUTH_STORAGE_KEY);
+            throw new Error("FORBIDDEN");
+          }
+          return user;
+        } catch (error) {
+          if (error.message === "FORBIDDEN") {
+            alert("Access denied. Admin privileges required.");
+            window.location.href = "login.html";
+            throw error;
+          }
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+          window.location.href = "login.html";
+          throw error;
+        }
+      }
+
+      let mustChangePassword = false;
+
+      try {
+        currentUser = await ensureAdmin();
+        mustChangePassword = !!currentUser?.must_change_password;
+      } catch (error) {
+        throw error;
+      }
+
+      if (!mustChangePassword) {
+      const userDisplay = document.getElementById("current-user");
+      if (userDisplay && currentUser) {
+        userDisplay.textContent = `👤 ${
+          currentUser.full_name || currentUser.username
+        }`;
+      }
+
+      const logoutBtn = document.getElementById("logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+          if (!confirm("Are you sure you want to logout?")) {
+            return;
+          }
+          try {
+            await fetch(`${API_ORIGIN}/api/auth/logout`, {
+              method: "POST",
+              credentials: "include",
+            });
+          } catch (error) {
+            console.warn("Logout failed:", error);
+          } finally {
+            localStorage.removeItem(AUTH_STORAGE_KEY);
+            window.location.href = "login.html";
+          }
+        });
+      }
+
+      const manageUsersBtn = document.getElementById("manage-users");
+      if (manageUsersBtn) {
+        manageUsersBtn.addEventListener("click", () => {
+          window.location.href = "user-management.html";
+        });
+      }
+
+      // View Logs button
+      const viewLogsBtn = document.getElementById("view-logs-btn");
+      if (viewLogsBtn) {
+        viewLogsBtn.addEventListener("click", () => {
+          window.location.href = "logs-viewer.html";
+        });
+      }
+
+      async function loadJourneyPlans() {
+        const status = document.getElementById("status");
+        const tbody = document.querySelector("#plans-table tbody");
+        status.textContent = "Loading...";
+        status.className = "";
+        try {
+          const res = await authFetch(
+            `${window.API_BASE || ""}/api/journey-plans`
+          );
+          if (!res.ok) throw new Error("Request failed");
+          const { data } = await res.json();
+          tbody.innerHTML = "";
+
+          cachedPlans = data || [];
+
+          if (!data || data.length === 0) {
+            status.textContent = "No journey plans saved yet.";
+            status.className = "muted";
+            return;
+          }
+
+          data.forEach((plan) => {
+            const tr = document.createElement("tr");
+            const departure = plan.departure_date
+              ? new Date(plan.departure_date).toLocaleDateString()
+              : "";
+            const passengers = (plan.passengers || [])
+              .map((p) => p.name)
+              .filter(Boolean)
+              .join(", ");
+            const call =
+              plan.call_journey_manager ||
+              plan?.route_snapshot?.driver?.gsm ||
+              "";
+            tr.innerHTML = `
+            <td><input type="checkbox" class="row-checkbox" data-number="${
+              plan.journey_plan_number
+            }" /></td>
             <td>${plan.journey_plan_number}</td>
-            <td>${plan.created_at ? new Date(plan.created_at).toLocaleString() : ''}</td>
+            <td>${
+              plan.created_at ? new Date(plan.created_at).toLocaleString() : ""
+            }</td>
             <td>${departure}</td>
-            <td>${plan.driver_name || ''}</td>
-            <td>${plan.vehicle_number || ''}</td>
-            <td>${plan.from_location || ''}</td>
-            <td>${plan.to_location || ''}</td>
+            <td>${plan.driver_name || ""}</td>
+            <td>${plan.vehicle_number || ""}</td>
+            <td>${plan.from_location || ""}</td>
+            <td>${plan.to_location || ""}</td>
             <td>${passengers || '<span class="muted">—</span>'}</td>
             <td>${call || '<span class="muted">—</span>'}</td>
             <td>
-              <button class="btn btn-small" data-action="edit-number" data-number="${plan.journey_plan_number}">Edit #</button>
+              <button class="btn btn-small" data-action="view" data-number="${
+                plan.journey_plan_number
+              }" style="background: linear-gradient(135deg, #10b981, #059669);">View</button>
+              <button class="btn btn-small" data-action="edit-number" data-number="${
+                plan.journey_plan_number
+              }" style="background: linear-gradient(135deg, #f59e0b, #f97316);">Edit #</button>
+              <button class="btn btn-small" data-action="delete" data-number="${
+                plan.journey_plan_number
+              }" style="background: linear-gradient(135deg, #ef4444, #dc2626);">Delete</button>
             </td>
           `;
+            tbody.appendChild(tr);
+          });
+
+          status.textContent = `Loaded ${data.length} journey plan(s).`;
+          status.className = "success";
+        } catch (error) {
+          console.error(error);
+          status.textContent = "Failed to load journey plans.";
+          status.className = "error";
+        }
+      }
+
+      async function editJourneyPlanNumber(currentNumber) {
+        const status = document.getElementById("status");
+        const plan = cachedPlans.find(
+          (p) => Number(p.journey_plan_number) === Number(currentNumber)
+        );
+        if (!plan) {
+          status.textContent = "Plan not found locally.";
+          status.className = "error";
+          return;
+        }
+
+        const input = prompt(
+          "New journey plan number",
+          plan.journey_plan_number
+        );
+        if (input === null) return;
+        const nextNumber = Number(input);
+        if (!Number.isInteger(nextNumber) || nextNumber < 1) {
+          status.textContent = "Please enter a positive integer.";
+          status.className = "error";
+          return;
+        }
+
+        if (nextNumber === Number(plan.journey_plan_number)) {
+          status.textContent = "Journey plan number unchanged.";
+          status.className = "muted";
+          return;
+        }
+
+        status.textContent = "Updating journey plan number...";
+        status.className = "";
+        try {
+          const res = await authFetch(
+            `${window.API_BASE || ""}/api/journey-plans/${
+              plan.journey_plan_number
+            }`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ journey_plan_number: nextNumber }),
+            }
+          );
+
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(
+              err.error || "Failed to update journey plan number"
+            );
+          }
+
+          status.textContent = "Journey plan number updated.";
+          status.className = "success";
+          await loadJourneyPlans();
+        } catch (error) {
+          console.error(error);
+          status.textContent =
+            error.message || "Failed to update journey plan number.";
+          status.className = "error";
+        }
+      }
+
+      async function setNextNumber() {
+        const status = document.getElementById("status");
+        const input = prompt("Next journey plan number");
+        if (input === null) return;
+        const nextNumber = Number(input);
+        if (!Number.isInteger(nextNumber) || nextNumber < 1) {
+          status.textContent = "Please enter a positive integer.";
+          status.className = "error";
+          return;
+        }
+
+        status.textContent = "Updating sequence...";
+        status.className = "";
+        try {
+          const res = await authFetch(
+            `${window.API_BASE || ""}/api/settings/next-number`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ nextNumber }),
+            }
+          );
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || "Failed to update next number");
+          }
+          status.textContent = `Next journey plan number set to ${nextNumber}.`;
+          status.className = "success";
+        } catch (error) {
+          console.error(error);
+          status.textContent = error.message || "Failed to update next number.";
+          status.className = "error";
+        }
+      }
+
+      async function deleteJourneyPlan(number) {
+        const status = document.getElementById("status");
+        const plan = cachedPlans.find(
+          (p) => Number(p.journey_plan_number) === Number(number)
+        );
+        if (!plan) {
+          status.textContent = "Plan not found.";
+          status.className = "error";
+          return;
+        }
+
+        const confirmMsg = `Are you sure you want to delete Journey Plan #${number}?\n\nDriver: ${
+          plan.driver_name || "N/A"
+        }\nDate: ${
+          plan.departure_date || "N/A"
+        }\n\nThis action cannot be undone.`;
+
+        if (!confirm(confirmMsg)) return;
+
+        status.textContent = "Deleting journey plan...";
+        status.className = "";
+
+        try {
+          const res = await authFetch(
+            `${window.API_BASE || ""}/api/journey-plans/${number}`,
+            {
+              method: "DELETE",
+            }
+          );
+
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || "Failed to delete journey plan");
+          }
+
+          status.textContent = `Journey plan #${number} deleted successfully.`;
+          status.className = "success";
+          await loadJourneyPlans();
+        } catch (error) {
+          console.error(error);
+          status.textContent =
+            error.message || "Failed to delete journey plan.";
+          status.className = "error";
+        }
+      }
+
+      function viewJourneyPlan(number) {
+        // فتح index.html مع تحميل Journey
+        window.open(`index.html?load=${number}`, "_blank");
+      }
+
+      // Filter functionality
+      const filterSearch = document.getElementById("filter-search");
+      const filterDate = document.getElementById("filter-date");
+      const clearFiltersBtn = document.getElementById("clear-filters");
+
+      function applyFilters() {
+        const searchTerm = filterSearch?.value.toLowerCase() || "";
+        const dateFilter = filterDate?.value || "";
+
+        let filtered = [...cachedPlans];
+
+        if (searchTerm) {
+          filtered = filtered.filter((plan) => {
+            const searchable = [
+              plan.journey_plan_number?.toString(),
+              plan.driver_name,
+              plan.vehicle_number,
+              plan.from_location,
+              plan.to_location,
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
+            return searchable.includes(searchTerm);
+          });
+        }
+
+        if (dateFilter) {
+          filtered = filtered.filter(
+            (plan) => plan.departure_date === dateFilter
+          );
+        }
+
+        renderFilteredPlans(filtered);
+      }
+
+      function renderFilteredPlans(plans) {
+        const status = document.getElementById("status");
+        const tbody = document.querySelector("#plans-table tbody");
+        tbody.innerHTML = "";
+
+        if (plans.length === 0) {
+          status.textContent = "No journey plans match the filters.";
+          status.className = "muted";
+          return;
+        }
+
+        plans.forEach((plan) => {
+          const tr = document.createElement("tr");
+          const departure = plan.departure_date
+            ? new Date(plan.departure_date).toLocaleDateString()
+            : "";
+          const passengers = (plan.passengers || [])
+            .map((p) => p.name)
+            .filter(Boolean)
+            .join(", ");
+          const call =
+            plan.call_journey_manager ||
+            plan?.route_snapshot?.driver?.gsm ||
+            "";
+          tr.innerHTML = `
+          <td><input type="checkbox" class="row-checkbox" data-number="${
+            plan.journey_plan_number
+          }" /></td>
+          <td>${plan.journey_plan_number}</td>
+          <td>${
+            plan.created_at ? new Date(plan.created_at).toLocaleString() : ""
+          }</td>
+          <td>${departure}</td>
+          <td>${plan.driver_name || ""}</td>
+          <td>${plan.vehicle_number || ""}</td>
+          <td>${plan.from_location || ""}</td>
+          <td>${plan.to_location || ""}</td>
+          <td>${passengers || '<span class="muted">—</span>'}</td>
+          <td>${call || '<span class="muted">—</span>'}</td>
+          <td>
+            <button class="btn btn-small" data-action="view" data-number="${
+              plan.journey_plan_number
+            }" style="background: linear-gradient(135deg, #10b981, #059669);">View</button>
+            <button class="btn btn-small" data-action="edit-number" data-number="${
+              plan.journey_plan_number
+            }" style="background: linear-gradient(135deg, #f59e0b, #f97316);">Edit #</button>
+            <button class="btn btn-small" data-action="delete" data-number="${
+              plan.journey_plan_number
+            }" style="background: linear-gradient(135deg, #ef4444, #dc2626);">Delete</button>
+          </td>
+        `;
           tbody.appendChild(tr);
         });
 
-        status.textContent = `Loaded ${data.length} journey plan(s).`;
-        status.className = 'success';
-      } catch (error) {
-        console.error(error);
-        status.textContent = 'Failed to load journey plans.';
-        status.className = 'error';
-      }
-    }
-
-    async function editJourneyPlanNumber(currentNumber) {
-      const status = document.getElementById('status');
-      const plan = cachedPlans.find(p => Number(p.journey_plan_number) === Number(currentNumber));
-      if (!plan) {
-        status.textContent = 'Plan not found locally.';
-        status.className = 'error';
-        return;
+        status.textContent = `Showing ${plans.length} of ${cachedPlans.length} journey plan(s).`;
+        status.className = "success";
       }
 
-      const input = prompt('New journey plan number', plan.journey_plan_number);
-      if (input === null) return;
-      const nextNumber = Number(input);
-      if (!Number.isInteger(nextNumber) || nextNumber < 1) {
-        status.textContent = 'Please enter a positive integer.';
-        status.className = 'error';
-        return;
+      if (filterSearch) {
+        filterSearch.addEventListener("input", applyFilters);
       }
 
-      if (nextNumber === Number(plan.journey_plan_number)) {
-        status.textContent = 'Journey plan number unchanged.';
-        status.className = 'muted';
-        return;
+      if (filterDate) {
+        filterDate.addEventListener("change", applyFilters);
       }
 
-      status.textContent = 'Updating journey plan number...';
-      status.className = '';
-      try {
-        const res = await fetch(`${window.API_BASE || ''}/api/journey-plans/${plan.journey_plan_number}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ journey_plan_number: nextNumber })
+      if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener("click", () => {
+          if (filterSearch) filterSearch.value = "";
+          if (filterDate) filterDate.value = "";
+          loadJourneyPlans();
+        });
+      }
+
+      document
+        .getElementById("plans-table")
+        .querySelector("tbody")
+        .addEventListener("click", (event) => {
+          const btn = event.target.closest("button[data-action]");
+          if (!btn) return;
+          const action = btn.dataset.action;
+          const number = btn.dataset.number;
+
+          if (action === "edit-number" && number) {
+            editJourneyPlanNumber(number);
+          } else if (action === "delete" && number) {
+            deleteJourneyPlan(number);
+          } else if (action === "view" && number) {
+            viewJourneyPlan(number);
+          }
         });
 
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.error || 'Failed to update journey plan number');
+      document
+        .getElementById("set-next-number")
+        .addEventListener("click", setNextNumber);
+      document
+        .getElementById("refresh-table")
+        .addEventListener("click", () => loadJourneyPlans());
+
+      // ===== Select All & Delete Multiple =====
+      const selectAllCheckbox = document.getElementById("select-all");
+      const deleteSelectedBtn = document.getElementById("delete-selected");
+      const selectedCountSpan = document.getElementById("selected-count");
+
+      function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll(".row-checkbox:checked");
+        const count = checkboxes.length;
+
+        if (selectedCountSpan) selectedCountSpan.textContent = count;
+        if (deleteSelectedBtn) {
+          deleteSelectedBtn.style.display = count > 0 ? "block" : "none";
         }
-
-        status.textContent = 'Journey plan number updated.';
-        status.className = 'success';
-        await loadJourneyPlans();
-      } catch (error) {
-        console.error(error);
-        status.textContent = error.message || 'Failed to update journey plan number.';
-        status.className = 'error';
-      }
-    }
-
-    async function setNextNumber() {
-      const status = document.getElementById('status');
-      const input = prompt('Next journey plan number');
-      if (input === null) return;
-      const nextNumber = Number(input);
-      if (!Number.isInteger(nextNumber) || nextNumber < 1) {
-        status.textContent = 'Please enter a positive integer.';
-        status.className = 'error';
-        return;
       }
 
-      status.textContent = 'Updating sequence...';
-      status.className = '';
-      try {
-        const res = await fetch(`${window.API_BASE || ''}/api/settings/next-number`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nextNumber })
+      if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener("change", (e) => {
+          const checkboxes = document.querySelectorAll(".row-checkbox");
+          checkboxes.forEach((cb) => (cb.checked = e.target.checked));
+          updateSelectedCount();
         });
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.error || 'Failed to update next number');
-        }
-        status.textContent = `Next journey plan number set to ${nextNumber}.`;
-        status.className = 'success';
-      } catch (error) {
-        console.error(error);
-        status.textContent = error.message || 'Failed to update next number.';
-        status.className = 'error';
       }
+
+      // Listen to individual checkboxes
+      document
+        .getElementById("plans-table")
+        .querySelector("tbody")
+        .addEventListener("change", (e) => {
+          if (e.target.classList.contains("row-checkbox")) {
+            updateSelectedCount();
+
+            // Update select-all checkbox state
+            const allCheckboxes = document.querySelectorAll(".row-checkbox");
+            const checkedCheckboxes = document.querySelectorAll(
+              ".row-checkbox:checked"
+            );
+            if (selectAllCheckbox) {
+              selectAllCheckbox.checked =
+                allCheckboxes.length > 0 &&
+                allCheckboxes.length === checkedCheckboxes.length;
+            }
+          }
+        });
+
+      if (deleteSelectedBtn) {
+        deleteSelectedBtn.addEventListener("click", async () => {
+          const checkboxes = document.querySelectorAll(".row-checkbox:checked");
+          const numbers = Array.from(checkboxes).map((cb) => cb.dataset.number);
+
+          if (numbers.length === 0) {
+            alert("No journeys selected");
+            return;
+          }
+
+          const confirmMsg = `Are you sure you want to delete ${
+            numbers.length
+          } journey plan(s)?\n\nNumbers: ${numbers.join(
+            ", "
+          )}\n\nThis action cannot be undone.`;
+
+          if (!confirm(confirmMsg)) return;
+
+          const status = document.getElementById("status");
+          status.textContent = `Deleting ${numbers.length} journey plan(s)...`;
+          status.className = "";
+
+          let successCount = 0;
+          let failCount = 0;
+
+          for (const number of numbers) {
+            try {
+              const res = await authFetch(
+                `${window.API_BASE || ""}/api/journey-plans/${number}`,
+                {
+                  method: "DELETE",
+                }
+              );
+
+              if (res.ok) {
+                successCount++;
+              } else {
+                failCount++;
+              }
+            } catch (error) {
+              console.error(`Error deleting journey #${number}:`, error);
+              failCount++;
+            }
+          }
+
+          if (successCount > 0) {
+            status.textContent = `Deleted ${successCount} journey plan(s)${
+              failCount > 0 ? `, ${failCount} failed` : ""
+            }.`;
+            status.className = "success";
+          } else {
+            status.textContent = `Failed to delete journey plans.`;
+            status.className = "error";
+          }
+
+          await loadJourneyPlans();
+          if (selectAllCheckbox) selectAllCheckbox.checked = false;
+          updateSelectedCount();
+        });
+      }
+
+      loadJourneyPlans();
+    } else {
+      window.location.href = "change-password.html";
     }
-
-    document.getElementById('plans-table').querySelector('tbody').addEventListener('click', event => {
-      const btn = event.target.closest('button[data-action]');
-      if (!btn) return;
-      const action = btn.dataset.action;
-      const number = btn.dataset.number;
-      if (action === 'edit-number' && number) {
-        editJourneyPlanNumber(number);
-      }
-    });
-
-    document.getElementById('set-next-number').addEventListener('click', setNextNumber);
-    document.getElementById('refresh-table').addEventListener('click', () => loadJourneyPlans());
-
-    loadJourneyPlans();
-  </script>
-</body>
+    </script>
+  </body>
 </html>

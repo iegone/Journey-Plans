@@ -33,7 +33,7 @@
 
 html,
 body {
-  height: 70vh;
+  height: 100vh;
   width: 100vw;
   margin: 0%;
   padding: 0%;
@@ -45,7 +45,7 @@ body {
 .page {
   margin: 0;
   margin: -550px;
-  scale: 0.18;
+  scale: 0.4;
   border-radius: 28px;
   padding: 0%;
   border: #1c1c74 1px solid;
@@ -468,6 +468,18 @@ p {
   top: 792px;
   height: 41px;
   width: 145px;
+}
+
+@media (max-width: 720px){
+
+  html,
+body {
+  height: 70vh;
+  width: 100vw;
+}
+  .page{
+    scale: 0.18;
+  }
 }
 
 /* ==== PRINT LAYOUT (A4 Landscape, No margins, Single page) ==== */

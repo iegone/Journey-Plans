@@ -1,8 +1,11 @@
 -- Journey Plan table for Supabase (PostgreSQL)
 -- Run inside the SQL editor of your Supabase project.
 
+-- IMPORTANT: If table already exists, run migration script below instead of recreating
+
 create table if not exists public.journey_plans (
-  journey_plan_number bigint generated always as identity primary key,
+  id bigserial primary key,
+  journey_plan_number bigint not null unique,
   created_at timestamptz not null default now(),
   departure_date date,
   vehicle_number text,
@@ -19,6 +22,46 @@ create table if not exists public.journey_plans (
   rest_stops jsonb default '[]'::jsonb,
   notes text
 );
+
+-- Index for fast lookup by journey_plan_number
+create index if not exists journey_plans_number_idx
+  on public.journey_plans (journey_plan_number desc);
+
+-- ===== MIGRATION SCRIPT (if table already exists) =====
+-- Run this if you already have data in the journey_plans table
+
+-- Step 1: Add new id column
+do $$
+begin
+  -- Check if we need to migrate (journey_plan_number is still primary key)
+  if exists (
+    select 1 from information_schema.table_constraints
+    where table_name = 'journey_plans'
+      and constraint_type = 'PRIMARY KEY'
+      and constraint_name like '%journey_plan_number%'
+  ) then
+    -- Add new id column
+    alter table public.journey_plans add column if not exists id bigserial;
+    
+    -- Drop old primary key
+    alter table public.journey_plans drop constraint if exists journey_plans_pkey;
+    
+    -- Make journey_plan_number nullable temporarily and remove identity
+    alter table public.journey_plans 
+      alter column journey_plan_number drop identity if exists,
+      alter column journey_plan_number drop not null;
+    
+    -- Set id as new primary key
+    alter table public.journey_plans add primary key (id);
+    
+    -- Make journey_plan_number not null and unique
+    alter table public.journey_plans 
+      alter column journey_plan_number set not null,
+      add constraint journey_plans_number_unique unique (journey_plan_number);
+      
+    raise notice 'Migration completed successfully';
+  end if;
+end $$;
 
 alter table public.journey_plans
   add column if not exists call_journey_manager text;
@@ -63,20 +106,8 @@ create table if not exists public.settings (
 
 alter table public.settings enable row level security;
 
-create or replace function public.set_journey_plan_sequence(next_value bigint)
-returns void
-language plpgsql
-security definer
-as $$
-declare
-  seq_name text;
-begin
-  select pg_get_serial_sequence('public.journey_plans', 'journey_plan_number') into seq_name;
-  if seq_name is not null then
-    perform setval(seq_name, greatest(next_value, 1) - 1, false);
-  end if;
-end;
-$$;
+-- Note: set_journey_plan_sequence function is no longer needed
+-- journey_plan_number is now manually controlled by the backend
 
 do $$
 begin

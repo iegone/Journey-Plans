@@ -9,8 +9,60 @@
   </head>
   <body>
     <div class="sidebar">
-      <div>
-        <!-- <a href="test.html">test</a> -->
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        "
+      >
+        <h2 style="margin: 0; font-size: 18px">Journey Plan</h2>
+        <div style="display: flex; gap: 8px; align-items: center">
+          <span id="current-user" style="font-size: 12px; color: #666"></span>
+          <button
+            class="btn btn-secondary btn-small"
+            id="logout-btn"
+            style="padding: 4px 8px; font-size: 11px"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+      <div style="position: relative">
+        <label for="load-journey-search">Load Saved Journey</label>
+        <input
+          type="text"
+          id="load-journey-search"
+          placeholder="Type to search: #85, driver, location..."
+          autocomplete="off"
+        />
+        <div
+          id="journey-suggestions"
+          style="
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid rgba(48, 43, 184, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            margin-top: 4px;
+          "
+        ></div>
+      </div>
+      <div
+        style="
+          border-top: 2px solid rgba(48, 43, 184, 0.2);
+          padding-top: 16px;
+          margin-top: 8px;
+        "
+      >
         <label for="departure-date">Departure date</label>
         <input type="date" id="departure-date" />
       </div>
@@ -470,8 +522,25 @@
       </div>
       <div class="sidebar-actions">
         <button type="button" id="save-journey-plan">Save Journey Plan</button>
-        <button type="button" id="refresh-plan-number">
-          Refresh Plan Number
+        <button
+          type="button"
+          id="update-journey-plan"
+          style="
+            display: none;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+          "
+        >
+          Update Journey Plan
+        </button>
+        <button
+          type="button"
+          id="new-journey-plan"
+          style="
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+          "
+        >
+          New Journey Plan
         </button>
         <div id="save-status" role="status" aria-live="polite"></div>
       </div>
@@ -572,12 +641,86 @@
       </div>
     </div>
   </body>
-  <script>
+  <script type="module">
     const REMOTE_API_BASE = ""; // set to deployed API origin, e.g. 'https://your-api.onrender.com'
     const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
-    window.API_BASE = LOCAL_HOSTS.includes(window.location.hostname)
+    const API_ORIGIN = LOCAL_HOSTS.includes(window.location.hostname)
       ? ""
       : REMOTE_API_BASE || window.location.origin;
+    window.API_BASE = API_ORIGIN;
+
+    const AUTH_STORAGE_KEY = "currentUser";
+    let currentUser = null;
+
+    function authFetch(url, options = {}) {
+      const finalOptions = { ...options, credentials: "include" };
+      if (options.headers) {
+        finalOptions.headers = options.headers;
+      }
+      return fetch(url, finalOptions);
+    }
+
+    async function ensureAuth() {
+      try {
+        const response = await fetch(`${API_ORIGIN}/api/auth/me`, {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("Unauthorized");
+        }
+        const { user } = await response.json();
+        if (!user) {
+          throw new Error("Unauthorized");
+        }
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+        return user;
+      } catch (error) {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        window.location.href = "login.html";
+        throw error;
+      }
+    }
+
+    let mustChangePassword = false;
+
+    try {
+      currentUser = await ensureAuth();
+      mustChangePassword = !!currentUser?.must_change_password;
+      if (mustChangePassword) {
+        window.location.href = "change-password.html";
+      }
+    } catch (error) {
+      throw error;
+    }
+
+    if (!mustChangePassword) {
+    const userDisplay = document.getElementById("current-user");
+    if (userDisplay && currentUser) {
+      userDisplay.textContent = `👤 ${
+        currentUser.full_name || currentUser.username
+      }`;
+    }
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async () => {
+        if (!confirm("Are you sure you want to logout?")) {
+          return;
+        }
+        try {
+          await fetch(`${API_ORIGIN}/api/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+          });
+        } catch (error) {
+          console.warn("Logout request failed:", error);
+        } finally {
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+          window.location.href = "login.html";
+        }
+      });
+    }
+
     (function () {
       const PLACEHOLDER = "";
       const REST_NAME_CHOICES = [
@@ -623,28 +766,100 @@
         wrapper.appendChild(btn);
         sel.dataset.hasAddBtn = "1";
 
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           let label = prompt(opts.prompt || "Enter new option");
           if (label === null) return;
           label = String(label).trim();
           if (!label) return;
+
+          // حفظ في الداتابيز حسب نوع Select
+          try {
+            if (sel.id === "driver-name") {
+              // حفظ السائق
+              const code = prompt("Driver code (optional):", "");
+              const gsm = prompt("GSM number (optional):", "");
+
+              const response = await authFetch(
+                `${window.API_BASE || ""}/api/options/drivers`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    name: label,
+                    code: code?.trim(),
+                    gsm: gsm?.trim(),
+                  }),
+                }
+              );
+
+              if (response.ok) {
+                const { data } = await response.json();
+                MASTER_PEOPLE_OPTIONS.push({
+                  value: data.name,
+                  text: data.name,
+                  code: data.code,
+                  gsm: data.gsm,
+                });
+                await loadOptionsFromDB();
+              } else {
+                const err = await response.json().catch(() => ({}));
+                alert(err.error || "Failed to save driver");
+                return;
+              }
+            } else if (sel.id === "vehicle-number") {
+              // حفظ المركبة
+              const response = await authFetch(
+                `${window.API_BASE || ""}/api/options/vehicles`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ number: label }),
+                }
+              );
+
+              if (response.ok) {
+                await loadOptionsFromDB();
+              } else {
+                const err = await response.json().catch(() => ({}));
+                alert(err.error || "Failed to save vehicle");
+                return;
+              }
+            } else if (
+              sel.id === "from-locations" ||
+              sel.id === "to-locations"
+            ) {
+              // حفظ المكان
+              const response = await authFetch(
+                `${window.API_BASE || ""}/api/options/locations`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ name: label }),
+                }
+              );
+
+              if (response.ok) {
+                await loadOptionsFromDB();
+              } else {
+                const err = await response.json().catch(() => ({}));
+                alert(err.error || "Failed to save location");
+                return;
+              }
+            }
+          } catch (error) {
+            console.error("Error saving option:", error);
+            alert("Failed to save option to database");
+            return;
+          }
+
           const value = opts.valueMapper ? opts.valueMapper(label) : label;
           const option = new Option(label, value);
           sel.add(option);
           sel.value = value;
           sel.dispatchEvent(new Event("change", { bubbles: true }));
-          if (sel.id === "driver-name") {
-            if (!MASTER_PEOPLE_OPTIONS.some((opt) => opt.value === value)) {
-              MASTER_PEOPLE_OPTIONS.push({
-                value,
-                text: label,
-                code: null,
-                gsm: null,
-              });
-            }
-            if (typeof refreshPeopleOptions === "function") {
-              refreshPeopleOptions();
-            }
+
+          if (typeof refreshPeopleOptions === "function") {
+            refreshPeopleOptions();
           }
         });
       }
@@ -717,7 +932,7 @@
 
       async function fetchNextJourneyPlanNumber() {
         try {
-          const response = await fetch("/api/journey-plans/next-number");
+          const response = await authFetch("/api/journey-plans/next-number");
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const { nextNumber } = await response.json();
           if (
@@ -774,12 +989,89 @@
         }));
       }
 
-      const MASTER_PEOPLE_OPTIONS = parseOptionsFromSelect(driverSelect).filter(
+      let MASTER_PEOPLE_OPTIONS = parseOptionsFromSelect(driverSelect).filter(
         (opt) => opt.value
       );
       if (driverSelect && !driverSelect.dataset.placeholder) {
         driverSelect.dataset.placeholder = "Select driver";
       }
+
+      // ===== تحميل الخيارات من الداتابيز =====
+      async function loadOptionsFromDB() {
+        try {
+          // تحميل السائقين
+          const driversRes = await authFetch(
+            `${window.API_BASE || ""}/api/options/drivers`
+          );
+          if (driversRes.ok) {
+            const { data: drivers } = await driversRes.json();
+            if (drivers && drivers.length > 0) {
+              MASTER_PEOPLE_OPTIONS = drivers.map((d) => ({
+                value: d.name,
+                text: d.name,
+                code: d.code,
+                gsm: d.gsm,
+              }));
+
+              // تحديث driver select
+              if (driverSelect) {
+                const currentValue = driverSelect.value;
+                renderSelectOptions(
+                  driverSelect,
+                  MASTER_PEOPLE_OPTIONS,
+                  currentValue
+                );
+              }
+            }
+          }
+
+          // تحميل المركبات
+          const vehiclesRes = await authFetch(
+            `${window.API_BASE || ""}/api/options/vehicles`
+          );
+          if (vehiclesRes.ok) {
+            const { data: vehicles } = await vehiclesRes.json();
+            if (vehicles && vehicles.length > 0 && vehicleNumberSelect) {
+              const currentValue = vehicleNumberSelect.value;
+              vehicleNumberSelect.innerHTML =
+                '<option value="">select vehicle</option>';
+              vehicles.forEach((v) => {
+                const opt = new Option(v.number, v.number);
+                vehicleNumberSelect.add(opt);
+              });
+              if (currentValue) vehicleNumberSelect.value = currentValue;
+            }
+          }
+
+          // تحميل الأماكن
+          const locationsRes = await authFetch(
+            `${window.API_BASE || ""}/api/options/locations`
+          );
+          if (locationsRes.ok) {
+            const { data: locations } = await locationsRes.json();
+            if (locations && locations.length > 0) {
+              [fromSel, toSel].forEach((select) => {
+                if (!select) return;
+                const currentValue = select.value;
+                const firstOption = select.querySelector('option[value=""]');
+                select.innerHTML = firstOption
+                  ? firstOption.outerHTML
+                  : '<option value="">select location</option>';
+                locations.forEach((loc) => {
+                  const opt = new Option(loc.name, loc.name);
+                  select.add(opt);
+                });
+                if (currentValue) select.value = currentValue;
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error loading options from DB:", error);
+        }
+      }
+
+      // استدعاء التحميل عند بدء الصفحة
+      loadOptionsFromDB();
 
       function renderSelectOptions(select, options, currentValue) {
         if (!select) return;
@@ -1207,15 +1499,65 @@
 
       async function saveJourneyPlan() {
         if (!saveButton) return;
+
+        // Validation: التحقق من الحقول الإجبارية
+        const validationErrors = [];
+
+        // اسم السائق
+        if (!driverSelect?.value) {
+          validationErrors.push("Driver name is required");
+        }
+
+        // رقم المركبة
+        if (!vehicleNumberSelect?.value) {
+          validationErrors.push("Vehicle number is required");
+        }
+
+        // تاريخ المغادرة
+        if (!departureDateInput?.value) {
+          validationErrors.push("Departure date is required");
+        }
+
+        // From: مكان + وقت
+        if (!fromSel?.value) {
+          validationErrors.push("From location is required");
+        }
+        if (!fromTime?.value) {
+          validationErrors.push("From departure time is required");
+        }
+
+        // To: مكان + وقت
+        if (!toSel?.value) {
+          validationErrors.push("To location is required");
+        }
+        if (!toTime?.value) {
+          validationErrors.push("To arrival time is required");
+        }
+
+        // عرض الأخطاء إن وجدت
+        if (validationErrors.length > 0) {
+          const errorMessage =
+            "Please fill required fields:\n\n• " +
+            validationErrors.join("\n• ");
+          alert(errorMessage);
+          setStatus(
+            "Validation failed. Please check required fields.",
+            "error"
+          );
+          return;
+        }
+
         try {
           setStatus("Saving journey plan...");
           saveButton.disabled = true;
           const payload = collectJourneyPlanData();
-          const response = await fetch(
+          const response = await authFetch(
             `${window.API_BASE || ""}/api/journey-plans`,
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                "Content-Type": "application/json",
+              },
               body: JSON.stringify(payload),
             }
           );
@@ -1365,11 +1707,34 @@
         addName.textContent = "+";
         addName.title = "Add rest name";
         addName.className = "select-add-btn";
-        addName.addEventListener("click", () => {
+        addName.addEventListener("click", async () => {
           let label = prompt("Enter rest name");
           if (label === null) return;
           label = String(label).trim();
           if (!label) return;
+
+          // حفظ في الداتابيز
+          try {
+            const response = await authFetch(
+              `${window.API_BASE || ""}/api/options/rest-types`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: label }),
+              }
+            );
+
+            if (!response.ok) {
+              const err = await response.json().catch(() => ({}));
+              alert(err.error || "Failed to save rest type");
+              return;
+            }
+          } catch (error) {
+            console.error("Error saving rest type:", error);
+            alert("Failed to save rest type to database");
+            return;
+          }
+
           const opt = new Option(label, label);
           nameSel.add(opt);
           nameSel.value = label;
@@ -1449,6 +1814,427 @@
       refreshPeopleOptions();
       fetchNextJourneyPlanNumber();
 
+      // ===== Load & Search Journeys (Autocomplete) =====
+      let allJourneys = [];
+      const loadJourneySearch = document.getElementById("load-journey-search");
+      const journeySuggestions = document.getElementById("journey-suggestions");
+
+      async function fetchAllJourneys() {
+        try {
+          const response = await authFetch(
+            `${window.API_BASE || ""}/api/journey-plans`
+          );
+          if (!response.ok) throw new Error("Failed to fetch journeys");
+          const { data } = await response.json();
+          allJourneys = data || [];
+        } catch (error) {
+          console.error("Error fetching journeys:", error);
+        }
+      }
+
+      function showSuggestions(journeys) {
+        if (!journeySuggestions) return;
+
+        if (journeys.length === 0) {
+          journeySuggestions.style.display = "none";
+          return;
+        }
+
+        journeySuggestions.innerHTML = "";
+        journeySuggestions.style.display = "block";
+
+        journeys.slice(0, 10).forEach((journey) => {
+          const item = document.createElement("div");
+          item.style.cssText = `
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(48, 43, 184, 0.08);
+            transition: background 0.2s;
+          `;
+
+          const date = journey.departure_date
+            ? new Date(journey.departure_date).toLocaleDateString()
+            : "N/A";
+
+          item.innerHTML = `
+            <div style="font-weight: 600; color: #302bb8;">#${
+              journey.journey_plan_number
+            }</div>
+            <div style="font-size: 13px; color: #666;">
+              ${journey.driver_name || "No driver"} | ${
+            journey.from_location || ""
+          } → ${journey.to_location || ""} | ${date}
+            </div>
+          `;
+
+          item.dataset.journeyData = JSON.stringify(journey);
+
+          item.addEventListener("mouseenter", () => {
+            item.style.background = "rgba(48, 43, 184, 0.08)";
+          });
+
+          item.addEventListener("mouseleave", () => {
+            item.style.background = "transparent";
+          });
+
+          item.addEventListener("click", () => {
+            try {
+              const journeyData = JSON.parse(item.dataset.journeyData);
+              loadJourneyToForm(journeyData);
+              loadJourneySearch.value = "";
+              journeySuggestions.style.display = "none";
+            } catch (error) {
+              console.error("Error loading journey:", error);
+              setStatus("Failed to load journey", "error");
+            }
+          });
+
+          journeySuggestions.appendChild(item);
+        });
+      }
+
+      // Live search
+      if (loadJourneySearch) {
+        loadJourneySearch.addEventListener("input", (e) => {
+          const searchTerm = e.target.value.toLowerCase().trim();
+
+          if (!searchTerm || searchTerm.length < 1) {
+            journeySuggestions.style.display = "none";
+            return;
+          }
+
+          const filtered = allJourneys.filter((journey) => {
+            const searchText = [
+              journey.journey_plan_number?.toString(),
+              journey.driver_name,
+              journey.vehicle_number,
+              journey.from_location,
+              journey.to_location,
+              journey.departure_date,
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
+
+            return searchText.includes(searchTerm);
+          });
+
+          showSuggestions(filtered);
+        });
+
+        // إخفاء suggestions عند الضغط خارجها
+        document.addEventListener("click", (e) => {
+          if (
+            !loadJourneySearch.contains(e.target) &&
+            !journeySuggestions.contains(e.target)
+          ) {
+            journeySuggestions.style.display = "none";
+          }
+        });
+      }
+
+      function loadJourneyToForm(journeyData) {
+        // ملء الحقول الأساسية
+        if (departureDateInput && journeyData.departure_date) {
+          departureDateInput.value = journeyData.departure_date;
+          departureDateInput.dispatchEvent(new Event("change"));
+        }
+
+        if (vehicleNumberSelect && journeyData.vehicle_number) {
+          vehicleNumberSelect.value = journeyData.vehicle_number;
+          vehicleNumberSelect.dispatchEvent(new Event("change"));
+        }
+
+        if (driverSelect && journeyData.driver_name) {
+          // البحث عن السائق في القائمة
+          const driverOption = Array.from(driverSelect.options).find(
+            (opt) => opt.textContent.trim() === journeyData.driver_name
+          );
+          if (driverOption) {
+            driverSelect.value = driverOption.value;
+          } else {
+            // إضافة السائق إذا لم يكن موجود
+            const newOption = new Option(
+              journeyData.driver_name,
+              journeyData.driver_name
+            );
+            driverSelect.add(newOption);
+            driverSelect.value = journeyData.driver_name;
+          }
+          driverSelect.dispatchEvent(new Event("change"));
+        }
+
+        if (fromSel && journeyData.from_location) {
+          fromSel.value = journeyData.from_location;
+          fromSel.dispatchEvent(new Event("change"));
+        }
+
+        if (fromTime && journeyData.from_departure_time) {
+          fromTime.value = journeyData.from_departure_time;
+          fromTime.dispatchEvent(new Event("change"));
+        }
+
+        if (toSel && journeyData.to_location) {
+          toSel.value = journeyData.to_location;
+          toSel.dispatchEvent(new Event("change"));
+        }
+
+        if (toTime && journeyData.to_arrival_time) {
+          toTime.value = journeyData.to_arrival_time;
+          toTime.dispatchEvent(new Event("change"));
+        }
+
+        // ملء الركاب
+        if (journeyData.passengers && Array.isArray(journeyData.passengers)) {
+          // مسح الركاب الحاليين
+          container.innerHTML = "";
+
+          journeyData.passengers.forEach((passenger, index) => {
+            const field = createPassengerField(index + 1);
+            container.appendChild(field);
+            const select = field.querySelector("select[data-passenger-index]");
+            if (select && passenger.value) {
+              // إضافة الراكب إذا لم يكن موجود
+              const existingOption = Array.from(select.options).find(
+                (opt) => opt.value === passenger.value
+              );
+              if (!existingOption && passenger.name) {
+                const newOption = new Option(passenger.name, passenger.value);
+                select.add(newOption);
+              }
+              select.value = passenger.value;
+              select.dispatchEvent(new Event("change"));
+            }
+          });
+
+          if (journeyData.passengers.length >= 3) {
+            addBtn.style.display = "none";
+          }
+        }
+
+        // ملء Rest stops
+        if (journeyData.rest_stops && Array.isArray(journeyData.rest_stops)) {
+          // مسح Rest stops الحالية
+          restsContainer.innerHTML = "";
+
+          journeyData.rest_stops.forEach((rest) => {
+            const field = createRestField();
+            restsContainer.appendChild(field);
+
+            const nameSelect = field.querySelector("select[data-rest-name]");
+            const arriveInput = field.querySelector("input[data-rest-arrive]");
+            const departInput = field.querySelector("input[data-rest-depart]");
+
+            if (nameSelect && rest.name) {
+              const existingOption = Array.from(nameSelect.options).find(
+                (opt) => opt.value === rest.name
+              );
+              if (!existingOption) {
+                const newOption = new Option(rest.name, rest.name);
+                nameSelect.add(newOption);
+              }
+              nameSelect.value = rest.name;
+              nameSelect.dispatchEvent(new Event("change"));
+            }
+
+            if (arriveInput && rest.arrive_time) {
+              arriveInput.value = rest.arrive_time;
+              arriveInput.dispatchEvent(new Event("change"));
+            }
+
+            if (departInput && rest.depart_time) {
+              departInput.value = rest.depart_time;
+              departInput.dispatchEvent(new Event("change"));
+            }
+          });
+
+          reindexRestSlots();
+        }
+
+        // تحديث رقم Journey Plan
+        if (journeyNumberNode && journeyData.journey_plan_number) {
+          journeyNumberNode.textContent = journeyData.journey_plan_number;
+          journeyNumberNode.dataset.loaded = "true";
+        }
+
+        setStatus("Journey loaded successfully", "success");
+      }
+
+      // Note: Load button removed - journeys load on click from suggestions
+
+      // تحميل قائمة الـ Journeys عند بدء الصفحة
+      fetchAllJourneys();
+
+      // تحميل Journey من URL parameter (من Dashboard)
+      const urlParams = new URLSearchParams(window.location.search);
+      const loadNumber = urlParams.get("load");
+      if (loadNumber) {
+        // انتظار تحميل القائمة ثم تحميل Journey المطلوب
+        setTimeout(async () => {
+          const journey = allJourneys.find(
+            (j) => j.journey_plan_number == loadNumber
+          );
+          if (journey) {
+            loadJourneyToForm(journey);
+          } else {
+            // محاولة تحميله من API مباشرة
+            try {
+              const response = await authFetch(
+                `${window.API_BASE || ""}/api/journey-plans`
+              );
+              const { data } = await response.json();
+              const foundJourney = data?.find(
+                (j) => j.journey_plan_number == loadNumber
+              );
+              if (foundJourney) {
+                loadJourneyToForm(foundJourney);
+              }
+            } catch (error) {
+              console.error("Failed to load journey:", error);
+            }
+          }
+        }, 1000);
+      }
+
+      // ===== Update & New Journey Functions =====
+      const updateButton = document.getElementById("update-journey-plan");
+      const newJourneyButton = document.getElementById("new-journey-plan");
+      let currentLoadedJourneyNumber = null;
+
+      function switchToEditMode(journeyNumber) {
+        currentLoadedJourneyNumber = journeyNumber;
+
+        // إخفاء Save، إظهار Update و New
+        if (saveButton) saveButton.style.display = "none";
+        if (updateButton) updateButton.style.display = "block";
+        if (newJourneyButton) newJourneyButton.style.display = "block";
+
+        setStatus(`Editing Journey #${journeyNumber}`, "success");
+      }
+
+      function switchToNewMode() {
+        currentLoadedJourneyNumber = null;
+
+        // إظهار Save، إخفاء Update و New
+        if (saveButton) saveButton.style.display = "block";
+        if (updateButton) updateButton.style.display = "none";
+        if (newJourneyButton) newJourneyButton.style.display = "none";
+
+        // مسح جميع الحقول
+        clearAllFields();
+
+        // إعادة تحميل رقم Journey Plan التالي
+        if (journeyNumberNode) {
+          journeyNumberNode.dataset.loaded = "false";
+          journeyNumberNode.dataset.locked = "false";
+        }
+        fetchNextJourneyPlanNumber();
+
+        setStatus("Ready for new journey", "success");
+      }
+
+      function clearAllFields() {
+        if (departureDateInput) departureDateInput.value = "";
+        if (vehicleNumberSelect) vehicleNumberSelect.value = "";
+        if (driverSelect) driverSelect.value = "";
+        if (fromSel) fromSel.value = "";
+        if (fromTime) fromTime.value = "";
+        if (toSel) toSel.value = "";
+        if (toTime) toTime.value = "";
+
+        if (container) container.innerHTML = "";
+        if (restsContainer) restsContainer.innerHTML = "";
+        if (addBtn) addBtn.style.display = "inline-block";
+
+        renderFromRow();
+        renderToRow();
+        if (applyDriverHandler) applyDriverHandler();
+      }
+
+      async function updateJourneyPlan() {
+        if (!currentLoadedJourneyNumber) {
+          alert("No journey loaded for update");
+          return;
+        }
+
+        // نفس الـ validation
+        const validationErrors = [];
+
+        if (!driverSelect?.value)
+          validationErrors.push("Driver name is required");
+        if (!vehicleNumberSelect?.value)
+          validationErrors.push("Vehicle number is required");
+        if (!departureDateInput?.value)
+          validationErrors.push("Departure date is required");
+        if (!fromSel?.value) validationErrors.push("From location is required");
+        if (!fromTime?.value)
+          validationErrors.push("From departure time is required");
+        if (!toSel?.value) validationErrors.push("To location is required");
+        if (!toTime?.value)
+          validationErrors.push("To arrival time is required");
+
+        if (validationErrors.length > 0) {
+          alert(
+            "Please fill required fields:\n\n• " + validationErrors.join("\n• ")
+          );
+          setStatus("Validation failed", "error");
+          return;
+        }
+
+        try {
+          setStatus("Updating journey plan...");
+          updateButton.disabled = true;
+
+          const payload = collectJourneyPlanData();
+          const response = await authFetch(
+            `${
+              window.API_BASE || ""
+            }/api/journey-plans/${currentLoadedJourneyNumber}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+
+          if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.error || "Failed to update journey plan");
+          }
+
+          const { data } = await response.json();
+          setStatus("Journey plan updated successfully!", "success");
+
+          // إعادة تحميل القائمة
+          await fetchAllJourneys();
+
+          // فتح template للطباعة
+          printToTemplatePage();
+        } catch (error) {
+          console.error("Error updating journey plan:", error);
+          setStatus(error.message || "Failed to update journey plan", "error");
+        } finally {
+          if (updateButton) updateButton.disabled = false;
+        }
+      }
+
+      if (updateButton) {
+        updateButton.addEventListener("click", updateJourneyPlan);
+      }
+
+      if (newJourneyButton) {
+        newJourneyButton.addEventListener("click", switchToNewMode);
+      }
+
+      // تعديل loadJourneyToForm لتفعيل Edit mode
+      const originalLoadJourneyToForm = loadJourneyToForm;
+      loadJourneyToForm = function (journeyData) {
+        originalLoadJourneyToForm(journeyData);
+        switchToEditMode(journeyData.journey_plan_number);
+      };
+
       // ===== دالة الطباعة باستخدام template.html =====
       function printToTemplatePage() {
         // جمع كل البيانات من الصفحة الحالية
@@ -1506,5 +2292,8 @@
         }
       }
     })();
+  } else {
+    window.location.href = "change-password.html";
+  }
   </script>
 </html>

@@ -155,20 +155,20 @@ body {
 
 .sidebar .select-add-btn {
   position: absolute;
-  right: 0px;
-  top: 50%;
-  height: 100%;
-  transform: translateY(-50%);
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 12px;
+  padding: 0 10px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: #302bb8;
   border: 1px solid rgba(48, 43, 184, 0.25);
-  border-radius: 0px 14px 14px 0px;
+  border-radius: 0 14px 14px 0;
   background: rgba(48, 43, 184, 0.08);
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
@@ -271,20 +271,21 @@ body {
   align-items: flex-start;
 }
 
-  .page {
-    margin: 0;
-    border-radius: 28px;
-    width: 2048px;
-    height: 1441px;
-    aspect-ratio: 2048 / 1441;
-    background: url('./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg') no-repeat center top;
-    background-size: cover;
-    position: relative;
-    font-family: Arial, sans-serif;
-    color: #302bb8;
-    transform-origin: top left;
-    transform: scale(var(--page-scale));
-  }
+.page {
+  margin: 0;
+  border-radius: 28px;
+  width: 2048px;
+  height: 1441px;
+  aspect-ratio: 2048 / 1441;
+  background: url('./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg') no-repeat center top;
+  background-size: cover;
+  position: relative;
+  font-family: Arial, sans-serif;
+  color: #302bb8;
+  transform-origin: top left;
+  transform: scale(var(--page-scale));
+  overflow: hidden;
+}
 
   .page::after {
     content: "";

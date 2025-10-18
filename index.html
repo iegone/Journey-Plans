@@ -232,8 +232,6 @@
       </div>
   </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
     (function() {
       const PLACEHOLDER = '';
@@ -808,7 +806,7 @@
           journeyNumberNode.dataset.locked = 'true';
         }
         setStatus('Journey plan saved successfully.', 'success');
-        await downloadJourneyPlanPdf(data?.journey_plan_number || payload.journey_plan_number_hint);
+        window.requestAnimationFrame(() => window.print());
       } catch (error) {
         console.error('Error saving journey plan', error);
         setStatus(error.message || 'Failed to save journey plan.', 'error');
@@ -817,34 +815,6 @@
       }
     }
 
-    async function downloadJourneyPlanPdf(journeyNumber) {
-      if (typeof html2canvas !== 'function' || !window.jspdf) return;
-      const sheet = document.querySelector('.page');
-      if (!sheet) return;
-      try {
-        const canvas = await html2canvas(sheet, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#ffffff'
-        });
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new window.jspdf.jsPDF('l', 'pt', 'a4');
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
-        const renderWidth = imgWidth * ratio;
-        const renderHeight = imgHeight * ratio;
-        const offsetX = (pageWidth - renderWidth) / 2;
-        const offsetY = (pageHeight - renderHeight) / 2;
-        pdf.addImage(imgData, 'PNG', offsetX, offsetY, renderWidth, renderHeight, undefined, 'FAST');
-        const filename = `journey-plan-${journeyNumber ?? Date.now()}.pdf`;
-        pdf.save(filename);
-      } catch (err) {
-        console.error('Failed to generate PDF', err);
-      }
-    }
 
     function applyRestDisplay(slot, nameText, arriveVal, departVal){
       if (!slot || slot > 10) return;

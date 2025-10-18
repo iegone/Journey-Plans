@@ -1,171 +1,481 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Journey Plan</title>
-  <link rel="stylesheet" href="styles.css">
-  
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Journey Plan</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div>
+        <a href="test.html">test</a>
+        <label for="departure-date">Departure date</label>
+        <input type="date" id="departure-date" />
+      </div>
+      <div>
+        <label for="vehicle-number">Vehicle Number</label>
+        <select id="vehicle-number" data-placeholder="Select driver">
+          <option value="">select vehicle</option>
+          <option value="4972 YW">Unit 1</option>
+          <option value="575 BA">Unit 2</option>
+          <option value="2111RK">Unit 3</option>
+          <option value="6354 RH">Unit 4</option>
+          <option value="3267 HW">Unit 5</option>
+          <option value="3950 DA">Pickup 1</option>
+          <option value="171 MB">Pickup 2</option>
+          <option value="9689 HW">Pickup 3</option>
+        </select>
+      </div>
+      <div>
+        <label for="driver-name">Driver Name</label>
+        <select id="driver-name" data-placeholder="Select driver">
+          <option value="">Select driver</option>
+          <option
+            data-code="VOS-001"
+            data-gsm="9070 7038"
+            value="Mohamed Al Mayahi"
+          >
+            Mohamed Al Mayahi
+          </option>
+          <option
+            data-code="VOS-0014"
+            data-gsm="9796 9572"
+            value="Hamed Al Raabi"
+          >
+            Hamed Al Naabi
+          </option>
+          <option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">
+            Ahmed Salah
+          </option>
+          <option
+            data-code="VOS-003"
+            data-gsm="9633 5565"
+            value="Mohammed Sulaiman"
+          >
+            Mohammed Sulaiman
+          </option>
+          <option
+            data-code="VOS-009"
+            data-gsm="9818 0866"
+            value="Haitham Al Hadi"
+          >
+            Haitham Al Hadi
+          </option>
+          <option
+            data-code="VOS-0018"
+            data-gsm="9231 4855"
+            value="Waleed Al Balushi"
+          >
+            Waleed Al Balushi
+          </option>
+          <option
+            data-code="VOS-0024"
+            data-gsm="9796 9571"
+            value="Mojaled Ahmed"
+          >
+            Mojaled Ahmed
+          </option>
+          <option
+            data-code="VOS-0004"
+            data-gsm="9988 7044"
+            value="Abdu Aziz Salim"
+          >
+            Abdu Aziz Salim
+          </option>
+          <option
+            data-code="VOS-007"
+            data-gsm="9944 3307"
+            value="Ali Said Al Mulhairhi"
+          >
+            Ali Said Al Mulhairhi
+          </option>
+          <option
+            data-code="VOS-0025"
+            data-gsm="9232 4405"
+            value="Haitham Al Rajahi"
+          >
+            Haitham Al Rajahi
+          </option>
+          <option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">
+            Shaik Ali
+          </option>
+          <option
+            data-code="VOS-0013"
+            data-gsm="9553 5327"
+            value="Khalid Al Sharji"
+          >
+            Khalid Al Sharji
+          </option>
+          <option
+            data-code="VOS-0030"
+            data-gsm="9945 4912"
+            value="Zakarya Yahya"
+          >
+            Zakarya Yahya
+          </option>
+        </select>
+      </div>
+      <div style="display: none">
+        <label for="Passenger-name">Passenger Name</label>
+        <select id="Passenger-name">
+          <option value="">Select passenger</option>
+          <option
+            data-code="VOS-001"
+            data-gsm="9070 7038"
+            value="Mohamed Al Mayahi"
+          >
+            Mohamed Al Mayahi
+          </option>
+          <option
+            data-code="VOS-0014"
+            data-gsm="9796 9572"
+            value="Hamed Al Raabi"
+          >
+            Hamed Al Naabi
+          </option>
+          <option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">
+            Ahmed Salah
+          </option>
+          <option
+            data-code="VOS-003"
+            data-gsm="9633 5565"
+            value="Mohammed Sulaiman"
+          >
+            Mohammed Sulaiman
+          </option>
+          <option
+            data-code="VOS-009"
+            data-gsm="9818 0866"
+            value="Haitham Al Hadi"
+          >
+            Haitham Al Hadi
+          </option>
+          <option
+            data-code="VOS-0018"
+            data-gsm="9231 4855"
+            value="Waleed Al Balushi"
+          >
+            Waleed Al Balushi
+          </option>
+          <option
+            data-code="VOS-0024"
+            data-gsm="9796 9571"
+            value="Mojaled Ahmed"
+          >
+            Mojaled Ahmed
+          </option>
+          <option
+            data-code="VOS-0004"
+            data-gsm="9988 7044"
+            value="Abdu Aziz Salim"
+          >
+            Abdu Aziz Salim
+          </option>
+          <option
+            data-code="VOS-007"
+            data-gsm="9944 3307"
+            value="Ali Said Al Mulhairhi"
+          >
+            Ali Said Al Mulhairhi
+          </option>
+          <option
+            data-code="VOS-0025"
+            data-gsm="9232 4405"
+            value="Haitham Al Rajahi"
+          >
+            Haitham Al Rajahi
+          </option>
+          <option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">
+            Shaik Ali
+          </option>
+          <option
+            data-code="VOS-0013"
+            data-gsm="9553 5327"
+            value="Khalid Al Sharji"
+          >
+            Khalid Al Sharji
+          </option>
+          <option
+            data-code="VOS-0030"
+            data-gsm="9945 4912"
+            value="Zakarya Yahya"
+          >
+            Zakarya Yahya
+          </option>
+        </select>
+      </div>
+      <div style="display: none">
+        <label for="Passenger2-name">Passenger2 Name</label>
+        <select id="Passenger2-name">
+          <option value="">Select passenger</option>
+          <option
+            data-code="VOS-001"
+            data-gsm="9070 7038"
+            value="Mohamed Al Mayahi"
+          >
+            Mohamed Al Mayahi
+          </option>
+          <option
+            data-code="VOS-0014"
+            data-gsm="9796 9572"
+            value="Hamed Al Raabi"
+          >
+            Hamed Al Naabi
+          </option>
+          <option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">
+            Ahmed Salah
+          </option>
+          <option
+            data-code="VOS-003"
+            data-gsm="9633 5565"
+            value="Mohammed Sulaiman"
+          >
+            Mohammed Sulaiman
+          </option>
+          <option
+            data-code="VOS-009"
+            data-gsm="9818 0866"
+            value="Haitham Al Hadi"
+          >
+            Haitham Al Hadi
+          </option>
+          <option
+            data-code="VOS-0018"
+            data-gsm="9231 4855"
+            value="Waleed Al Balushi"
+          >
+            Waleed Al Balushi
+          </option>
+          <option
+            data-code="VOS-0024"
+            data-gsm="9796 9571"
+            value="Mojaled Ahmed"
+          >
+            Mojaled Ahmed
+          </option>
+          <option
+            data-code="VOS-0004"
+            data-gsm="9988 7044"
+            value="Abdu Aziz Salim"
+          >
+            Abdu Aziz Salim
+          </option>
+          <option
+            data-code="VOS-007"
+            data-gsm="9944 3307"
+            value="Ali Said Al Mulhairhi"
+          >
+            Ali Said Al Mulhairhi
+          </option>
+          <option
+            data-code="VOS-0025"
+            data-gsm="9232 4405"
+            value="Haitham Al Rajahi"
+          >
+            Haitham Al Rajahi
+          </option>
+          <option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">
+            Shaik Ali
+          </option>
+          <option
+            data-code="VOS-0013"
+            data-gsm="9553 5327"
+            value="Khalid Al Sharji"
+          >
+            Khalid Al Sharji
+          </option>
+          <option
+            data-code="VOS-0030"
+            data-gsm="9945 4912"
+            value="Zakarya Yahya"
+          >
+            Zakarya Yahya
+          </option>
+        </select>
+      </div>
+      <div style="display: none">
+        <label for="Passenger3-name">Passenger3 Name</label>
+        <select id="Passenger3-name">
+          <option value="">Select passenger</option>
+          <option
+            data-code="VOS-001"
+            data-gsm="9070 7038"
+            value="Mohamed Al Mayahi"
+          >
+            Mohamed Al Mayahi
+          </option>
+          <option
+            data-code="VOS-0014"
+            data-gsm="9796 9572"
+            value="Hamed Al Raabi"
+          >
+            Hamed Al Naabi
+          </option>
+          <option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">
+            Ahmed Salah
+          </option>
+          <option
+            data-code="VOS-003"
+            data-gsm="9633 5565"
+            value="Mohammed Sulaiman"
+          >
+            Mohammed Sulaiman
+          </option>
+          <option
+            data-code="VOS-009"
+            data-gsm="9818 0866"
+            value="Haitham Al Hadi"
+          >
+            Haitham Al Hadi
+          </option>
+          <option
+            data-code="VOS-0018"
+            data-gsm="9231 4855"
+            value="Waleed Al Balushi"
+          >
+            Waleed Al Balushi
+          </option>
+          <option
+            data-code="VOS-0024"
+            data-gsm="9796 9571"
+            value="Mojaled Ahmed"
+          >
+            Mojaled Ahmed
+          </option>
+          <option
+            data-code="VOS-0004"
+            data-gsm="9988 7044"
+            value="Abdu Aziz Salim"
+          >
+            Abdu Aziz Salim
+          </option>
+          <option
+            data-code="VOS-007"
+            data-gsm="9944 3307"
+            value="Ali Said Al Mulhairhi"
+          >
+            Ali Said Al Mulhairhi
+          </option>
+          <option
+            data-code="VOS-0025"
+            data-gsm="9232 4405"
+            value="Haitham Al Rajahi"
+          >
+            Haitham Al Rajahi
+          </option>
+          <option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">
+            Shaik Ali
+          </option>
+          <option
+            data-code="VOS-0013"
+            data-gsm="9553 5327"
+            value="Khalid Al Sharji"
+          >
+            Khalid Al Sharji
+          </option>
+          <option
+            data-code="VOS-0030"
+            data-gsm="9945 4912"
+            value="Zakarya Yahya"
+          >
+            Zakarya Yahya
+          </option>
+        </select>
+      </div>
+      <div id="passengers-dynamic">
+        <label>Passengers</label>
+        <div
+          id="passengers-container"
+          style="display: flex; flex-direction: column; gap: 8px; margin: 6px 0"
+        ></div>
+        <button
+          type="button"
+          id="add-passenger-btn"
+          style="
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+            border-radius: 6px;
+            cursor: pointer;
+          "
+        >
+          + Add passenger
+        </button>
+      </div>
 
-   <div class="sidebar">
-        <div>
-            <label for="departure-date">Departure date</label>
-            <input type="date" id="departure-date">
-        </div>
-        <div>
-            <label for="vehicle-number">Vehicle Number</label>
-            <select id="vehicle-number"  data-placeholder="Select driver">
-                <option value="">select vehicle</option>
-                <option value="4972 YW">Unit 1</option>
-<option value="575 BA">Unit 2</option>
-<option value="2111RK">Unit 3</option>
-<option value="6354 RH">Unit 4</option>
-<option value="3267 HW">Unit 5</option>
-<option value="3950 DA">Pickup 1</option>
-<option value="171 MB">Pickup 2</option>
-<option value="9689 HW">Pickup 3</option>
-            </select>
-        </div>
-        <div>
-            <label for="driver-name">Driver Name</label>
-            <select id="driver-name" data-placeholder="Select driver">
-                <option value="" >Select driver</option>
-                <option data-code="VOS-001"  data-gsm="9070 7038" value="Mohamed Al Mayahi">Mohamed Al Mayahi</option>
-                <option data-code="VOS-0014" data-gsm="9796 9572" value="Hamed Al Raabi">Hamed Al Naabi</option>
-                <option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">Ahmed Salah</option>
-                <option data-code="VOS-003"  data-gsm="9633 5565" value="Mohammed Sulaiman">Mohammed Sulaiman</option>
-                <option data-code="VOS-009"  data-gsm="9818 0866" value="Haitham Al Hadi">Haitham Al Hadi</option>
-                <option data-code="VOS-0018" data-gsm="9231 4855" value="Waleed Al Balushi">Waleed Al Balushi</option>
-<option data-code="VOS-0024" data-gsm="9796 9571" value="Mojaled Ahmed">Mojaled Ahmed</option>
-<option data-code="VOS-0004" data-gsm="9988 7044" value="Abdu Aziz Salim">Abdu Aziz Salim</option>
-<option data-code="VOS-007"  data-gsm="9944 3307" value="Ali Said Al Mulhairhi">Ali Said Al Mulhairhi</option>
-<option data-code="VOS-0025" data-gsm="9232 4405" value="Haitham Al Rajahi">Haitham Al Rajahi</option>
-<option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">Shaik Ali</option>
-<option data-code="VOS-0013" data-gsm="9553 5327" value="Khalid Al Sharji">Khalid Al Sharji</option>
-<option data-code="VOS-0030" data-gsm="9945 4912" value="Zakarya Yahya">Zakarya Yahya</option>
-
-            </select>
-        </div>
-        <div style="display:none">
-            <label for="Passenger-name">Passenger Name</label>
-            <select id="Passenger-name">
-                <option value="">Select passenger</option>
-                <option data-code="VOS-001"  data-gsm="9070 7038" value="Mohamed Al Mayahi">Mohamed Al Mayahi</option>
-<option data-code="VOS-0014" data-gsm="9796 9572" value="Hamed Al Raabi">Hamed Al Naabi</option>
-<option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">Ahmed Salah</option>
-<option data-code="VOS-003"  data-gsm="9633 5565" value="Mohammed Sulaiman">Mohammed Sulaiman</option>
-<option data-code="VOS-009"  data-gsm="9818 0866" value="Haitham Al Hadi">Haitham Al Hadi</option>
-<option data-code="VOS-0018" data-gsm="9231 4855" value="Waleed Al Balushi">Waleed Al Balushi</option>
-<option data-code="VOS-0024" data-gsm="9796 9571" value="Mojaled Ahmed">Mojaled Ahmed</option>
-<option data-code="VOS-0004" data-gsm="9988 7044" value="Abdu Aziz Salim">Abdu Aziz Salim</option>
-<option data-code="VOS-007"  data-gsm="9944 3307" value="Ali Said Al Mulhairhi">Ali Said Al Mulhairhi</option>
-<option data-code="VOS-0025" data-gsm="9232 4405" value="Haitham Al Rajahi">Haitham Al Rajahi</option>
-<option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">Shaik Ali</option>
-<option data-code="VOS-0013" data-gsm="9553 5327" value="Khalid Al Sharji">Khalid Al Sharji</option>
-<option data-code="VOS-0030" data-gsm="9945 4912" value="Zakarya Yahya">Zakarya Yahya</option>
-            </select>
-        </div>
-        <div style="display:none">
-            <label for="Passenger2-name">Passenger2 Name</label>
-            <select id="Passenger2-name">
-                <option value="">Select passenger</option>
-                <option data-code="VOS-001"  data-gsm="9070 7038" value="Mohamed Al Mayahi">Mohamed Al Mayahi</option>
-<option data-code="VOS-0014" data-gsm="9796 9572" value="Hamed Al Raabi">Hamed Al Naabi</option>
-<option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">Ahmed Salah</option>
-<option data-code="VOS-003"  data-gsm="9633 5565" value="Mohammed Sulaiman">Mohammed Sulaiman</option>
-<option data-code="VOS-009"  data-gsm="9818 0866" value="Haitham Al Hadi">Haitham Al Hadi</option>
-<option data-code="VOS-0018" data-gsm="9231 4855" value="Waleed Al Balushi">Waleed Al Balushi</option>
-<option data-code="VOS-0024" data-gsm="9796 9571" value="Mojaled Ahmed">Mojaled Ahmed</option>
-<option data-code="VOS-0004" data-gsm="9988 7044" value="Abdu Aziz Salim">Abdu Aziz Salim</option>
-<option data-code="VOS-007"  data-gsm="9944 3307" value="Ali Said Al Mulhairhi">Ali Said Al Mulhairhi</option>
-<option data-code="VOS-0025" data-gsm="9232 4405" value="Haitham Al Rajahi">Haitham Al Rajahi</option>
-<option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">Shaik Ali</option>
-<option data-code="VOS-0013" data-gsm="9553 5327" value="Khalid Al Sharji">Khalid Al Sharji</option>
-<option data-code="VOS-0030" data-gsm="9945 4912" value="Zakarya Yahya">Zakarya Yahya</option>
-            </select>
-        </div>
-        <div style="display:none">
-            <label for="Passenger3-name">Passenger3 Name</label>
-            <select id="Passenger3-name">
-                <option value="">Select passenger</option>
-                <option data-code="VOS-001"  data-gsm="9070 7038" value="Mohamed Al Mayahi">Mohamed Al Mayahi</option>
-<option data-code="VOS-0014" data-gsm="9796 9572" value="Hamed Al Raabi">Hamed Al Naabi</option>
-<option data-code="VOS-0029" data-gsm="9206 2338" value="Ahmed Salah">Ahmed Salah</option>
-<option data-code="VOS-003"  data-gsm="9633 5565" value="Mohammed Sulaiman">Mohammed Sulaiman</option>
-<option data-code="VOS-009"  data-gsm="9818 0866" value="Haitham Al Hadi">Haitham Al Hadi</option>
-<option data-code="VOS-0018" data-gsm="9231 4855" value="Waleed Al Balushi">Waleed Al Balushi</option>
-<option data-code="VOS-0024" data-gsm="9796 9571" value="Mojaled Ahmed">Mojaled Ahmed</option>
-<option data-code="VOS-0004" data-gsm="9988 7044" value="Abdu Aziz Salim">Abdu Aziz Salim</option>
-<option data-code="VOS-007"  data-gsm="9944 3307" value="Ali Said Al Mulhairhi">Ali Said Al Mulhairhi</option>
-<option data-code="VOS-0025" data-gsm="9232 4405" value="Haitham Al Rajahi">Haitham Al Rajahi</option>
-<option data-code="VOS-0028" data-gsm="9512 3881" value="Shaik Ali">Shaik Ali</option>
-<option data-code="VOS-0013" data-gsm="9553 5327" value="Khalid Al Sharji">Khalid Al Sharji</option>
-<option data-code="VOS-0030" data-gsm="9945 4912" value="Zakarya Yahya">Zakarya Yahya</option>
-            </select>
-        </div>
-        <div id="passengers-dynamic">
-          <label>Passengers</label>
-          <div id="passengers-container" style="display:flex; flex-direction:column; gap:8px; margin:6px 0;"></div>
-          <button type="button" id="add-passenger-btn" style="padding:6px 10px; border:1px solid #ccc; background:#f8f8f8; border-radius:6px; cursor:pointer;">+ Add passenger</button>
-        </div>
-        
-        <div>
-            <label for="from-locations">From</label>
-            <select id="from-locations" data-placeholder="Select location">
-                <option value="">select location</option>
-                <option value="ARA">ARA</option>
-                <option value="MANAH">MANAH</option>
-                <option value="DALEEL">DALEEL</option>
-                <option value="IBRI">IBRI</option>
-            </select>
-            <input type="time" id="from-time">
-        </div>
-        <div style="display:none">
-            <label for="Resat-locations">Resat</label>
-            <select id="Resat-locations" data-placeholder="Select location">
-              <option value="">select location</option>
-                <option value="ARA">ARA</option>
-                <option value="MANAH">MANAH</option>
-                <option value="DALEEL">DALEEL</option>
-                <option value="IBRI">IBRI</option>
-            </select>
-            <input type="time">
-        </div>
-        <div style="display:none">
-            <label for="Resat2-locations">Resat2</label>
-            <select id="Resat2-locations">
-                <option value="ARA">ARA</option>
-                <option value="MANAH">MANAH</option>
-                <option value="DALEEL">DALEEL</option>
-                <option value="IBRI">IBRI</option>
-            </select>
-            <input type="time">
-        </div>
-        <div>
-            <label for="to-locations">To</label>
-            <select id="to-locations" data-placeholder="Select location">
-              <option >select location</option>
-                <option value="MANAH">MANAH</option>
-                <option value="DALEEL">DALEEL</option>
-                <option value="IBRI">IBRI</option>
-                <option value="MUSCAT">MUSCAT</option>
-            </select>
-            <input type="time" id="to-time">
-        </div>
-        <div id="rests-dynamic" style="margin-top:10px;">
-          <label>Rest stops</label>
-          <div id="rests-container" style="display:flex; flex-direction:column; gap:8px; margin:6px 0;"></div>
-          <button type="button" id="add-rest-btn" style="padding:6px 10px; border:1px solid #ccc; background:#f8f8f8; border-radius:6px; cursor:pointer;">+ Add rest</button>
-        </div>
-        <div class="sidebar-actions">
-          <button type="button" id="save-journey-plan">Save Journey Plan</button>
-          <button type="button" id="refresh-plan-number">Refresh Plan Number</button>
-          <div id="save-status" role="status" aria-live="polite"></div>
-        </div>
+      <div>
+        <label for="from-locations">From</label>
+        <select id="from-locations" data-placeholder="Select location">
+          <option value="">select location</option>
+          <option value="ARA">ARA</option>
+          <option value="MANAH">MANAH</option>
+          <option value="DALEEL">DALEEL</option>
+          <option value="IBRI">IBRI</option>
+        </select>
+        <input type="time" id="from-time" />
+      </div>
+      <div style="display: none">
+        <label for="Resat-locations">Resat</label>
+        <select id="Resat-locations" data-placeholder="Select location">
+          <option value="">select location</option>
+          <option value="ARA">ARA</option>
+          <option value="MANAH">MANAH</option>
+          <option value="DALEEL">DALEEL</option>
+          <option value="IBRI">IBRI</option>
+        </select>
+        <input type="time" />
+      </div>
+      <div style="display: none">
+        <label for="Resat2-locations">Resat2</label>
+        <select id="Resat2-locations">
+          <option value="ARA">ARA</option>
+          <option value="MANAH">MANAH</option>
+          <option value="DALEEL">DALEEL</option>
+          <option value="IBRI">IBRI</option>
+        </select>
+        <input type="time" />
+      </div>
+      <div>
+        <label for="to-locations">To</label>
+        <select id="to-locations" data-placeholder="Select location">
+          <option>select location</option>
+          <option value="MANAH">MANAH</option>
+          <option value="DALEEL">DALEEL</option>
+          <option value="IBRI">IBRI</option>
+          <option value="MUSCAT">MUSCAT</option>
+        </select>
+        <input type="time" id="to-time" />
+      </div>
+      <div id="rests-dynamic" style="margin-top: 10px">
+        <label>Rest stops</label>
+        <div
+          id="rests-container"
+          style="display: flex; flex-direction: column; gap: 8px; margin: 6px 0"
+        ></div>
+        <button
+          type="button"
+          id="add-rest-btn"
+          style="
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+            border-radius: 6px;
+            cursor: pointer;
+          "
+        >
+          + Add rest
+        </button>
+      </div>
+      <div class="sidebar-actions">
+        <button type="button" id="save-journey-plan">Save Journey Plan</button>
+        <button type="button" id="refresh-plan-number">
+          Refresh Plan Number
+        </button>
+        <div id="save-status" role="status" aria-live="polite"></div>
+      </div>
     </div>
-     
+
     <div class="main">
       <div class="page-shell">
         <div class="page">
@@ -182,7 +492,6 @@
 
           <p class="Call-Journey-Manager">97969572</p>
 
-
           <p class="Route-Place-Name-1"></p>
           <p class="Route-Place-Name-2"></p>
           <p class="Route-Place-Name-3"></p>
@@ -194,20 +503,46 @@
           <p class="Route-Place-Name-9"></p>
           <p class="Route-Place-Name-10"></p>
 
-
-
-          <p class="Time-Arrive-Time-Depart-1"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-2"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-3"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-4"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-5"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-6"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-7"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-8"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-9"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-          <p class="Time-Arrive-Time-Depart-10"><span class="time-arrive"></span><span class="time-separator"></span><span class="time-depart"></span></p>
-
-
+          <p class="Time-Arrive-Time-Depart-1">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-2">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-3">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-4">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-5">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-6">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-7">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-8">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-9">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
+          <p class="Time-Arrive-Time-Depart-10">
+            <span class="time-arrive"></span><span class="time-separator"></span
+            ><span class="time-depart"></span>
+          </p>
 
           <p class="Rest-Tick-1"></p>
           <p class="Rest-Tick-2"></p>
@@ -220,60 +555,75 @@
           <p class="Rest-Tick-9"></p>
           <p class="Rest-Tick-10"></p>
 
-          <img class="img-right-1" src="./right.png" alt="">
-          <img class="img-right-2" src="./right.png" alt="">
-          <img class="img-right-3" src="./right.png" alt="">
+          <img class="img-right-1" src="./right.png" alt="" />
+          <img class="img-right-2" src="./right.png" alt="" />
+          <img class="img-right-3" src="./right.png" alt="" />
 
-          <img class="signature" src="signature.png" alt="">
+          <img class="signature" src="signature.png" alt="" />
 
-          <img class="Signature-with-name" src="Signature with name.png" alt="">
+          <img
+            class="Signature-with-name"
+            src="Signature with name.png"
+            alt=""
+          />
           <p class="Signature-date"></p>
         </div>
       </div>
-  </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<script>
-    (function() {
-      const PLACEHOLDER = '';
-      const REST_NAME_CHOICES = ['CHECKPOINT', 'FUEL', 'MEAL', 'PRAYER', 'COFFEE'];
-      const REST_NAME_OPTIONS_HTML = REST_NAME_CHOICES.map(name => `<option value="${name}">${name}</option>`).join('');
+    </div>
+  </body>
+  <script>
+    const REMOTE_API_BASE = ""; // set to deployed API origin, e.g. 'https://your-api.onrender.com'
+    const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+    window.API_BASE = LOCAL_HOSTS.includes(window.location.hostname)
+      ? ""
+      : REMOTE_API_BASE || window.location.origin;
+    (function () {
+      const PLACEHOLDER = "";
+      const REST_NAME_CHOICES = [
+        "CHECKPOINT",
+        "FUEL",
+        "MEAL",
+        "PRAYER",
+        "COFFEE",
+      ];
+      const REST_NAME_OPTIONS_HTML = REST_NAME_CHOICES.map(
+        (name) => `<option value="${name}">${name}</option>`
+      ).join("");
 
       function displayWithPlaceholder(value) {
-        return (value && String(value).trim()) ? String(value).trim() : '';
+        return value && String(value).trim() ? String(value).trim() : "";
       }
 
       function selectedText(select) {
-        if (!select) return '';
+        if (!select) return "";
         const opt = select.options[select.selectedIndex];
-        return opt ? opt.textContent.trim() : '';
+        return opt ? opt.textContent.trim() : "";
       }
 
       function attachAddButton(selectId, opts = {}) {
         const sel = document.getElementById(selectId);
         if (!sel || sel.dataset.hasAddBtn) return;
 
-        let wrapper = sel.closest('.select-with-add');
+        let wrapper = sel.closest(".select-with-add");
         if (!wrapper) {
-          wrapper = document.createElement('div');
-          wrapper.className = 'select-with-add';
+          wrapper = document.createElement("div");
+          wrapper.className = "select-with-add";
           const parent = sel.parentNode;
           parent.insertBefore(wrapper, sel);
           wrapper.appendChild(sel);
         }
 
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = opts.label || '+';
-        btn.title = opts.title || 'Add option';
-        btn.className = 'select-add-btn';
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = opts.label || "+";
+        btn.title = opts.title || "Add option";
+        btn.className = "select-add-btn";
 
         wrapper.appendChild(btn);
-        sel.dataset.hasAddBtn = '1';
+        sel.dataset.hasAddBtn = "1";
 
-        btn.addEventListener('click', () => {
-          let label = prompt(opts.prompt || 'Enter new option');
+        btn.addEventListener("click", () => {
+          let label = prompt(opts.prompt || "Enter new option");
           if (label === null) return;
           label = String(label).trim();
           if (!label) return;
@@ -281,99 +631,120 @@
           const option = new Option(label, value);
           sel.add(option);
           sel.value = value;
-          sel.dispatchEvent(new Event('change', { bubbles: true }));
-          if (sel.id === 'driver-name') {
-            if (!MASTER_PEOPLE_OPTIONS.some(opt => opt.value === value)) {
-              MASTER_PEOPLE_OPTIONS.push({ value, text: label, code: null, gsm: null });
+          sel.dispatchEvent(new Event("change", { bubbles: true }));
+          if (sel.id === "driver-name") {
+            if (!MASTER_PEOPLE_OPTIONS.some((opt) => opt.value === value)) {
+              MASTER_PEOPLE_OPTIONS.push({
+                value,
+                text: label,
+                code: null,
+                gsm: null,
+              });
             }
-            if (typeof refreshPeopleOptions === 'function') {
+            if (typeof refreshPeopleOptions === "function") {
               refreshPeopleOptions();
             }
           }
         });
       }
 
-      const driverSelect = document.getElementById('driver-name');
-      const driverNodes = document.querySelectorAll('.Driver-Name');
+      const driverSelect = document.getElementById("driver-name");
+      const driverNodes = document.querySelectorAll(".Driver-Name");
       function setDriverNameOnPage(value) {
         const text = displayWithPlaceholder(value);
-        driverNodes.forEach(node => node.textContent = text);
+        driverNodes.forEach((node) => (node.textContent = text));
       }
 
-      const journeyNumberNode = document.querySelector('.Journey-Plan-Number');
-      const saveButton = document.getElementById('save-journey-plan');
-      const refreshNumberButton = document.getElementById('refresh-plan-number');
-      const saveStatusEl = document.getElementById('save-status');
-      const signatureDateNode = document.querySelector('.Signature-date');
-      const callManagerNode = document.querySelector('.Call-Journey-Manager');
-      const departureDateInput = document.getElementById('departure-date');
-      const vehicleNumberSelect = document.getElementById('vehicle-number');
+      const journeyNumberNode = document.querySelector(".Journey-Plan-Number");
+      const saveButton = document.getElementById("save-journey-plan");
+      const refreshNumberButton = document.getElementById(
+        "refresh-plan-number"
+      );
+      const saveStatusEl = document.getElementById("save-status");
+      const signatureDateNode = document.querySelector(".Signature-date");
+      const callManagerNode = document.querySelector(".Call-Journey-Manager");
+      const departureDateInput = document.getElementById("departure-date");
+      const vehicleNumberSelect = document.getElementById("vehicle-number");
 
       let applyDriverHandler = null;
       if (driverNodes.length) {
         if (driverSelect) {
           applyDriverHandler = () => {
-            const option = driverSelect.selectedIndex >= 0 ? driverSelect.options[driverSelect.selectedIndex] : null;
+            const option =
+              driverSelect.selectedIndex >= 0
+                ? driverSelect.options[driverSelect.selectedIndex]
+                : null;
             const rawValue = driverSelect.value;
-            const displayName = rawValue ? (option ? option.textContent : rawValue) : '';
+            const displayName = rawValue
+              ? option
+                ? option.textContent
+                : rawValue
+              : "";
             setDriverNameOnPage(displayName);
             if (callManagerNode) {
-              callManagerNode.textContent = option && option.dataset.gsm ? option.dataset.gsm : '';
+              callManagerNode.textContent =
+                option && option.dataset.gsm ? option.dataset.gsm : "";
             }
-            if (typeof refreshPeopleOptions === 'function') {
+            if (typeof refreshPeopleOptions === "function") {
               refreshPeopleOptions();
             }
           };
-          driverSelect.addEventListener('change', () => applyDriverHandler && applyDriverHandler());
+          driverSelect.addEventListener(
+            "change",
+            () => applyDriverHandler && applyDriverHandler()
+          );
         } else {
-          setDriverNameOnPage('');
-          if (callManagerNode) callManagerNode.textContent = '';
+          setDriverNameOnPage("");
+          if (callManagerNode) callManagerNode.textContent = "";
         }
       }
 
-      function setStatus(message, tone = 'default') {
+      function setStatus(message, tone = "default") {
         if (!saveStatusEl) return;
-        saveStatusEl.textContent = message || '';
-        saveStatusEl.classList.remove('error', 'success');
-        if (tone === 'error') {
-          saveStatusEl.classList.add('error');
-        } else if (tone === 'success') {
-          saveStatusEl.classList.add('success');
+        saveStatusEl.textContent = message || "";
+        saveStatusEl.classList.remove("error", "success");
+        if (tone === "error") {
+          saveStatusEl.classList.add("error");
+        } else if (tone === "success") {
+          saveStatusEl.classList.add("success");
         }
       }
 
       if (journeyNumberNode) {
-        journeyNumberNode.dataset.locked = 'false';
+        journeyNumberNode.dataset.locked = "false";
       }
 
       async function fetchNextJourneyPlanNumber() {
         try {
-          const response = await fetch('/api/journey-plans/next-number');
+          const response = await fetch("/api/journey-plans/next-number");
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const { nextNumber } = await response.json();
-          if (journeyNumberNode && journeyNumberNode.dataset.locked !== 'true') {
-            journeyNumberNode.textContent = nextNumber ?? '';
+          if (
+            journeyNumberNode &&
+            journeyNumberNode.dataset.locked !== "true"
+          ) {
+            journeyNumberNode.textContent = nextNumber ?? "";
           }
           return nextNumber;
         } catch (error) {
-          console.error('Failed to fetch next journey plan number', error);
-          setStatus('Unable to fetch next plan number.', 'error');
+          console.error("Failed to fetch next journey plan number", error);
+          setStatus("Unable to fetch next plan number.", "error");
           return null;
         }
       }
 
       [
-        { id: 'vehicle-number', title: 'Add vehicle' },
-        { id: 'driver-name', title: 'Add driver' },
-        { id: 'from-locations', title: 'Add origin' },
-        { id: 'to-locations', title: 'Add destination' }
-      ].forEach(cfg => attachAddButton(cfg.id, { title: cfg.title }));
+        { id: "vehicle-number", title: "Add vehicle" },
+        { id: "driver-name", title: "Add driver" },
+        { id: "from-locations", title: "Add origin" },
+        { id: "to-locations", title: "Add destination" },
+      ].forEach((cfg) => attachAddButton(cfg.id, { title: cfg.title }));
 
       // Utility: get the <span> that holds the passenger name for N=1..3
       function getPassengerNameSpan(n) {
         const p = document.querySelector(`.Passengers-${n}`);
         if (!p) return null;
-        const spans = p.querySelectorAll('span');
+        const spans = p.querySelectorAll("span");
         return spans.length >= 2 ? spans[1] : null;
       }
 
@@ -386,60 +757,68 @@
       }
 
       // Ensure initial placeholders for all three positions
-      [1,2,3].forEach((n) => setPassengerOnPage(n, ''));
+      [1, 2, 3].forEach((n) => setPassengerOnPage(n, ""));
 
       // Sidebar dynamic controls
-      const container = document.getElementById('passengers-container');
-      const addBtn = document.getElementById('add-passenger-btn');
+      const container = document.getElementById("passengers-container");
+      const addBtn = document.getElementById("add-passenger-btn");
 
       function parseOptionsFromSelect(select) {
         if (!select) return [];
-        return Array.from(select.options).map(opt => ({
+        return Array.from(select.options).map((opt) => ({
           value: opt.value,
           text: opt.textContent,
           code: opt.dataset.code || null,
-          gsm: opt.dataset.gsm || null
+          gsm: opt.dataset.gsm || null,
         }));
       }
 
-      const MASTER_PEOPLE_OPTIONS = parseOptionsFromSelect(driverSelect).filter(opt => opt.value);
+      const MASTER_PEOPLE_OPTIONS = parseOptionsFromSelect(driverSelect).filter(
+        (opt) => opt.value
+      );
       if (driverSelect && !driverSelect.dataset.placeholder) {
-        driverSelect.dataset.placeholder = 'Select driver';
+        driverSelect.dataset.placeholder = "Select driver";
       }
 
       function renderSelectOptions(select, options, currentValue) {
         if (!select) return;
         const placeholder =
           select.dataset.placeholder ||
-          select.getAttribute('data-placeholder') ||
+          select.getAttribute("data-placeholder") ||
           select.querySelector('option[value=""]')?.textContent ||
-          'Select option';
+          "Select option";
         const chunks = [`<option value="">${placeholder}</option>`];
-        options.forEach(opt => {
+        options.forEach((opt) => {
           const attrs = [];
           if (opt.code) attrs.push(`data-code="${opt.code}"`);
           if (opt.gsm) attrs.push(`data-gsm="${opt.gsm}"`);
-          const attrString = attrs.length ? ' ' + attrs.join(' ') : '';
-          const selected = opt.value === currentValue ? ' selected' : '';
-          chunks.push(`<option value="${opt.value}"${attrString}${selected}>${opt.text}</option>`);
+          const attrString = attrs.length ? " " + attrs.join(" ") : "";
+          const selected = opt.value === currentValue ? " selected" : "";
+          chunks.push(
+            `<option value="${opt.value}"${attrString}${selected}>${opt.text}</option>`
+          );
         });
-        select.innerHTML = chunks.join('');
-        if (currentValue && options.some(opt => opt.value === currentValue)) {
+        select.innerHTML = chunks.join("");
+        if (currentValue && options.some((opt) => opt.value === currentValue)) {
           select.value = currentValue;
         } else {
-          select.value = '';
+          select.value = "";
         }
       }
 
       function getPassengerSelects() {
-        return container ? Array.from(container.querySelectorAll('select[data-passenger-index]')) : [];
+        return container
+          ? Array.from(
+              container.querySelectorAll("select[data-passenger-index]")
+            )
+          : [];
       }
 
       function refreshPeopleOptions() {
         const passengerSelects = getPassengerSelects();
-        const driverValue = driverSelect ? driverSelect.value : '';
+        const driverValue = driverSelect ? driverSelect.value : "";
         const passengerCounts = {};
-        passengerSelects.forEach(sel => {
+        passengerSelects.forEach((sel) => {
           const val = sel.value;
           if (val) {
             passengerCounts[val] = (passengerCounts[val] || 0) + 1;
@@ -448,7 +827,7 @@
 
         if (driverSelect) {
           const previousDriverValue = driverValue;
-          const allowedForDriver = MASTER_PEOPLE_OPTIONS.filter(opt => {
+          const allowedForDriver = MASTER_PEOPLE_OPTIONS.filter((opt) => {
             const value = opt.value;
             if (!value) return true;
             const count = passengerCounts[value] || 0;
@@ -457,16 +836,22 @@
             }
             return true;
           });
-          renderSelectOptions(driverSelect, allowedForDriver, previousDriverValue);
+          renderSelectOptions(
+            driverSelect,
+            allowedForDriver,
+            previousDriverValue
+          );
           if (driverSelect.value !== previousDriverValue) {
-            const driverDisplay = driverSelect.value ? (selectedText(driverSelect) || driverSelect.value) : '';
+            const driverDisplay = driverSelect.value
+              ? selectedText(driverSelect) || driverSelect.value
+              : "";
             setDriverNameOnPage(driverDisplay);
           }
         }
 
-        passengerSelects.forEach(sel => {
+        passengerSelects.forEach((sel) => {
           const currentValue = sel.value;
-          const allowed = MASTER_PEOPLE_OPTIONS.filter(opt => {
+          const allowed = MASTER_PEOPLE_OPTIONS.filter((opt) => {
             const value = opt.value;
             if (!value) return true;
             const count = passengerCounts[value] || 0;
@@ -480,7 +865,7 @@
           });
           renderSelectOptions(sel, allowed, currentValue);
           if (sel.value !== currentValue) {
-            const idx = Number(sel.getAttribute('data-passenger-index'));
+            const idx = Number(sel.getAttribute("data-passenger-index"));
             if (!Number.isNaN(idx)) {
               setPassengerOnPage(idx, sel.value);
             }
@@ -489,40 +874,46 @@
       }
 
       function createPassengerField(n) {
-        const wrap = document.createElement('div');
-        wrap.style.display = 'flex';
-        wrap.style.gap = '6px';
-        wrap.style.alignItems = 'center';
+        const wrap = document.createElement("div");
+        wrap.style.display = "flex";
+        wrap.style.gap = "6px";
+        wrap.style.alignItems = "center";
 
-        const label = document.createElement('label');
+        const label = document.createElement("label");
         label.textContent = `Passenger ${n}`;
-        label.style.minWidth = '105px';
+        label.style.minWidth = "105px";
 
-        const select = document.createElement('select');
-        select.setAttribute('data-passenger-index', String(n));
-        select.dataset.placeholder = 'Select passenger';
-        renderSelectOptions(select, MASTER_PEOPLE_OPTIONS, '');
-        select.addEventListener('change', (e) => {
-          const idx = Number(select.getAttribute('data-passenger-index'));
+        const select = document.createElement("select");
+        select.setAttribute("data-passenger-index", String(n));
+        select.dataset.placeholder = "Select passenger";
+        renderSelectOptions(select, MASTER_PEOPLE_OPTIONS, "");
+        select.addEventListener("change", (e) => {
+          const idx = Number(select.getAttribute("data-passenger-index"));
           setPassengerOnPage(idx, select.value);
           refreshPeopleOptions();
         });
 
         // Insert remove button after select creation, before label appended
-        const del = document.createElement('button');
-        del.type = 'button';
-        del.textContent = '×';
-        del.style.cssText = 'padding:2px 6px;border:1px solid #ccc;background:#eee;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;';
-        del.addEventListener('click',()=>{
+        const del = document.createElement("button");
+        del.type = "button";
+        del.textContent = "×";
+        del.style.cssText =
+          "padding:2px 6px;border:1px solid #ccc;background:#eee;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;";
+        del.addEventListener("click", () => {
           wrap.remove();
-          setPassengerOnPage(n,'');
+          setPassengerOnPage(n, "");
           // re-enable add button if below 3
-          if(container.querySelectorAll('select[data-passenger-index]').length < 3){ addBtn.style.display='inline-block'; }
+          if (
+            container.querySelectorAll("select[data-passenger-index]").length <
+            3
+          ) {
+            addBtn.style.display = "inline-block";
+          }
           refreshPeopleOptions();
         });
 
         // Initialize page placeholder for this passenger
-        setPassengerOnPage(n, '');
+        setPassengerOnPage(n, "");
 
         wrap.appendChild(label);
         wrap.appendChild(select);
@@ -534,14 +925,14 @@
         return getPassengerSelects().length;
       }
 
-      addBtn.addEventListener('click', () => {
+      addBtn.addEventListener("click", () => {
         const count = currentCount();
         if (count >= 3) return; // safety
         const next = count + 1;
         container.appendChild(createPassengerField(next));
         refreshPeopleOptions();
         if (next >= 3) {
-          addBtn.style.display = 'none';
+          addBtn.style.display = "none";
         }
       });
 
@@ -551,143 +942,163 @@
 
       // === LINK Departure Date to page ===
       if (departureDateInput) {
-        const handleDepartureChange = e => {
+        const handleDepartureChange = (e) => {
           const v = e.target.value;
-          const formatted = v ? new Date(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).replace(/ /g,'-') : '';
-          const t = document.querySelector('.Departure-Date');
+          const formatted = v
+            ? new Date(v)
+                .toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+                .replace(/ /g, "-")
+            : "";
+          const t = document.querySelector(".Departure-Date");
           if (t) t.textContent = formatted;
           if (signatureDateNode) signatureDateNode.textContent = formatted;
         };
-        departureDateInput.addEventListener('change', handleDepartureChange);
+        departureDateInput.addEventListener("change", handleDepartureChange);
         handleDepartureChange({ target: departureDateInput });
       }
 
       // === LINK Vehicle Number to page ===
       if (vehicleNumberSelect) {
-        const handleVehicleChange = e => {
-          const plate = e.target.value || '';
-          const t = document.querySelector('.Vehicle-Number');
+        const handleVehicleChange = (e) => {
+          const plate = e.target.value || "";
+          const t = document.querySelector(".Vehicle-Number");
           if (t) t.textContent = plate;
         };
-        vehicleNumberSelect.addEventListener('change', handleVehicleChange);
+        vehicleNumberSelect.addEventListener("change", handleVehicleChange);
         handleVehicleChange({ target: vehicleNumberSelect });
       }
-    // === LINK From / To to page (Route + Time) ===
-    function getTimeElements(idx){
-      const node = document.querySelector('.Time-Arrive-Time-Depart-' + idx);
-      if(!node) return null;
-      return {
-        node,
-        arrive: node.querySelector('.time-arrive') || node.querySelector('span:nth-child(1)'),
-        separator: node.querySelector('.time-separator'),
-        depart: node.querySelector('.time-depart') || node.querySelector('span:nth-child(3)')
-      };
-    }
-    function fmtTime(v){
-      return (v && String(v).trim()) ? String(v).trim() : '';
-    }
-    function setArrive(idx, timeStr){
-      const elements = getTimeElements(idx);
-      if(!elements || !elements.arrive) return;
-      elements.arrive.textContent = fmtTime(timeStr);
-      updateTimeSeparator(elements);
-    }
-    function setDepart(idx, timeStr){
-      const elements = getTimeElements(idx);
-      if(!elements || !elements.depart) return;
-      elements.depart.textContent = fmtTime(timeStr);
-      updateTimeSeparator(elements);
-    }
-    function updateTimeSeparator(elements){
-      if (!elements || !elements.separator) return;
-      const hasArrive = elements.arrive && elements.arrive.textContent.trim();
-      const hasDepart = elements.depart && elements.depart.textContent.trim();
-      elements.separator.textContent = (hasArrive && hasDepart) ? ' - ' : '';
-    }
-    function setRoutePlaceName(idx, val){
-      const t = document.querySelector('.Route-Place-Name-' + idx);
-      if(t) t.textContent = displayWithPlaceholder(val);
-    }
-    function setTimeRange(){ /* deprecated in favor of setArrive/setDepart */ }
+      // === LINK From / To to page (Route + Time) ===
+      function getTimeElements(idx) {
+        const node = document.querySelector(".Time-Arrive-Time-Depart-" + idx);
+        if (!node) return null;
+        return {
+          node,
+          arrive:
+            node.querySelector(".time-arrive") ||
+            node.querySelector("span:nth-child(1)"),
+          separator: node.querySelector(".time-separator"),
+          depart:
+            node.querySelector(".time-depart") ||
+            node.querySelector("span:nth-child(3)"),
+        };
+      }
+      function fmtTime(v) {
+        return v && String(v).trim() ? String(v).trim() : "";
+      }
+      function setArrive(idx, timeStr) {
+        const elements = getTimeElements(idx);
+        if (!elements || !elements.arrive) return;
+        elements.arrive.textContent = fmtTime(timeStr);
+        updateTimeSeparator(elements);
+      }
+      function setDepart(idx, timeStr) {
+        const elements = getTimeElements(idx);
+        if (!elements || !elements.depart) return;
+        elements.depart.textContent = fmtTime(timeStr);
+        updateTimeSeparator(elements);
+      }
+      function updateTimeSeparator(elements) {
+        if (!elements || !elements.separator) return;
+        const hasArrive = elements.arrive && elements.arrive.textContent.trim();
+        const hasDepart = elements.depart && elements.depart.textContent.trim();
+        elements.separator.textContent = hasArrive && hasDepart ? " - " : "";
+      }
+      function setRoutePlaceName(idx, val) {
+        const t = document.querySelector(".Route-Place-Name-" + idx);
+        if (t) t.textContent = displayWithPlaceholder(val);
+      }
+      function setTimeRange() {
+        /* deprecated in favor of setArrive/setDepart */
+      }
 
-    const fromSel = document.getElementById('from-locations');
-    const fromTime = document.getElementById('from-time');
-    const toSel = document.getElementById('to-locations');
-    const toTime = document.getElementById('to-time');
+      const fromSel = document.getElementById("from-locations");
+      const fromTime = document.getElementById("from-time");
+      const toSel = document.getElementById("to-locations");
+      const toTime = document.getElementById("to-time");
 
-    function normalizeTimeValue(value) {
-      return value && String(value).trim() ? value : '';
-    }
+      function normalizeTimeValue(value) {
+        return value && String(value).trim() ? value : "";
+      }
 
-    function renderFromRow() {
-      setRoutePlaceName(1, selectedText(fromSel) || (fromSel ? fromSel.value : ''));
-      const departValue = normalizeTimeValue(fromTime && fromTime.value);
-      setArrive(1, departValue ? '00:00' : '');
-      setDepart(1, departValue);
-    }
+      function renderFromRow() {
+        setRoutePlaceName(
+          1,
+          selectedText(fromSel) || (fromSel ? fromSel.value : "")
+        );
+        const departValue = normalizeTimeValue(fromTime && fromTime.value);
+        setArrive(1, departValue ? "00:00" : "");
+        setDepart(1, departValue);
+      }
 
-    renderFromRow();
+      renderFromRow();
 
-    if (fromSel) {
-      fromSel.addEventListener('change', renderFromRow);
-    }
-    if (fromTime) {
-      fromTime.addEventListener('change', renderFromRow);
-    }
-    if (toSel) {
-      toSel.addEventListener('change', () => renderToRow());
-    }
-    if (toTime) {
-      toTime.addEventListener('change', () => renderToRow());
-    }
+      if (fromSel) {
+        fromSel.addEventListener("change", renderFromRow);
+      }
+      if (fromTime) {
+        fromTime.addEventListener("change", renderFromRow);
+      }
+      if (toSel) {
+        toSel.addEventListener("change", () => renderToRow());
+      }
+      if (toTime) {
+        toTime.addEventListener("change", () => renderToRow());
+      }
 
-    // === Dynamic Rest stops (between From and To) ===
-    function setRestTick(n, val){
-      const t = document.querySelector('.Rest-Tick-' + n);
-      if(t) t.textContent = displayWithPlaceholder(val);
-    }
+      // === Dynamic Rest stops (between From and To) ===
+      function setRestTick(n, val) {
+        const t = document.querySelector(".Rest-Tick-" + n);
+        if (t) t.textContent = displayWithPlaceholder(val);
+      }
 
-    const restsContainer = document.getElementById('rests-container');
-    const addRestBtn = document.getElementById('add-rest-btn');
+      const restsContainer = document.getElementById("rests-container");
+      const addRestBtn = document.getElementById("add-rest-btn");
 
-    function restFields() {
-      return restsContainer ? Array.from(restsContainer.querySelectorAll('.rest-field')) : [];
-    }
+      function restFields() {
+        return restsContainer
+          ? Array.from(restsContainer.querySelectorAll(".rest-field"))
+          : [];
+      }
 
-    function currentRests(){
-      return restFields().length;
-    }
+      function currentRests() {
+        return restFields().length;
+      }
 
-    function syncRestAddButton(){
-      if (!addRestBtn) return;
-      addRestBtn.style.display = currentRests() >= 8 ? 'none' : 'inline-block';
-    }
+      function syncRestAddButton() {
+        if (!addRestBtn) return;
+        addRestBtn.style.display =
+          currentRests() >= 8 ? "none" : "inline-block";
+      }
 
-    function hhmmToMin(v){
-      if(!v || !/^[0-2]?\d:[0-5]\d$/.test(v)) return null;
-      const [h,m] = v.split(':').map(Number);
-      return (h % 24) * 60 + m;
-    }
+      function hhmmToMin(v) {
+        if (!v || !/^[0-2]?\d:[0-5]\d$/.test(v)) return null;
+        const [h, m] = v.split(":").map(Number);
+        return (h % 24) * 60 + m;
+      }
 
-    function minToHHMM(m){
-      m = Math.max(0, m|0);
-      const h = Math.floor(m/60) % 24;
-      const mm = m % 60;
-      return String(h).padStart(2,'0') + ':' + String(mm).padStart(2,'0');
-    }
+      function minToHHMM(m) {
+        m = Math.max(0, m | 0);
+        const h = Math.floor(m / 60) % 24;
+        const mm = m % 60;
+        return String(h).padStart(2, "0") + ":" + String(mm).padStart(2, "0");
+      }
 
-    function calculateRestTick(arrive, depart){
-      const a = hhmmToMin(arrive);
-      const d = hhmmToMin(depart);
-      if (a == null || d == null) return '';
-      let diff = d - a;
-      if(diff < 0) diff += 24 * 60;
-      return minToHHMM(diff);
-    }
+      function calculateRestTick(arrive, depart) {
+        const a = hhmmToMin(arrive);
+        const d = hhmmToMin(depart);
+        if (a == null || d == null) return "";
+        let diff = d - a;
+        if (diff < 0) diff += 24 * 60;
+        return minToHHMM(diff);
+      }
 
       function findPersonMeta(value) {
         if (!value) return null;
-        return MASTER_PEOPLE_OPTIONS.find(opt => opt.value === value) || null;
+        return MASTER_PEOPLE_OPTIONS.find((opt) => opt.value === value) || null;
       }
 
       function collectPassengersData() {
@@ -701,327 +1112,398 @@
               value,
               name: meta?.text || value,
               code: meta?.code || null,
-              gsm: meta?.gsm || null
+              gsm: meta?.gsm || null,
             };
           })
           .filter(Boolean);
       }
 
-    function buildRouteSnapshot() {
-      const rows = [];
-      for (let idx = 1; idx <= 10; idx++) {
-        const placeNode = document.querySelector(`.Route-Place-Name-${idx}`);
-        const restTickNode = document.querySelector(`.Rest-Tick-${idx}`);
-        const time = getTimeElements(idx);
-        rows.push({
-          row: idx,
-          place_name: placeNode ? placeNode.textContent.trim() : '',
-          arrive: time && time.arrive ? time.arrive.textContent.trim() : '',
-          depart: time && time.depart ? time.depart.textContent.trim() : '',
-          rest_tick: restTickNode ? restTickNode.textContent.trim() : ''
+      function buildRouteSnapshot() {
+        const rows = [];
+        for (let idx = 1; idx <= 10; idx++) {
+          const placeNode = document.querySelector(`.Route-Place-Name-${idx}`);
+          const restTickNode = document.querySelector(`.Rest-Tick-${idx}`);
+          const time = getTimeElements(idx);
+          rows.push({
+            row: idx,
+            place_name: placeNode ? placeNode.textContent.trim() : "",
+            arrive: time && time.arrive ? time.arrive.textContent.trim() : "",
+            depart: time && time.depart ? time.depart.textContent.trim() : "",
+            rest_tick: restTickNode ? restTickNode.textContent.trim() : "",
+          });
+        }
+        return rows;
+      }
+
+      function collectRestStopsData() {
+        return restFields().map((field) => {
+          const slot = Number(field.dataset.restSlot);
+          const nameSel = field.querySelector("select[data-rest-name]");
+          const arriveInput = field.querySelector("input[data-rest-arrive]");
+          const departInput = field.querySelector("input[data-rest-depart]");
+          const arrive = arriveInput ? arriveInput.value : "";
+          const depart = departInput ? departInput.value : "";
+          const name = nameSel ? selectedText(nameSel) || nameSel.value : "";
+          const trimmedName = name && name.trim() ? name.trim() : null;
+          return {
+            order: slot - 1,
+            table_row: slot,
+            name: trimmedName,
+            arrive_time: arrive,
+            depart_time: depart,
+            duration: calculateRestTick(arrive, depart),
+          };
         });
       }
-      return rows;
-    }
 
-    function collectRestStopsData() {
-      return restFields().map(field => {
-        const slot = Number(field.dataset.restSlot);
-        const nameSel = field.querySelector('select[data-rest-name]');
-        const arriveInput = field.querySelector('input[data-rest-arrive]');
-        const departInput = field.querySelector('input[data-rest-depart]');
-        const arrive = arriveInput ? arriveInput.value : '';
-        const depart = departInput ? departInput.value : '';
-        const name = nameSel ? (selectedText(nameSel) || nameSel.value) : '';
-        const trimmedName = name && name.trim() ? name.trim() : null;
+      function collectJourneyPlanData() {
+        const passengers = collectPassengersData();
+        const restStops = collectRestStopsData();
+        const routeRows = buildRouteSnapshot();
+        const numberHint = journeyNumberNode
+          ? journeyNumberNode.textContent.trim()
+          : null;
+        const driverValue = driverSelect ? driverSelect.value : "";
+        const driverMeta = findPersonMeta(driverValue);
+        const driverDisplayName = driverValue
+          ? driverMeta?.text || driverValue
+          : null;
+        const callManagerValue = callManagerNode
+          ? callManagerNode.textContent.trim()
+          : "";
+        const journeyNumberValue = numberHint || null;
         return {
-          order: slot - 1,
-          table_row: slot,
-          name: trimmedName,
-          arrive_time: arrive,
-          depart_time: depart,
-          duration: calculateRestTick(arrive, depart)
+          departure_date:
+            document.getElementById("departure-date")?.value || null,
+          vehicle_number:
+            document.getElementById("vehicle-number")?.value || null,
+          driver_name: driverDisplayName,
+          from_location: selectedText(fromSel) || fromSel?.value || null,
+          from_departure_time: fromTime?.value || null,
+          to_location: selectedText(toSel) || toSel?.value || null,
+          to_arrival_time: toTime?.value || null,
+          call_journey_manager: callManagerValue || null,
+          signature_date:
+            document.getElementById("departure-date")?.value || null,
+          journey_plan_number_hint: journeyNumberValue,
+          passengers,
+          rest_stops: restStops,
+          route_snapshot: {
+            journey_plan_number_hint: numberHint,
+            driver: driverMeta
+              ? {
+                  value: driverMeta.value,
+                  name: driverMeta.text,
+                  code: driverMeta.code,
+                  gsm: driverMeta.gsm,
+                }
+              : null,
+            rows: routeRows,
+          },
+          notes: null,
         };
-      });
-    }
+      }
 
-    function collectJourneyPlanData() {
-      const passengers = collectPassengersData();
-      const restStops = collectRestStopsData();
-      const routeRows = buildRouteSnapshot();
-      const numberHint = journeyNumberNode ? journeyNumberNode.textContent.trim() : null;
-      const driverValue = driverSelect ? driverSelect.value : '';
-      const driverMeta = findPersonMeta(driverValue);
-      const driverDisplayName = driverValue ? (driverMeta?.text || driverValue) : null;
-      const callManagerValue = callManagerNode ? callManagerNode.textContent.trim() : '';
-      const journeyNumberValue = numberHint || null;
-      return {
-        departure_date: document.getElementById('departure-date')?.value || null,
-        vehicle_number: document.getElementById('vehicle-number')?.value || null,
-        driver_name: driverDisplayName,
-        from_location: selectedText(fromSel) || fromSel?.value || null,
-        from_departure_time: fromTime?.value || null,
-        to_location: selectedText(toSel) || toSel?.value || null,
-        to_arrival_time: toTime?.value || null,
-        call_journey_manager: callManagerValue || null,
-        signature_date: document.getElementById('departure-date')?.value || null,
-        journey_plan_number_hint: journeyNumberValue,
-        passengers,
-        rest_stops: restStops,
-        route_snapshot: {
-          journey_plan_number_hint: numberHint,
-          driver: driverMeta
-            ? { value: driverMeta.value, name: driverMeta.text, code: driverMeta.code, gsm: driverMeta.gsm }
-            : null,
-          rows: routeRows
-        },
-        notes: null
-      };
-    }
+      async function saveJourneyPlan() {
+        if (!saveButton) return;
+        try {
+          setStatus("Saving journey plan...");
+          saveButton.disabled = true;
+          const payload = collectJourneyPlanData();
+          const response = await fetch(
+            `${window.API_BASE || ""}/api/journey-plans`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }
+          );
 
-    async function saveJourneyPlan() {
-      if (!saveButton) return;
-      try {
-        setStatus('Saving journey plan...');
-        saveButton.disabled = true;
-        const payload = collectJourneyPlanData();
-        const response = await fetch('/api/journey-plans', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-          let message = 'Failed to save journey plan.';
-          try {
-            const err = await response.json();
-            if (err?.error) message = err.error;
-          } catch {
-            // ignore parse errors
+          if (!response.ok) {
+            let message = "Failed to save journey plan.";
+            try {
+              const err = await response.json();
+              if (err?.error) message = err.error;
+            } catch {
+              // ignore parse errors
+            }
+            throw new Error(message);
           }
-          throw new Error(message);
-        }
 
-        const { data } = await response.json();
-        if (data?.journey_plan_number && journeyNumberNode) {
-          journeyNumberNode.textContent = data.journey_plan_number;
-          journeyNumberNode.dataset.locked = 'true';
+          const { data } = await response.json();
+          if (data?.journey_plan_number && journeyNumberNode) {
+            journeyNumberNode.textContent = data.journey_plan_number;
+            journeyNumberNode.dataset.locked = "true";
+          }
+          setStatus("Journey plan saved successfully.", "success");
+
+          // فتح test.html للطباعة
+          printToTestPage();
+        } catch (error) {
+          console.error("Error saving journey plan", error);
+          setStatus(error.message || "Failed to save journey plan.", "error");
+        } finally {
+          saveButton.disabled = false;
         }
-        setStatus('Journey plan saved successfully.', 'success');
-        window.requestAnimationFrame(() => {
-          if (window.matchMedia('(max-width: 768px)').matches) {
-            downloadJourneyPlanPdf(data?.journey_plan_number || payload.journey_plan_number_hint);
+      }
+
+      function applyRestDisplay(slot, nameText, arriveVal, departVal) {
+        if (!slot || slot > 10) return;
+        setRoutePlaceName(slot, nameText);
+        setArrive(slot, normalizeTimeValue(arriveVal));
+        setDepart(slot, normalizeTimeValue(departVal));
+        if (slot >= 2 && slot <= 10) {
+          setRestTick(slot, calculateRestTick(arriveVal, departVal));
+        }
+      }
+
+      function renderToRow() {
+        const fields = restFields();
+        const occupiedSlots = new Set();
+        let maxRestSlot = 1;
+        fields.forEach((field) => {
+          const slot = Number(field.dataset.restSlot);
+          if (!Number.isNaN(slot) && slot > 0) {
+            occupiedSlots.add(slot);
+            if (slot > maxRestSlot) maxRestSlot = slot;
+          }
+        });
+        if (occupiedSlots.size === 0) {
+          maxRestSlot = 1;
+        }
+        const toSlot = Math.min(10, Math.max(2, maxRestSlot + 1));
+        const toName = selectedText(toSel) || (toSel ? toSel.value : "");
+        const toArrive = normalizeTimeValue(toTime && toTime.value);
+        const defaultDepart = toArrive ? "00:00" : "";
+
+        for (let idx = 2; idx <= 10; idx++) {
+          if (occupiedSlots.has(idx)) continue;
+
+          if (idx === toSlot) {
+            setRoutePlaceName(idx, toName);
+            setArrive(idx, toArrive);
+            setDepart(idx, defaultDepart);
           } else {
-            window.print();
+            setRoutePlaceName(idx, "");
+            setArrive(idx, "");
+            setDepart(idx, "");
+            if (idx >= 2 && idx <= 10) {
+              setRestTick(idx, "");
+            }
+          }
+        }
+      }
+
+      function reindexRestSlots() {
+        if (!restsContainer) return;
+        const fields = restFields();
+
+        for (let idx = 2; idx <= 9; idx++) {
+          setRoutePlaceName(idx, "");
+          setArrive(idx, "");
+          setDepart(idx, "");
+          if (idx >= 2) {
+            setRestTick(idx, "");
+          }
+        }
+
+        fields.forEach((field, index) => {
+          const slot = index + 2;
+          field.dataset.restSlot = String(slot);
+
+          const label = field.querySelector("[data-rest-label]");
+          if (label) label.textContent = `Rest ${index + 1}`;
+
+          const nameSel = field.querySelector("select[data-rest-name]");
+          const inArr = field.querySelector("input[data-rest-arrive]");
+          const inDep = field.querySelector("input[data-rest-depart]");
+
+          if (nameSel) nameSel.dataset.restNameIndex = String(slot);
+          if (inArr) inArr.dataset.restIndex = String(slot);
+          if (inDep) inDep.dataset.restIndex = String(slot);
+
+          const nameText =
+            nameSel && nameSel.value ? selectedText(nameSel) : "";
+          const arriveVal = inArr ? inArr.value : "";
+          const departVal = inDep ? inDep.value : "";
+          applyRestDisplay(slot, nameText, arriveVal, departVal);
+        });
+
+        for (let n = fields.length + 2; n <= 10; n++) {
+          setRestTick(n, "");
+        }
+
+        renderToRow();
+        syncRestAddButton();
+      }
+
+      function createRestField() {
+        const wrap = document.createElement("div");
+        wrap.style.display = "flex";
+        wrap.style.gap = "6px";
+        wrap.style.alignItems = "center";
+        wrap.className = "rest-field";
+        wrap.dataset.restSlot = "0";
+
+        const label = document.createElement("label");
+        label.setAttribute("data-rest-label", "");
+        label.style.minWidth = "105px";
+        label.textContent = "Rest";
+
+        const nameWrapper = document.createElement("div");
+        nameWrapper.className = "select-with-add";
+
+        const nameSel = document.createElement("select");
+        nameSel.setAttribute("data-rest-name", "");
+        nameSel.dataset.placeholder = "Select rest name";
+        nameSel.style.minWidth = "150px";
+        nameSel.innerHTML = `<option value="">Select rest name</option>${REST_NAME_OPTIONS_HTML}`;
+
+        const addName = document.createElement("button");
+        addName.type = "button";
+        addName.textContent = "+";
+        addName.title = "Add rest name";
+        addName.className = "select-add-btn";
+        addName.addEventListener("click", () => {
+          let label = prompt("Enter rest name");
+          if (label === null) return;
+          label = String(label).trim();
+          if (!label) return;
+          const opt = new Option(label, label);
+          nameSel.add(opt);
+          nameSel.value = label;
+          nameSel.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+
+        nameWrapper.appendChild(nameSel);
+        nameWrapper.appendChild(addName);
+
+        const inArr = document.createElement("input");
+        inArr.type = "time";
+        inArr.placeholder = "Arrive";
+        inArr.setAttribute("data-rest-arrive", "");
+
+        const inDep = document.createElement("input");
+        inDep.type = "time";
+        inDep.placeholder = "Depart";
+        inDep.setAttribute("data-rest-depart", "");
+
+        const getSlot = () => Number(wrap.dataset.restSlot) || 0;
+
+        function applyCurrentState() {
+          const slot = getSlot();
+          if (!slot) return;
+          const nameText = nameSel.value ? selectedText(nameSel) : "";
+          applyRestDisplay(slot, nameText, inArr.value, inDep.value);
+          renderToRow();
+        }
+
+        nameSel.addEventListener("change", applyCurrentState);
+        inArr.addEventListener("change", applyCurrentState);
+        inDep.addEventListener("change", applyCurrentState);
+
+        const del = document.createElement("button");
+        del.type = "button";
+        del.textContent = "×";
+        del.style.cssText =
+          "padding:2px 6px;border:1px solid #ccc;background:#eee;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;";
+        del.addEventListener("click", () => {
+          wrap.remove();
+          reindexRestSlots();
+        });
+
+        wrap.appendChild(label);
+        wrap.appendChild(nameWrapper);
+        wrap.appendChild(inArr);
+        wrap.appendChild(inDep);
+        wrap.appendChild(del);
+        return wrap;
+      }
+
+      if (addRestBtn && restsContainer) {
+        addRestBtn.addEventListener("click", () => {
+          if (currentRests() >= 8) return;
+          restsContainer.appendChild(createRestField());
+          reindexRestSlots();
+        });
+      }
+
+      if (saveButton) {
+        saveButton.addEventListener("click", saveJourneyPlan);
+      }
+
+      if (refreshNumberButton) {
+        refreshNumberButton.addEventListener("click", async () => {
+          if (journeyNumberNode) journeyNumberNode.dataset.locked = "false";
+          const next = await fetchNextJourneyPlanNumber();
+          if (next) {
+            setStatus(`Next journey plan number: ${next}`, "success");
           }
         });
-      } catch (error) {
-        console.error('Error saving journey plan', error);
-        setStatus(error.message || 'Failed to save journey plan.', 'error');
-      } finally {
-        saveButton.disabled = false;
       }
-    }
 
+      reindexRestSlots();
+      renderToRow();
+      if (applyDriverHandler) applyDriverHandler();
+      refreshPeopleOptions();
+      fetchNextJourneyPlanNumber();
 
-    function applyRestDisplay(slot, nameText, arriveVal, departVal){
-      if (!slot || slot > 10) return;
-      setRoutePlaceName(slot, nameText);
-      setArrive(slot, normalizeTimeValue(arriveVal));
-      setDepart(slot, normalizeTimeValue(departVal));
-      if (slot >= 2 && slot <= 10) {
-        setRestTick(slot, calculateRestTick(arriveVal, departVal));
-      }
-    }
+      // ===== دالة الطباعة باستخدام test.html =====
+      function printToTestPage() {
+        // جمع كل البيانات من الصفحة الحالية
+        const printData = {
+          journeyPlanNumber: journeyNumberNode?.textContent || "",
+          departureDate:
+            document.querySelector(".Departure-Date")?.textContent || "",
+          vehicleNumber:
+            document.querySelector(".Vehicle-Number")?.textContent || "",
+          driverName: document.querySelector(".Driver-Name")?.textContent || "",
+          callManager: callManagerNode?.textContent || "",
+          signatureDate: signatureDateNode?.textContent || "",
+          passengers: [],
+          routes: [],
+          times: [],
+          rests: [],
+        };
 
-    function renderToRow() {
-      const fields = restFields();
-      const occupiedSlots = new Set();
-      let maxRestSlot = 1;
-      fields.forEach(field => {
-        const slot = Number(field.dataset.restSlot);
-        if (!Number.isNaN(slot) && slot > 0) {
-          occupiedSlots.add(slot);
-          if (slot > maxRestSlot) maxRestSlot = slot;
-        }
-      });
-      if (occupiedSlots.size === 0) {
-        maxRestSlot = 1;
-      }
-      const toSlot = Math.min(10, Math.max(2, maxRestSlot + 1));
-      const toName = selectedText(toSel) || (toSel ? toSel.value : '');
-      const toArrive = normalizeTimeValue(toTime && toTime.value);
-      const defaultDepart = toArrive ? '00:00' : '';
-
-      for (let idx = 2; idx <= 10; idx++) {
-        if (occupiedSlots.has(idx)) continue;
-
-        if (idx === toSlot) {
-          setRoutePlaceName(idx, toName);
-          setArrive(idx, toArrive);
-          setDepart(idx, defaultDepart);
-        } else {
-          setRoutePlaceName(idx, '');
-          setArrive(idx, '');
-          setDepart(idx, '');
-          if (idx >= 2 && idx <= 10) {
-            setRestTick(idx, '');
+        // الركاب
+        for (let i = 1; i <= 3; i++) {
+          const passenger = document.querySelector(`.Passengers-${i}`);
+          if (passenger) {
+            printData.passengers.push(passenger.innerHTML);
           }
         }
-      }
-    }
 
-    function reindexRestSlots(){
-      if (!restsContainer) return;
-      const fields = restFields();
+        // المسارات والأوقات والراحة
+        for (let i = 1; i <= 10; i++) {
+          const route =
+            document.querySelector(`.Route-Place-Name-${i}`)?.textContent || "";
+          const time =
+            document.querySelector(`.Time-Arrive-Time-Depart-${i}`)
+              ?.innerHTML || "";
+          const rest =
+            document.querySelector(`.Rest-Tick-${i}`)?.textContent || "";
 
-      for (let idx = 2; idx <= 9; idx++) {
-        setRoutePlaceName(idx, '');
-        setArrive(idx, '');
-        setDepart(idx, '');
-        if (idx >= 2) {
-          setRestTick(idx, '');
+          printData.routes.push(route);
+          printData.times.push(time);
+          printData.rests.push(rest);
+        }
+
+        // حفظ البيانات في localStorage
+        localStorage.setItem("journeyPlanPrintData", JSON.stringify(printData));
+
+        // فتح test.html
+        const printWindow = window.open(
+          "test.html",
+          "_blank",
+          "width=1200,height=800"
+        );
+
+        if (!printWindow) {
+          alert("Please allow pop-ups to print the journey plan");
+          return;
         }
       }
-
-      fields.forEach((field, index) => {
-        const slot = index + 2;
-        field.dataset.restSlot = String(slot);
-
-        const label = field.querySelector('[data-rest-label]');
-        if (label) label.textContent = `Rest ${index + 1}`;
-
-        const nameSel = field.querySelector('select[data-rest-name]');
-        const inArr = field.querySelector('input[data-rest-arrive]');
-        const inDep = field.querySelector('input[data-rest-depart]');
-
-        if (nameSel) nameSel.dataset.restNameIndex = String(slot);
-        if (inArr) inArr.dataset.restIndex = String(slot);
-        if (inDep) inDep.dataset.restIndex = String(slot);
-
-        const nameText = nameSel && nameSel.value ? selectedText(nameSel) : '';
-        const arriveVal = inArr ? inArr.value : '';
-        const departVal = inDep ? inDep.value : '';
-        applyRestDisplay(slot, nameText, arriveVal, departVal);
-      });
-
-      for (let n = fields.length + 2; n <= 10; n++) {
-        setRestTick(n, '');
-      }
-
-      renderToRow();
-      syncRestAddButton();
-    }
-
-    function createRestField(){
-      const wrap = document.createElement('div');
-      wrap.style.display = 'flex';
-      wrap.style.gap = '6px';
-      wrap.style.alignItems = 'center';
-      wrap.className = 'rest-field';
-      wrap.dataset.restSlot = '0';
-
-      const label = document.createElement('label');
-      label.setAttribute('data-rest-label', '');
-      label.style.minWidth = '105px';
-      label.textContent = 'Rest';
-
-      const nameWrapper = document.createElement('div');
-      nameWrapper.className = 'select-with-add';
-
-      const nameSel = document.createElement('select');
-      nameSel.setAttribute('data-rest-name', '');
-      nameSel.dataset.placeholder = 'Select rest name';
-      nameSel.style.minWidth = '150px';
-      nameSel.innerHTML = `<option value="">Select rest name</option>${REST_NAME_OPTIONS_HTML}`;
-
-      const addName = document.createElement('button');
-      addName.type = 'button';
-      addName.textContent = '+';
-      addName.title = 'Add rest name';
-      addName.className = 'select-add-btn';
-      addName.addEventListener('click', () => {
-        let label = prompt('Enter rest name');
-        if (label === null) return;
-        label = String(label).trim();
-        if (!label) return;
-        const opt = new Option(label, label);
-        nameSel.add(opt);
-        nameSel.value = label;
-        nameSel.dispatchEvent(new Event('change', { bubbles: true }));
-      });
-
-      nameWrapper.appendChild(nameSel);
-      nameWrapper.appendChild(addName);
-
-      const inArr = document.createElement('input');
-      inArr.type = 'time';
-      inArr.placeholder = 'Arrive';
-      inArr.setAttribute('data-rest-arrive', '');
-
-      const inDep = document.createElement('input');
-      inDep.type = 'time';
-      inDep.placeholder = 'Depart';
-      inDep.setAttribute('data-rest-depart', '');
-
-      const getSlot = () => Number(wrap.dataset.restSlot) || 0;
-
-      function applyCurrentState(){
-        const slot = getSlot();
-        if (!slot) return;
-        const nameText = nameSel.value ? selectedText(nameSel) : '';
-        applyRestDisplay(slot, nameText, inArr.value, inDep.value);
-        renderToRow();
-      }
-
-      nameSel.addEventListener('change', applyCurrentState);
-      inArr.addEventListener('change', applyCurrentState);
-      inDep.addEventListener('change', applyCurrentState);
-
-      const del = document.createElement('button');
-      del.type = 'button';
-      del.textContent = '×';
-      del.style.cssText = 'padding:2px 6px;border:1px solid #ccc;background:#eee;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;';
-      del.addEventListener('click', ()=>{
-        wrap.remove();
-        reindexRestSlots();
-      });
-
-      wrap.appendChild(label);
-      wrap.appendChild(nameWrapper);
-      wrap.appendChild(inArr);
-      wrap.appendChild(inDep);
-      wrap.appendChild(del);
-     return wrap;
-    }
-
-    if (addRestBtn && restsContainer) {
-      addRestBtn.addEventListener('click', ()=>{
-        if(currentRests() >= 8) return;
-        restsContainer.appendChild(createRestField());
-        reindexRestSlots();
-      });
-    }
-
-    if (saveButton) {
-      saveButton.addEventListener('click', saveJourneyPlan);
-    }
-
-    if (refreshNumberButton) {
-      refreshNumberButton.addEventListener('click', async ()=>{
-        if (journeyNumberNode) journeyNumberNode.dataset.locked = 'false';
-        const next = await fetchNextJourneyPlanNumber();
-        if (next) {
-          setStatus(`Next journey plan number: ${next}`, 'success');
-        }
-      });
-    }
-
-    reindexRestSlots();
-    renderToRow();
-    if (applyDriverHandler) applyDriverHandler();
-    refreshPeopleOptions();
-    fetchNextJourneyPlanNumber();
     })();
   </script>
 </html>

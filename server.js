@@ -267,6 +267,11 @@ app.put('/api/settings/next-number', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚐 Journey Plan server running at http://localhost:${PORT}`);
+const host = "0.0.0.0";
+app.listen(PORT, host, () => {
+  console.log(
+    `Journey Plan server ready.
+    Use http://localhost:${PORT} 
+    http://192.168.100.6:${PORT} `
+  );
 });

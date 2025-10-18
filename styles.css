@@ -2,10 +2,15 @@ html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   font-family: "Segoe UI", "Cairo", sans-serif;
-  background: radial-gradient(circle at top, #f2f5ff 0%, #e8ecff 45%, #f8f8ff 100%);
+  background: radial-gradient(
+    circle at top,
+    #f2f5ff 0%,
+    #e8ecff 45%,
+    #f8f8ff 100%
+  );
   color: #181846;
   -webkit-font-smoothing: antialiased;
 }
@@ -15,7 +20,7 @@ body {
 }
 
 @page {
-  size: A4 landscape;
+  size: landscape;
   margin: 0;
 }
 
@@ -26,7 +31,16 @@ body {
   gap: 32px;
   padding: 40px;
   box-sizing: border-box;
-  background-image: linear-gradient(135deg, rgba(48, 43, 184, 0.08) 0%, rgba(48, 43, 184, 0) 40%), linear-gradient(225deg, rgba(104, 120, 255, 0.12) 0%, rgba(232, 236, 255, 0) 55%);
+  background-image: linear-gradient(
+      135deg,
+      rgba(48, 43, 184, 0.08) 0%,
+      rgba(48, 43, 184, 0) 40%
+    ),
+    linear-gradient(
+      225deg,
+      rgba(104, 120, 255, 0.12) 0%,
+      rgba(232, 236, 255, 0) 55%
+    );
 }
 
 *,
@@ -106,8 +120,14 @@ body {
 
 .sidebar select {
   padding-right: 44px;
-  background-image: linear-gradient(45deg, transparent 50%, rgba(48, 43, 184, 0.55) 50%), linear-gradient(135deg, rgba(48, 43, 184, 0.55) 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(50% - 3px), calc(100% - 13px) calc(50% - 3px);
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      rgba(48, 43, 184, 0.55) 50%
+    ),
+    linear-gradient(135deg, rgba(48, 43, 184, 0.55) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 13px) calc(50% - 3px);
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
 }
@@ -116,13 +136,13 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-
 }
 
 .select-with-add select {
   flex: 1 1 auto;
   padding-right: 92px;
-  background-position: calc(100% - 62px) calc(50% - 3px), calc(100% - 57px) calc(50% - 3px);
+  background-position: calc(100% - 62px) calc(50% - 3px),
+    calc(100% - 57px) calc(50% - 3px);
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
 }
@@ -232,7 +252,7 @@ body {
   color: #1a7f35;
 }
 
-.main{
+.main {
   flex: 1 1 auto;
   display: flex;
   justify-content: center;
@@ -242,21 +262,21 @@ body {
   background: rgba(255, 255, 255, 0.6);
   border-radius: 30px;
   border: 1px solid rgba(48, 43, 184, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 25px 55px -30px rgba(12, 18, 98, 0.65);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 25px 55px -30px rgba(12, 18, 98, 0.65);
   overflow: auto;
-  
 }
 
-.main{
+.main {
   display: flex;
-   justify-content: center;
+  justify-content: center;
   align-items: center;
 }
 
 .page-shell {
   position: relative;
   scale: 0.5;
-  /* padding: -200px; */
+  padding: -200px;
   margin: -250px;
   flex: 0 0 auto;
   width: calc(2048px * var(--page-scale));
@@ -277,7 +297,8 @@ body {
   width: 2048px;
   height: 1441px;
   aspect-ratio: 2048 / 1441;
-  background: url('./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg') no-repeat center top;
+  background: url("./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg") no-repeat
+    center top;
   background-size: cover;
   position: relative;
   font-family: Arial, sans-serif;
@@ -287,521 +308,525 @@ body {
   overflow: hidden;
 }
 
-  .page::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(48, 43, 184, 0.12) 100%);
-    pointer-events: none;
-    mix-blend-mode: soft-light;
+.page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(48, 43, 184, 0.12) 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+.field {
+  position: absolute;
+  font-size: 18px;
+  color: black;
+}
+input,
+textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  font-size: 18px;
+}
+textarea {
+  height: 100%;
+  resize: none;
+  border: 1px solid black;
+}
+
+.Journey-Plan-Number {
+  position: absolute;
+  font-weight: 800;
+  font-size: 35px;
+
+  height: 59px;
+  width: 220px;
+
+  left: 1750px;
+  top: 16px;
+}
+
+p {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  direction: ltr;
+  /* border: 2px red  solid ; */
+}
+
+.page p span:first-child {
+  font-weight: 700;
+  color: #1c1c74;
+}
+
+.Departure-Date {
+  font-size: 25px;
+  left: 75px;
+  top: 198px;
+  height: 52px;
+  width: 268px;
+}
+
+.Vehicle-Number {
+  font-size: 25px;
+  left: 345px;
+  top: 198px;
+  height: 52px;
+  width: 254px;
+}
+
+.Driver-Name {
+  font-size: 25px;
+  left: 600px;
+  top: 198px;
+  height: 52px;
+  width: 580px;
+}
+
+.Passengers-1 {
+  justify-content: start;
+  font-size: 25px;
+  left: 1182px;
+  top: 198px;
+  height: 52px;
+  width: 265px;
+  gap: 10px;
+  padding-left: 15px;
+}
+
+.Passengers-2 {
+  justify-content: start;
+  font-size: 25px;
+  left: 1463px;
+  top: 198px;
+  height: 52px;
+  width: 254px;
+  gap: 10px;
+  padding-left: 15px;
+}
+
+.Passengers-3 {
+  justify-content: start;
+  font-size: 25px;
+  left: 1733px;
+  top: 198px;
+  height: 52px;
+  width: 222px;
+  gap: 10px;
+  padding-left: 15px;
+}
+
+.Call-Journey-Manager {
+  font-weight: 800;
+  font-size: 25px;
+  left: 1608px;
+  top: 722px;
+  height: 31px;
+  width: 346px;
+  gap: 10px;
+  padding-left: 15px;
+}
+
+.Route-Place-Name-1 {
+  font-size: 25px;
+  left: 82px;
+  top: 441px;
+  height: 40px;
+  width: 340px;
+}
+
+.Route-Place-Name-2 {
+  font-size: 25px;
+  left: 82px;
+  top: 483px;
+  height: 37px;
+  width: 340px;
+}
+
+.Route-Place-Name-3 {
+  font-size: 25px;
+  left: 82px;
+  top: 521px;
+  height: 36px;
+  width: 340px;
+}
+
+.Route-Place-Name-4 {
+  font-size: 25px;
+  left: 82px;
+  top: 559px;
+  height: 36px;
+  width: 340px;
+}
+
+.Route-Place-Name-5 {
+  font-size: 25px;
+  left: 82px;
+  top: 599px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-6 {
+  font-size: 25px;
+  left: 82px;
+  top: 635px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-7 {
+  font-size: 25px;
+  left: 82px;
+  top: 675px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-8 {
+  font-size: 25px;
+  left: 82px;
+  top: 715px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-9 {
+  font-size: 25px;
+  left: 82px;
+  top: 754px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-10 {
+  font-size: 25px;
+  left: 82px;
+  top: 792px;
+  height: 41px;
+  width: 340px;
+}
+
+.Time-Arrive-Time-Depart-1 {
+  font-size: 25px;
+  left: 425px;
+  top: 441px;
+  height: 40px;
+  width: 326px;
+}
+
+.Time-Arrive-Time-Depart-2 {
+  font-size: 25px;
+  left: 425px;
+  top: 483px;
+  height: 37px;
+  width: 326px;
+}
+
+.Time-Arrive-Time-Depart-3 {
+  font-size: 25px;
+  left: 425px;
+  top: 521px;
+  height: 37px;
+  width: 326px;
+}
+
+.Time-Arrive-Time-Depart-4 {
+  font-size: 25px;
+  left: 425px;
+  top: 559px;
+  height: 36px;
+  width: 326px;
+}
+
+.Time-Arrive-Time-Depart-5 {
+  font-size: 25px;
+  left: 425px;
+  top: 599px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-6 {
+  font-size: 25px;
+  left: 425px;
+  top: 635px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-7 {
+  font-size: 25px;
+  left: 425px;
+  top: 675px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-8 {
+  font-size: 25px;
+  left: 425px;
+  top: 715px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-9 {
+  font-size: 25px;
+  left: 425px;
+  top: 754px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-10 {
+  font-size: 25px;
+  left: 425px;
+  top: 792px;
+  height: 41px;
+  width: 326px;
+}
+
+.img-right-1 {
+  position: absolute;
+  left: 290px;
+  top: 905px;
+}
+.img-right-2 {
+  position: absolute;
+  left: 290px;
+  top: 940px;
+}
+.img-right-3 {
+  position: absolute;
+  left: 290px;
+  top: 978px;
+}
+
+.signature {
+  position: absolute;
+  left: 300px;
+  top: 1000px;
+  width: 170px;
+}
+.Signature-with-name {
+  position: absolute;
+  left: 1040px;
+  top: 1160px;
+  width: 300px;
+}
+
+.Signature-date {
+  font-size: 25px;
+  left: 1140px;
+  top: 1220px;
+  width: 300px;
+}
+
+.Rest-Tick-1 {
+  font-size: 25px;
+  left: 755px;
+  top: 441px;
+  height: 40px;
+  width: 145px;
+}
+
+.Rest-Tick-2 {
+  font-size: 25px;
+  left: 755px;
+  top: 482px;
+  height: 40px;
+  width: 145px;
+}
+
+.Rest-Tick-3 {
+  font-size: 25px;
+  left: 755px;
+  top: 522px;
+  height: 36px;
+  width: 145px;
+}
+
+.Rest-Tick-3 {
+  font-size: 25px;
+  left: 755px;
+  top: 522px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-4 {
+  font-size: 25px;
+  left: 755px;
+  top: 560px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-5 {
+  font-size: 25px;
+  left: 755px;
+  top: 598px;
+  height: 36px;
+  width: 145px;
+}
+
+.Rest-Tick-6 {
+  font-size: 25px;
+  left: 755px;
+  top: 636px;
+  height: 36px;
+  width: 145px;
+}
+
+.Rest-Tick-7 {
+  font-size: 25px;
+  left: 755px;
+  top: 675px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-8 {
+  font-size: 25px;
+  left: 755px;
+  top: 714px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-9 {
+  font-size: 25px;
+  left: 755px;
+  top: 754px;
+  height: 36px;
+  width: 145px;
+}
+
+.Rest-Tick-10 {
+  font-size: 25px;
+  left: 755px;
+  top: 792px;
+  height: 41px;
+  width: 145px;
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --page-scale: clamp(0.14, calc((100vw - 80px) / 2048), 0.5);
   }
-  .field {
-    position: absolute;
-    font-size: 18px;
-    color: black;
-  }
-  input, textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid black;
-    font-size: 18px;
-  }
-  textarea {
-    height: 100%;
-    resize: none;
-    border: 1px solid black;
-  }
 
-
-  .Journey-Plan-Number{
-    position: absolute;
-    font-weight: 800;
-    font-size: 35px;
-
-    height: 59px;
-    width: 220px;
-
-    left: 1750px;
-    top: 16px;
-  }
-
-
-
-  p{
-    position: absolute;
-    display: flex;
+  body {
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    direction: ltr;
-    /* border: 2px red  solid ; */
+    padding: 28px 24px;
   }
 
-  .page p span:first-child {
-    font-weight: 700;
-    color: #1c1c74;
+  .sidebar {
+    width: 100%;
+    max-width: 520px;
+    max-height: none;
   }
 
-  .Departure-Date{
-   
-    font-size: 25px;
-    left: 75px;
-    top: 198px;
-    height: 52px;
-    width: 268px;
-
+  .main {
+    display: none !important;
   }
+}
 
-  .Vehicle-Number{
-
-    font-size: 25px;
-    left: 345px;
-    top: 198px;
-    height: 52px;
-    width: 254px;
+@media (max-width: 720px) {
+  :root {
+    --page-scale: clamp(0.12, calc((100vw - 32px) / 2048), 0.32);
   }
 
-
-  .Driver-Name{
-    
-    font-size: 25px;
-    left: 600px;
-    top: 198px;
-    height: 52px;
-    width: 580px;
+  body {
+    padding: 20px 16px;
   }
 
-  .Passengers-1{
-    justify-content: start;
-    font-size: 25px;
-    left: 1182px;
-    top: 198px;
-   height: 52px;
-    width: 265px;
-    gap: 10px;
-    padding-left: 15px;
+  .sidebar {
+    padding: 22px 18px;
+    border-radius: 20px;
+    gap: 16px;
   }
 
-  .Passengers-2{
-    justify-content: start;
-    font-size: 25px;
-    left: 1463px;
-    top: 198px;
-   height: 52px;
-    width: 254px;
-    gap: 10px;
-    padding-left: 15px;
+  .main {
+    display: none !important;
   }
 
-  .Passengers-3{
-    justify-content: start;
-    font-size: 25px;
-    left: 1733px;
-    top: 198px;
-   height: 52px;
-    width: 222px;
-    gap: 10px;
-    padding-left: 15px;
-  }
-
-  .Call-Journey-Manager{
-    font-weight: 800;
-    font-size: 25px;
-    left: 1608px;
-    top: 722px;
-   height: 31px;
-    width: 346px;
-    gap: 10px;
-    padding-left: 15px;
-  }
-
-  .Route-Place-Name-1{
-    font-size: 25px;
-    left: 82px;
-    top: 441px;
-   height: 40px;
-    width: 340px;
-  }
-
-
-  .Route-Place-Name-2{
-    font-size: 25px;
-    left: 82px;
-    top: 483px;
-    height: 37px;
-    width: 340px;
-  }
-
-  .Route-Place-Name-3{
-    font-size: 25px;
-    left: 82px;
-    top: 521px;
-    height: 36px;
-    width: 340px;
-  }
-
-
-  .Route-Place-Name-4{
-    font-size: 25px;
-    left: 82px;
-    top: 559px;
-    height: 36px;
-    width: 340px;
-  }
-
-  .Route-Place-Name-5{
-    font-size: 25px;
-    left: 82px;
-    top: 599px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-6{
-    font-size: 25px;
-    left: 82px;
-    top: 635px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-7{
-    font-size: 25px;
-    left: 82px;
-    top: 675px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-8{
-    font-size: 25px;
-    left: 82px;
-    top: 715px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-9{
-    font-size: 25px;
-    left: 82px;
-    top: 754px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-10{
-    font-size: 25px;
-    left: 82px;
-    top: 792px;
-    height: 41px;
-    width: 340px;
-  }
-
-
-
-  .Time-Arrive-Time-Depart-1{
-    font-size: 25px;
-    left: 425px;
-    top: 441px;
-    height: 40px;
-    width: 326px;
-  }
-
-
-  .Time-Arrive-Time-Depart-2{
-    font-size: 25px;
-    left: 425px;
-    top: 483px;
-    height: 37px;
-    width: 326px;
-  }
-
-  .Time-Arrive-Time-Depart-3{
-    font-size: 25px;
-    left: 425px;
-    top: 521px;
-    height: 37px;
-    width: 326px;
-  }
-
-
-
-
-  .Time-Arrive-Time-Depart-4{
-    font-size: 25px;
-    left: 425px;
-    top: 559px;
-    height: 36px;
-    width: 326px;
-  }
-
-  .Time-Arrive-Time-Depart-5{
-    font-size: 25px;
-    left: 425px;
-    top: 599px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-6{
-    font-size: 25px;
-    left:425px;
-    top: 635px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-7{
-    font-size: 25px;
-    left: 425px;
-    top: 675px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-8{
-    font-size: 25px;
-    left: 425px;
-    top: 715px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-9{
-    font-size: 25px;
-    left: 425px;
-    top: 754px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-10{
-    font-size: 25px;
-    left: 425px;
-    top: 792px;
-    height: 41px;
-    width: 326px;
-  }
-
-
-  .img-right-1{
-    position: absolute;
-    left: 290px;
-    top: 905px;
-  }
-  .img-right-2{
-    position: absolute;
-    left: 290px;
-    top: 940px;
-  }
-  .img-right-3{
-    position: absolute;
-    left: 290px;
-    top: 978px;
-  }
-
-  .signature{
-    position: absolute;
-    left: 300px;
-    top: 1000px;
-    width: 170px;
-  }
-  .Signature-with-name{
-    position: absolute;
-    left: 1040px;
-    top: 1160px;
-    width: 300px;
-  }
-
-
-  .Signature-date{
-    font-size: 25px;
-    left: 1140px;
-    top: 1220px;
-    width: 300px;
-   
-  }
-
-  .Rest-Tick-1{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 441px;
-    height: 40px;
-    width: 145px;
-  }
-
-  .Rest-Tick-2{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 482px;
-    height: 40px;
-    width: 145px;
-  }
-
-  .Rest-Tick-3{
-    
-    font-size: 25px;
-    left: 755px;
-     top: 522px;
-    height: 36px;
-    width: 145px;
-  }
   
-  .Rest-Tick-3{
-    
-    font-size: 25px;
-    left: 755px;
-     top: 522px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-4{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 560px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-5{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 598px;
-    height: 36px;
-    width: 145px;
-  }
-  
-  .Rest-Tick-6{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 636px;
-    height: 36px;
-    width: 145px;
+}
+
+/* =========================
+   PRINT STYLES - Working Solution
+   ========================= */
+
+@media print {
+  /* طباعة الألوان والخلفيات */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  .Rest-Tick-7{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 675px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-8{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 714px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-9{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 754px;
-    height: 36px;
-    width: 145px;
+  /* إخفاء الشريط الجانبي */
+  .sidebar {
+    display: none !important;
   }
 
-  .Rest-Tick-10{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 792px;
-    height: 41px;
-    width: 145px;
+  /* A4 landscape - حجم الورقة */
+  html,
+  body {
+    width: 297mm;
+    height: 210mm;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 
-
-  @media (max-width: 1280px) {
-    :root {
-      --page-scale: clamp(0.14, calc((100vw - 80px) / 2048), 0.5);
-    }
-
-    body {
-      flex-direction: column;
-      align-items: center;
-      padding: 28px 24px;
-    }
-
-    .sidebar {
-      width: 100%;
-      max-width: 520px;
-      max-height: none;
-    }
-
-    .main {
-     display: none !important;
-    }
+  /* المحتوى الرئيسي والحاويات - شفافة وبسيطة */
+  .main,
+  .page-shell {
+    display: block !important;
+    width: 297mm;
+    height: 210mm;
+    margin: 0;
+    padding: 0;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: hidden;
+    position: relative;
   }
 
-  @media (max-width: 720px) {
-    :root {
-      --page-scale: clamp(0.12, calc((100vw - 32px) / 2048), 0.32);
-    }
+  /* الصفحة نفسها - الحجم الأصلي مع scale ديناميكي */
+  .page {
+    /* الأبعاد الأصلية */
+    width: 2048px;
+    height: 1441px;
 
-    body {
-      padding: 20px 16px;
-    }
+    /* إزالة أي transform من الشاشة */
+    transform: none !important;
 
-    .sidebar {
-      padding: 22px 18px;
-      border-radius: 20px;
-      gap: 16px;
-    }
+    /* حساب scale ديناميكي */
+    --sx: calc(297mm / 2048px);
+    --sy: calc(210mm / 1441px);
+    --s: min(var(--sx), var(--sy));
 
-    .main {
-      display: none !important;
-    }
+    /* التوسيط والتحجيم */
+    position: fixed;
+    top: calc((210mm - 1441px * var(--s)) / 2);
+    left: calc((297mm - 2048px * var(--s)) / 2);
+    transform: scale(var(--s)) !important;
+    transform-origin: top left !important;
+
+    margin: 0 !important;
+    padding: 0;
+    border: none;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+
+    background-size: 100% 100% !important;
+    background-position: center center !important;
+    overflow: hidden;
   }
 
-
- 
-
-  @media print {
-    :root { --page-scale: 1; }
-
-    /* precise print colors */
-    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
-    /* A4 landscape canvas with no margins */
-    html, body {
-      width: 297mm; height: 210mm;
-      margin: 0; padding: 0; overflow: hidden; background: #fff;
-      display: block;
-    }
-
-    /* hide UI panels; keep the stage */
-    .sidebar { display: none !important; }
-    .main { display: block !important; border: none; box-shadow: none; padding: 0; margin: 0; background: none; overflow: visible; width: 297mm; height: 210mm; }
-
-    /* let the shell be a neutral container (no borders/shadows) */
-    .page-shell {
-      width: 297mm; height: 210mm;
-       scale: 1;
-      padding: 0%;
-      margin: 0 auto; border: none; border-radius: 0; box-shadow: none; overflow: hidden; padding: 0;
-    }
-
-    /* Pixel-canvas 2048×1441 mapped uniformly into A4 landscape and centered */
-    .page {
-      width: 2048px; height: 1441px;
-     
-
-      /* neutralize any screen transform */
-      transform: none !important;
-
-      /* compute uniform scale from physical sheet */
-      --sx: calc(297mm / 2048px);
-      --sy: calc(210mm / 1441px);
-      --s: min(var(--sx), var(--sy)); /* preserve aspect */
-
-      position: fixed; /* pin to printed sheet */
-      top: calc((210mm - 1441px * var(--s)) / 2);
-      left: calc((297mm - 2048px * var(--s)) / 2);
-      transform: scale(var(--s)) !important;
-      transform-origin: top left !important;
-
-      margin: 0 !important;
-      box-shadow: none !important;
-      border-radius: 0 !important;
-      background-size: 100% 100% !important; /* 1:1 content mapping */
-      background-position: center center !important;
-      aspect-ratio: auto; /* avoid print engine constraints */
-    }
+  /* إزالة aspect-ratio و overlays */
+  .page {
+    aspect-ratio: auto;
   }
+
+  .page::after,
+  .page::before {
+    display: none !important;
+  }
+}

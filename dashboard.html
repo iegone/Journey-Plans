@@ -129,6 +129,11 @@
   </table>
 
   <script>
+    const REMOTE_API_BASE = ''; // set to deployed API origin if different
+    const LOCAL_HOSTS = ['localhost', '127.0.0.1'];
+    window.API_BASE = LOCAL_HOSTS.includes(window.location.hostname)
+      ? ''
+      : (REMOTE_API_BASE || window.location.origin);
     let cachedPlans = [];
 
     async function loadJourneyPlans() {
@@ -137,7 +142,7 @@
       status.textContent = 'Loading...';
       status.className = '';
       try {
-        const res = await fetch('/api/journey-plans');
+        const res = await fetch(`${window.API_BASE || ''}/api/journey-plans`);
         if (!res.ok) throw new Error('Request failed');
         const { data } = await res.json();
         tbody.innerHTML = '';
@@ -211,7 +216,7 @@
       status.textContent = 'Updating journey plan number...';
       status.className = '';
       try {
-        const res = await fetch(`/api/journey-plans/${plan.journey_plan_number}`, {
+        const res = await fetch(`${window.API_BASE || ''}/api/journey-plans/${plan.journey_plan_number}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ journey_plan_number: nextNumber })
@@ -246,7 +251,7 @@
       status.textContent = 'Updating sequence...';
       status.className = '';
       try {
-        const res = await fetch('/api/settings/next-number', {
+        const res = await fetch(`${window.API_BASE || ''}/api/settings/next-number`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nextNumber })

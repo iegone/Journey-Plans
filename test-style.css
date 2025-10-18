@@ -1,433 +1,474 @@
+/* Debug borders - uncomment if needed */
+/* * { border: #1c1c74 1px solid; } */
+
+/* زر الطباعة */
+.button-download {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.button-download button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #302bb8, #5e6bff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(48, 43, 184, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.button-download button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(48, 43, 184, 0.6);
+}
+
+.button-download button:active {
+  transform: translateY(0);
+}
+
+html,
+body {
+  height: 70vh;
+  width: 100vw;
+  margin: 0%;
+  padding: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 .page {
-    margin: 0;
-    border-radius: 28px;
-    width: 2048px;
-    height: 1441px;
-    aspect-ratio: 2048 / 1441;
-    background: url('./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg') no-repeat center top;
-    background-size: cover;
-    position: relative;
-    font-family: Arial, sans-serif;
-    color: #302bb8;
-    transform-origin: top left;
-    transform: scale(var(--page-scale));
-  }
+  margin: 0;
+  margin: -550px;
+  scale: 0.18;
+  border-radius: 28px;
+  padding: 0%;
+  border: #1c1c74 1px solid;
+  width: 2048px;
+  height: 1441px;
+  aspect-ratio: 2048 / 1441;
+  background: url("./Screenshot\ 2025-06-19\ at\ 7.03.53\ PM.jpg") no-repeat
+    center top;
+  background-size: cover;
+  position: relative;
+  font-family: Arial, sans-serif;
+  color: #302bb8;
+  /* transform-origin: top left; */
+  /* transform: scale(var(--page-scale)); */
+}
 
-  
-  .field {
-    position: absolute;
-    font-size: 18px;
-    color: black;
-  }
-  input, textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid black;
-    font-size: 18px;
-  }
-  textarea {
-    height: 100%;
-    resize: none;
-    border: 1px solid black;
-  }
+.button-download button {
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #302bb8, #5e6bff);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 8px 16px -10px rgba(48, 43, 184, 0.65);
+}
 
+.button-download button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px -12px rgba(48, 43, 184, 0.85);
+}
 
-  .Journey-Plan-Number{
-    position: absolute;
-    font-weight: 800;
-    font-size: 35px;
+.button-download button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+  box-shadow: none;
+}
 
-    height: 59px;
-    width: 220px;
+.field {
+  position: absolute;
+  font-size: 18px;
+  color: black;
+}
+input,
+textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  font-size: 18px;
+}
+textarea {
+  height: 100%;
+  resize: none;
+  border: 1px solid black;
+}
 
-    left: 1750px;
-    top: 16px;
-  }
+.Journey-Plan-Number {
+  position: absolute;
+  font-weight: 800;
+  font-size: 35px;
 
+  height: 59px;
+  width: 220px;
 
+  left: 1750px;
+  top: 16px;
+}
 
-  p{
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    direction: ltr;
-    /* border: 2px red  solid ; */
-  }
+p {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  direction: ltr;
+  /* border: 2px red  solid ; */
+}
 
-  .page p span:first-child {
-    font-weight: 700;
-    color: #1c1c74;
-  }
+.page p span:first-child {
+  font-weight: 700;
+  color: #1c1c74;
+}
 
-  .Departure-Date{
-   
-    font-size: 25px;
-    left: 75px;
-    top: 198px;
-    height: 52px;
-    width: 268px;
+.Departure-Date {
+  font-size: 25px;
+  left: 75px;
+  top: 198px;
+  height: 52px;
+  width: 268px;
+}
 
-  }
+.Vehicle-Number {
+  font-size: 25px;
+  left: 345px;
+  top: 198px;
+  height: 52px;
+  width: 254px;
+}
 
-  .Vehicle-Number{
+.Driver-Name {
+  font-size: 25px;
+  left: 600px;
+  top: 198px;
+  height: 52px;
+  width: 580px;
+}
 
-    font-size: 25px;
-    left: 345px;
-    top: 198px;
-    height: 52px;
-    width: 254px;
-  }
+.Passengers-1 {
+  justify-content: start;
+  font-size: 25px;
+  left: 1182px;
+  top: 198px;
+  height: 52px;
+  width: 265px;
+  gap: 10px;
+  padding-left: 15px;
+}
 
+.Passengers-2 {
+  justify-content: start;
+  font-size: 25px;
+  left: 1463px;
+  top: 198px;
+  height: 52px;
+  width: 254px;
+  gap: 10px;
+  padding-left: 15px;
+}
 
-  .Driver-Name{
-    
-    font-size: 25px;
-    left: 600px;
-    top: 198px;
-    height: 52px;
-    width: 580px;
-  }
+.Passengers-3 {
+  justify-content: start;
+  font-size: 25px;
+  left: 1733px;
+  top: 198px;
+  height: 52px;
+  width: 222px;
+  gap: 10px;
+  padding-left: 15px;
+}
 
-  .Passengers-1{
-    justify-content: start;
-    font-size: 25px;
-    left: 1182px;
-    top: 198px;
-   height: 52px;
-    width: 265px;
-    gap: 10px;
-    padding-left: 15px;
-  }
+.Call-Journey-Manager {
+  font-weight: 800;
+  font-size: 25px;
+  left: 1608px;
+  top: 722px;
+  height: 31px;
+  width: 346px;
+  gap: 10px;
+  padding-left: 15px;
+}
 
-  .Passengers-2{
-    justify-content: start;
-    font-size: 25px;
-    left: 1463px;
-    top: 198px;
-   height: 52px;
-    width: 254px;
-    gap: 10px;
-    padding-left: 15px;
-  }
+.Route-Place-Name-1 {
+  font-size: 25px;
+  left: 82px;
+  top: 441px;
+  height: 40px;
+  width: 340px;
+}
 
-  .Passengers-3{
-    justify-content: start;
-    font-size: 25px;
-    left: 1733px;
-    top: 198px;
-   height: 52px;
-    width: 222px;
-    gap: 10px;
-    padding-left: 15px;
-  }
+.Route-Place-Name-2 {
+  font-size: 25px;
+  left: 82px;
+  top: 483px;
+  height: 37px;
+  width: 340px;
+}
 
-  .Call-Journey-Manager{
-    font-weight: 800;
-    font-size: 25px;
-    left: 1608px;
-    top: 722px;
-   height: 31px;
-    width: 346px;
-    gap: 10px;
-    padding-left: 15px;
-  }
+.Route-Place-Name-3 {
+  font-size: 25px;
+  left: 82px;
+  top: 521px;
+  height: 36px;
+  width: 340px;
+}
 
-  .Route-Place-Name-1{
-    font-size: 25px;
-    left: 82px;
-    top: 441px;
-   height: 40px;
-    width: 340px;
-  }
+.Route-Place-Name-4 {
+  font-size: 25px;
+  left: 82px;
+  top: 559px;
+  height: 36px;
+  width: 340px;
+}
 
+.Route-Place-Name-5 {
+  font-size: 25px;
+  left: 82px;
+  top: 599px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-6 {
+  font-size: 25px;
+  left: 82px;
+  top: 635px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-7 {
+  font-size: 25px;
+  left: 82px;
+  top: 675px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-8 {
+  font-size: 25px;
+  left: 82px;
+  top: 715px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-9 {
+  font-size: 25px;
+  left: 82px;
+  top: 754px;
+  height: 36px;
+  width: 340px;
+}
+.Route-Place-Name-10 {
+  font-size: 25px;
+  left: 82px;
+  top: 792px;
+  height: 41px;
+  width: 340px;
+}
 
-  .Route-Place-Name-2{
-    font-size: 25px;
-    left: 82px;
-    top: 483px;
-    height: 37px;
-    width: 340px;
-  }
+.Time-Arrive-Time-Depart-1 {
+  font-size: 25px;
+  left: 425px;
+  top: 441px;
+  height: 40px;
+  width: 326px;
+}
 
-  .Route-Place-Name-3{
-    font-size: 25px;
-    left: 82px;
-    top: 521px;
-    height: 36px;
-    width: 340px;
-  }
+.Time-Arrive-Time-Depart-2 {
+  font-size: 25px;
+  left: 425px;
+  top: 483px;
+  height: 37px;
+  width: 326px;
+}
 
+.Time-Arrive-Time-Depart-3 {
+  font-size: 25px;
+  left: 425px;
+  top: 521px;
+  height: 37px;
+  width: 326px;
+}
 
-  .Route-Place-Name-4{
-    font-size: 25px;
-    left: 82px;
-    top: 559px;
-    height: 36px;
-    width: 340px;
-  }
+.Time-Arrive-Time-Depart-4 {
+  font-size: 25px;
+  left: 425px;
+  top: 559px;
+  height: 36px;
+  width: 326px;
+}
 
-  .Route-Place-Name-5{
-    font-size: 25px;
-    left: 82px;
-    top: 599px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-6{
-    font-size: 25px;
-    left: 82px;
-    top: 635px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-7{
-    font-size: 25px;
-    left: 82px;
-    top: 675px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-8{
-    font-size: 25px;
-    left: 82px;
-    top: 715px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-9{
-    font-size: 25px;
-    left: 82px;
-    top: 754px;
-    height: 36px;
-    width: 340px;
-  }
-  .Route-Place-Name-10{
-    font-size: 25px;
-    left: 82px;
-    top: 792px;
-    height: 41px;
-    width: 340px;
-  }
+.Time-Arrive-Time-Depart-5 {
+  font-size: 25px;
+  left: 425px;
+  top: 599px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-6 {
+  font-size: 25px;
+  left: 425px;
+  top: 635px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-7 {
+  font-size: 25px;
+  left: 425px;
+  top: 675px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-8 {
+  font-size: 25px;
+  left: 425px;
+  top: 715px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-9 {
+  font-size: 25px;
+  left: 425px;
+  top: 754px;
+  height: 36px;
+  width: 326px;
+}
+.Time-Arrive-Time-Depart-10 {
+  font-size: 25px;
+  left: 425px;
+  top: 792px;
+  height: 41px;
+  width: 326px;
+}
 
+.img-right-1 {
+  position: absolute;
+  left: 290px;
+  top: 905px;
+}
+.img-right-2 {
+  position: absolute;
+  left: 290px;
+  top: 940px;
+}
+.img-right-3 {
+  position: absolute;
+  left: 290px;
+  top: 978px;
+}
 
+.signature {
+  position: absolute;
+  left: 300px;
+  top: 1000px;
+  width: 170px;
+}
+.Signature-with-name {
+  position: absolute;
+  left: 1040px;
+  top: 1160px;
+  width: 300px;
+}
 
-  .Time-Arrive-Time-Depart-1{
-    font-size: 25px;
-    left: 425px;
-    top: 441px;
-    height: 40px;
-    width: 326px;
-  }
+.Signature-date {
+  font-size: 25px;
+  left: 1140px;
+  top: 1220px;
+  width: 300px;
+}
 
+.Rest-Tick-1 {
+  font-size: 25px;
+  left: 755px;
+  top: 441px;
+  height: 40px;
+  width: 145px;
+}
 
-  .Time-Arrive-Time-Depart-2{
-    font-size: 25px;
-    left: 425px;
-    top: 483px;
-    height: 37px;
-    width: 326px;
-  }
+.Rest-Tick-2 {
+  font-size: 25px;
+  left: 755px;
+  top: 482px;
+  height: 40px;
+  width: 145px;
+}
 
-  .Time-Arrive-Time-Depart-3{
-    font-size: 25px;
-    left: 425px;
-    top: 521px;
-    height: 37px;
-    width: 326px;
-  }
+.Rest-Tick-3 {
+  font-size: 25px;
+  left: 755px;
+  top: 522px;
+  height: 36px;
+  width: 145px;
+}
 
+.Rest-Tick-3 {
+  font-size: 25px;
+  left: 755px;
+  top: 522px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-4 {
+  font-size: 25px;
+  left: 755px;
+  top: 560px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-5 {
+  font-size: 25px;
+  left: 755px;
+  top: 598px;
+  height: 36px;
+  width: 145px;
+}
 
+.Rest-Tick-6 {
+  font-size: 25px;
+  left: 755px;
+  top: 636px;
+  height: 36px;
+  width: 145px;
+}
 
+.Rest-Tick-7 {
+  font-size: 25px;
+  left: 755px;
+  top: 675px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-8 {
+  font-size: 25px;
+  left: 755px;
+  top: 714px;
+  height: 36px;
+  width: 145px;
+}
+.Rest-Tick-9 {
+  font-size: 25px;
+  left: 755px;
+  top: 754px;
+  height: 36px;
+  width: 145px;
+}
 
-  .Time-Arrive-Time-Depart-4{
-    font-size: 25px;
-    left: 425px;
-    top: 559px;
-    height: 36px;
-    width: 326px;
-  }
-
-  .Time-Arrive-Time-Depart-5{
-    font-size: 25px;
-    left: 425px;
-    top: 599px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-6{
-    font-size: 25px;
-    left:425px;
-    top: 635px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-7{
-    font-size: 25px;
-    left: 425px;
-    top: 675px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-8{
-    font-size: 25px;
-    left: 425px;
-    top: 715px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-9{
-    font-size: 25px;
-    left: 425px;
-    top: 754px;
-    height: 36px;
-    width: 326px;
-  }
-  .Time-Arrive-Time-Depart-10{
-    font-size: 25px;
-    left: 425px;
-    top: 792px;
-    height: 41px;
-    width: 326px;
-  }
-
-
-  .img-right-1{
-    position: absolute;
-    left: 290px;
-    top: 905px;
-  }
-  .img-right-2{
-    position: absolute;
-    left: 290px;
-    top: 940px;
-  }
-  .img-right-3{
-    position: absolute;
-    left: 290px;
-    top: 978px;
-  }
-
-  .signature{
-    position: absolute;
-    left: 300px;
-    top: 1000px;
-    width: 170px;
-  }
-  .Signature-with-name{
-    position: absolute;
-    left: 1040px;
-    top: 1160px;
-    width: 300px;
-  }
-
-
-  .Signature-date{
-    font-size: 25px;
-    left: 1140px;
-    top: 1220px;
-    width: 300px;
-   
-  }
-
-  .Rest-Tick-1{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 441px;
-    height: 40px;
-    width: 145px;
-  }
-
-  .Rest-Tick-2{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 482px;
-    height: 40px;
-    width: 145px;
-  }
-
-  .Rest-Tick-3{
-    
-    font-size: 25px;
-    left: 755px;
-     top: 522px;
-    height: 36px;
-    width: 145px;
-  }
-  
-  .Rest-Tick-3{
-    
-    font-size: 25px;
-    left: 755px;
-     top: 522px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-4{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 560px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-5{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 598px;
-    height: 36px;
-    width: 145px;
-  }
-  
-  .Rest-Tick-6{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 636px;
-    height: 36px;
-    width: 145px;
-  }
-
-  .Rest-Tick-7{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 675px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-8{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 714px;
-    height: 36px;
-    width: 145px;
-  }
-  .Rest-Tick-9{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 754px;
-    height: 36px;
-    width: 145px;
-  }
-
-  .Rest-Tick-10{
-    
-    font-size: 25px;
-    left: 755px;
-    top: 792px;
-    height: 41px;
-    width: 145px;
-  }
-
-
-
+.Rest-Tick-10 {
+  font-size: 25px;
+  left: 755px;
+  top: 792px;
+  height: 41px;
+  width: 145px;
+}
 
 /* ==== PRINT LAYOUT (A4 Landscape, No margins, Single page) ==== */
 @page {
@@ -437,19 +478,37 @@
 
 @media print {
   /* exact colors in print */
-  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 
   /* show ONLY the .page sheet; hide everything else safely */
-  body > :not(.page) { display: none !important; }
+  body > :not(.page) {
+    display: none !important;
+  }
+
+  /* إخفاء زر الطباعة */
+  .button-download {
+    display: none !important;
+  }
 
   /* sheet (A4 landscape) measurements */
-  html, body { width: 297mm; height: 210mm; margin: 0; padding: 0; overflow: hidden; }
+  html,
+  body {
+    width: 297mm;
+    height: 210mm;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 
   /* Fit the 2048×1441 canvas uniformly into A4 landscape and center it */
   .page {
     /* keep your working canvas for absolute children */
     width: 2048px;
     height: 1441px;
+    scale: 1;
 
     /* neutralize any screen scaling */
     transform: none !important;
@@ -474,5 +533,7 @@
   }
 
   /* remove aspect-ratio constraint in print to avoid engine conflicts */
-  .page { aspect-ratio: auto; }
+  .page {
+    aspect-ratio: auto;
+  }
 }

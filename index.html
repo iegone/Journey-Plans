@@ -9,7 +9,7 @@
   <body>
     <div class="sidebar">
       <div>
-        <a href="test.html">test</a>
+        <!-- <a href="test.html">test</a> -->
         <label for="departure-date">Departure date</label>
         <input type="date" id="departure-date" />
       </div>
@@ -1237,8 +1237,8 @@
           }
           setStatus("Journey plan saved successfully.", "success");
 
-          // فتح test.html للطباعة
-          printToTestPage();
+          // فتح template.html للطباعة
+          printToTemplatePage();
         } catch (error) {
           console.error("Error saving journey plan", error);
           setStatus(error.message || "Failed to save journey plan.", "error");
@@ -1448,8 +1448,8 @@
       refreshPeopleOptions();
       fetchNextJourneyPlanNumber();
 
-      // ===== دالة الطباعة باستخدام test.html =====
-      function printToTestPage() {
+      // ===== دالة الطباعة باستخدام template.html =====
+      function printToTemplatePage() {
         // جمع كل البيانات من الصفحة الحالية
         const printData = {
           journeyPlanNumber: journeyNumberNode?.textContent || "",
@@ -1492,9 +1492,9 @@
         // حفظ البيانات في localStorage
         localStorage.setItem("journeyPlanPrintData", JSON.stringify(printData));
 
-        // فتح test.html
+        // فتح template.html
         const printWindow = window.open(
-          "test.html",
+          "template.html",
           "_blank",
           "width=1200,height=800"
         );

@@ -232,6 +232,8 @@
       </div>
   </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
     (function() {
       const PLACEHOLDER = '';
@@ -806,7 +808,13 @@
           journeyNumberNode.dataset.locked = 'true';
         }
         setStatus('Journey plan saved successfully.', 'success');
-        window.requestAnimationFrame(() => window.print());
+        window.requestAnimationFrame(() => {
+          if (window.matchMedia('(max-width: 768px)').matches) {
+            downloadJourneyPlanPdf(data?.journey_plan_number || payload.journey_plan_number_hint);
+          } else {
+            window.print();
+          }
+        });
       } catch (error) {
         console.error('Error saving journey plan', error);
         setStatus(error.message || 'Failed to save journey plan.', 'error');

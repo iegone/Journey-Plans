@@ -42,7 +42,7 @@ npm install bcryptjs
 ```sql
 -- Tables
 create table public.drivers (id bigserial primary key, name text unique not null, code text, gsm text, created_at timestamptz default now());
-create table public.vehicles (id bigserial primary key, number text unique not null, created_at timestamptz default now());
+create table public.vehicles (id bigserial primary key, number text unique not null, display_name text, created_at timestamptz default now());
 create table public.locations (id bigserial primary key, name text unique not null, created_at timestamptz default now());
 create table public.rest_types (id bigserial primary key, name text unique not null, created_at timestamptz default now());
 create table public.users (id bigserial primary key, username text unique not null, password_hash text not null, full_name text, role text default 'user', created_at timestamptz default now(), last_login timestamptz, must_change_password boolean not null default false);
@@ -51,6 +51,7 @@ create table public.activity_logs (id bigserial primary key, user_name text not 
 -- RLS
 alter table public.drivers enable row level security;
 alter table public.vehicles enable row level security;
+alter table public.vehicles add column if not exists display_name text;
 alter table public.locations enable row level security;
 alter table public.rest_types enable row level security;
 alter table public.users enable row level security;
@@ -75,7 +76,7 @@ drop function if exists public.set_journey_plan_sequence(bigint);
 
 -- Default data
 insert into public.drivers (name, code, gsm) values ('Mohamed Al Mayahi', 'VOS-001', '9070 7038'), ('Hamed Al Naabi', 'VOS-0014', '9796 9572'), ('Ahmed Salah', 'VOS-0029', '9206 2338'), ('Mohammed Sulaiman', 'VOS-003', '9633 5565'), ('Haitham Al Hadi', 'VOS-009', '9818 0866'), ('Waleed Al Balushi', 'VOS-0018', '9231 4855'), ('Mojaled Ahmed', 'VOS-0024', '9796 9571'), ('Abdu Aziz Salim', 'VOS-0004', '9988 7044'), ('Ali Said Al Mulhairhi', 'VOS-007', '9944 3307'), ('Haitham Al Rajahi', 'VOS-0025', '9232 4405'), ('Shaik Ali', 'VOS-0028', '9512 3881'), ('Khalid Al Sharji', 'VOS-0013', '9553 5327'), ('Zakarya Yahya', 'VOS-0030', '9945 4912') on conflict do nothing;
-insert into public.vehicles (number) values ('4972 YW'), ('575 BA'), ('2111RK'), ('6354 RH'), ('3267 HW'), ('3950 DA'), ('171 MB'), ('9689 HW') on conflict do nothing;
+insert into public.vehicles (number, display_name) values ('4972 YW', 'Unit 1'), ('575 BA', 'Unit 2'), ('2111RK', 'Unit 3'), ('6354 RH', 'Unit 4'), ('3267 HW', 'Unit 5'), ('3950 DA', 'Pickup 1'), ('171 MB', 'Pickup 2'), ('9689 HW', 'Pickup 3') on conflict (number) do nothing;
 insert into public.locations (name) values ('ARA'), ('MANAH'), ('DALEEL'), ('IBRI'), ('MUSCAT') on conflict do nothing;
 insert into public.rest_types (name) values ('CHECKPOINT'), ('FUEL'), ('MEAL'), ('PRAYER'), ('COFFEE') on conflict do nothing;
 insert into public.users (username, password_hash, full_name, role, must_change_password) values ('admin', '$2a$10$aTTDGEAEIlKl6hNAJxKDR.UVDVlC46YjXcYg2tvfPVzhVttApN4Xy', 'Administrator', 'admin', false) on conflict do nothing;

@@ -162,11 +162,14 @@
       <h1 style="margin: 0">Journey Plans Dashboard</h1>
       <div style="display: flex; gap: 12px; align-items: center">
         <span id="current-user" style="font-size: 14px; color: #666"></span>
-        <button class="btn btn-secondary btn-small" id="logout-btn">
-          Logout
+        <button class="btn btn-secondary btn-small" id="open-index-btn">
+          Journey Plan
         </button>
         <button class="btn btn-secondary btn-small" id="view-logs-btn">
           View Logs
+        </button>
+        <button class="btn btn-secondary btn-small" id="logout-btn">
+          Logout
         </button>
       </div>
     </div>
@@ -330,6 +333,13 @@
       if (manageUsersBtn) {
         manageUsersBtn.addEventListener("click", () => {
           window.location.href = "user-management.html";
+        });
+      }
+
+      const indexBtn = document.getElementById("open-index-btn");
+      if (indexBtn) {
+        indexBtn.addEventListener("click", () => {
+          window.location.href = "index.html";
         });
       }
 

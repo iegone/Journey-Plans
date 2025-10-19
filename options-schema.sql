@@ -15,6 +15,7 @@ create table if not exists public.drivers (
 create table if not exists public.vehicles (
   id bigserial primary key,
   number text not null unique,
+  display_name text,
   created_at timestamptz not null default now()
 );
 
@@ -68,9 +69,15 @@ insert into public.drivers (name, code, gsm) values
   ('Zakarya Yahya', 'VOS-0030', '9945 4912')
 on conflict (name) do nothing;
 
-insert into public.vehicles (number) values
-  ('4972 YW'), ('575 BA'), ('2111RK'), ('6354 RH'),
-  ('3267 HW'), ('3950 DA'), ('171 MB'), ('9689 HW')
+insert into public.vehicles (number, display_name) values
+  ('4972 YW', 'Unit 1'),
+  ('575 BA', 'Unit 2'),
+  ('2111RK', 'Unit 3'),
+  ('6354 RH', 'Unit 4'),
+  ('3267 HW', 'Unit 5'),
+  ('3950 DA', 'Pickup 1'),
+  ('171 MB', 'Pickup 2'),
+  ('9689 HW', 'Pickup 3')
 on conflict (number) do nothing;
 
 insert into public.locations (name) values
@@ -80,4 +87,5 @@ on conflict (name) do nothing;
 insert into public.rest_types (name) values
   ('CHECKPOINT'), ('FUEL'), ('MEAL'), ('PRAYER'), ('COFFEE')
 on conflict (name) do nothing;
-
+alter table public.vehicles
+  add column if not exists display_name text;

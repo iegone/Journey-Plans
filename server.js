@@ -842,14 +842,20 @@ app.get("/api/options/vehicles", authenticate(), async (req, res) => {
 
 app.post("/api/options/vehicles", authenticate(), async (req, res) => {
   try {
-    const { number } = req.body;
+    const { number, displayName } = req.body ?? {};
     if (!number || !number.trim()) {
       return res.status(400).json({ error: "Vehicle number is required" });
     }
 
+    const trimmedNumber = number.trim();
+    const trimmedDisplay =
+      typeof displayName === "string" && displayName.trim().length
+        ? displayName.trim()
+        : trimmedNumber;
+
     const { data, error } = await supabase
       .from("vehicles")
-      .insert({ number: number.trim() })
+      .insert({ number: trimmedNumber, display_name: trimmedDisplay })
       .select()
       .single();
 

@@ -108,3 +108,4 @@
 1. **Migration**: لازم تشغل migration script أولاً (راجع `MIGRATION-GUIDE.md`)
 2. **Pop-ups**: السماح بالـ pop-ups للطباعة من template
 3. **Validation**: الحقول الإجبارية لازم تتملى
+

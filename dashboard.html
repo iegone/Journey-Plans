@@ -336,6 +336,65 @@
         });
       }
 
+      const approvalToggle = document.getElementById("approval-toggle");
+      const approvalStatus = document.getElementById("approval-status");
+
+      function renderApprovalStatus(enabled) {
+        if (!approvalStatus) return;
+        approvalStatus.textContent = enabled
+          ? "Employees require admin approval"
+          : "Employees can edit freely";
+      }
+
+      async function loadApprovalSetting() {
+        try {
+          const res = await authFetch(
+            `${window.API_BASE || ""}/api/settings/approval`
+          );
+          if (!res.ok) throw new Error("Failed to fetch approval setting");
+          const data = await res.json();
+          const enabled = !!data.enabled;
+          if (approvalToggle) approvalToggle.checked = enabled;
+          renderApprovalStatus(enabled);
+        } catch (error) {
+          console.error("Unable to load approval setting", error);
+          renderApprovalStatus(false);
+          if (approvalToggle) approvalToggle.checked = false;
+        }
+      }
+
+      if (approvalToggle) {
+        approvalToggle.addEventListener("change", async (event) => {
+          const nextValue = event.target.checked;
+          approvalToggle.disabled = true;
+          renderApprovalStatus(nextValue);
+          try {
+            const res = await authFetch(
+              `${window.API_BASE || ""}/api/settings/approval`,
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ enabled: nextValue }),
+              }
+            );
+            if (!res.ok) {
+              throw new Error("Failed to update approval setting");
+            }
+            const data = await res.json();
+            approvalToggle.checked = !!data.enabled;
+            renderApprovalStatus(!!data.enabled);
+          } catch (error) {
+            console.error("Error updating approval setting", error);
+            alert("Failed to update approval setting. Please try again.");
+            approvalToggle.checked = !nextValue;
+            renderApprovalStatus(!nextValue);
+          } finally {
+            approvalToggle.disabled = false;
+          }
+        });
+        loadApprovalSetting();
+      }
+
       const indexBtn = document.getElementById("open-index-btn");
       if (indexBtn) {
         indexBtn.addEventListener("click", () => {

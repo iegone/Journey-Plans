@@ -139,6 +139,7 @@ node server.js
 - ✏️ Edit journey number
 - 👤 عرض المستخدم الحالي
 - 📊 View Logs button
+- ✅ Toggle employee approval requirement
 - 🚪 Logout button
 
 ### ✅ في `logs-viewer.html`:

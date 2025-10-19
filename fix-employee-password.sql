@@ -8,3 +8,4 @@ WHERE username = 'employee';
 
 -- التحقق من النتيجة
 SELECT username, full_name, role FROM public.users;
+

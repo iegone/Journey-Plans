@@ -41,6 +41,8 @@ const DEFAULT_NEW_USER_PASSWORD =
   process.env.DEFAULT_NEW_USER_PASSWORD && process.env.DEFAULT_NEW_USER_PASSWORD.length >= 8
     ? process.env.DEFAULT_NEW_USER_PASSWORD
     : "ChangeMe123!";
+const ENFORCE_MANAGER_APPROVAL =
+  process.env.ENABLE_MANAGER_APPROVAL === "true";
 
 if (!process.env.JWT_SECRET) {
   console.warn(
@@ -64,6 +66,7 @@ function toPublicUser(user) {
     full_name: user.full_name,
     role: user.role,
     must_change_password: user.must_change_password ?? false,
+    requires_admin_approval: user.requires_admin_approval ?? false,
     created_at: user.created_at ?? null,
     last_login: user.last_login ?? null,
   };
@@ -77,6 +80,7 @@ function createSessionToken(user) {
       role: user.role,
       full_name: user.full_name,
       must_change_password: user.must_change_password ?? false,
+      requires_admin_approval: user.requires_admin_approval ?? false,
     },
     JWT_SECRET,
     { expiresIn: SESSION_MAX_AGE_SECONDS }
@@ -126,6 +130,7 @@ function authenticate(requiredRole) {
         role: payload.role,
         full_name: payload.full_name,
         must_change_password: payload.must_change_password ?? false,
+        requires_admin_approval: payload.requires_admin_approval ?? false,
       };
 
       if (requiredRole && req.user.role !== requiredRole) {
@@ -157,6 +162,52 @@ async function setSettingValue(key, value) {
     .upsert({ key, value }, { onConflict: "key" });
 
   if (error) throw error;
+}
+
+function parseApprovalSetting(value) {
+  if (value == null) return null;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value > 0;
+  if (typeof value === "string") {
+    const lower = value.toLowerCase();
+    if (lower === "true") return true;
+    if (lower === "false") return false;
+  }
+  if (typeof value === "object") {
+    if ("enabled" in value) return parseApprovalSetting(value.enabled);
+    if ("value" in value) return parseApprovalSetting(value.value);
+  }
+  return null;
+}
+
+async function isManagerApprovalEnabled() {
+  try {
+    const stored = await getSettingValue("enforce_manager_approval");
+    const parsed = parseApprovalSetting(stored);
+    if (parsed == null) {
+      return ENFORCE_MANAGER_APPROVAL;
+    }
+    return !!parsed;
+  } catch (error) {
+    console.error("Failed to read manager approval setting:", error);
+    return ENFORCE_MANAGER_APPROVAL;
+  }
+}
+
+async function ensureModificationAllowed(req, res) {
+  try {
+    const approvalEnabled = await isManagerApprovalEnabled();
+    if (!approvalEnabled) return true;
+    if (req.user?.role === "admin") return true;
+    res.status(403).json({ error: "Admin approval required" });
+    return false;
+  } catch (error) {
+    console.error("Approval check failed:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to verify approval requirement" });
+    return false;
+  }
 }
 
 // No longer needed - journey_plan_number is now manually controlled
@@ -612,6 +663,10 @@ app.post("/api/journey-plans", authenticate(), async (req, res) => {
     const payload = req.body;
     const userName = req.user?.username || "Unknown";
 
+    if (!(await ensureModificationAllowed(req, res))) {
+      return;
+    }
+
     // الحصول على رقم Journey Plan التالي
     const nextNumber = await getNextJourneyNumber();
 
@@ -666,6 +721,10 @@ app.put("/api/journey-plans/:number", authenticate(), async (req, res) => {
   }
 
   try {
+    if (!(await ensureModificationAllowed(req, res))) {
+      return;
+    }
+
     const payload = req.body ?? {};
 
     const updateData = {};
@@ -800,6 +859,10 @@ app.get("/api/options/drivers", authenticate(), async (req, res) => {
 
 app.post("/api/options/drivers", authenticate(), async (req, res) => {
   try {
+    if (!(await ensureModificationAllowed(req, res))) {
+      return;
+    }
+
     const { name, code, gsm } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ error: "Driver name is required" });
@@ -847,6 +910,10 @@ app.post("/api/options/vehicles", authenticate(), async (req, res) => {
       return res.status(400).json({ error: "Vehicle number is required" });
     }
 
+    if (!(await ensureModificationAllowed(req, res))) {
+      return;
+    }
+
     const trimmedNumber = number.trim();
     const trimmedDisplay =
       typeof displayName === "string" && displayName.trim().length
@@ -890,6 +957,10 @@ app.get("/api/options/locations", authenticate(), async (req, res) => {
 
 app.post("/api/options/locations", authenticate(), async (req, res) => {
   try {
+    if (!(await ensureModificationAllowed(req, res))) {
+      return;
+    }
+
     const { name } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ error: "Location name is required" });
@@ -932,6 +1003,10 @@ app.get("/api/options/rest-types", authenticate(), async (req, res) => {
 
 app.post("/api/options/rest-types", authenticate(), async (req, res) => {
   try {
+    if (!(await ensureModificationAllowed(req, res))) {
+      return;
+    }
+
     const { name } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ error: "Rest type name is required" });

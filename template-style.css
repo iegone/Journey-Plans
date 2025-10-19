@@ -521,6 +521,8 @@ body {
     width: 2048px;
     height: 1441px;
     scale: 1;
+      border:none !important;
+
 
     /* neutralize any screen scaling */
     transform: none !important;

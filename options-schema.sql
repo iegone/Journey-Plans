@@ -89,3 +89,4 @@ insert into public.rest_types (name) values
 on conflict (name) do nothing;
 alter table public.vehicles
   add column if not exists display_name text;
+

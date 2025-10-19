@@ -29,6 +29,13 @@
           </button>
         </div>
       </div>
+      <div
+        id="approval-banner"
+        style="display: none; margin: 12px 0; padding: 12px; background: #fff4e5; border: 1px solid #fcd34d; border-radius: 8px; color: #b45309; font-size: 12px; line-height: 1.4;"
+      >
+        Admin approval required. Contact your administrator to make changes or
+        print.
+      </div>
       <div style="position: relative">
         <label for="load-journey-search">Load Saved Journey</label>
         <input
@@ -650,7 +657,7 @@
     window.API_BASE = API_ORIGIN;
 
     const AUTH_STORAGE_KEY = "currentUser";
-    const VEHICLE_LABELS = {
+    const DEFAULT_VEHICLE_LABELS = {
       "4972 YW": "Unit 1",
       "575 BA": "Unit 2",
       "2111RK": "Unit 3",
@@ -659,7 +666,95 @@
       "3950 DA": "Pickup 1",
       "171 MB": "Pickup 2",
       "9689 HW": "Pickup 3",
-    };    let currentUser = null;    const userDisplay = document.getElementById("current-user");
+    };
+    const VEHICLE_LABELS = { ...DEFAULT_VEHICLE_LABELS };
+    let currentUser = null;
+    let vehicleNumberSelect = null;
+
+    function getVehicleLabel(number, fallback = "") {
+      if (!number) return fallback || "";
+      return VEHICLE_LABELS[number] || fallback || number;
+    }
+
+    function populateVehicleOptions(list = []) {
+      if (!vehicleNumberSelect) return;
+
+      const currentValue = vehicleNumberSelect.value;
+      vehicleNumberSelect.innerHTML =
+        '<option value="">select vehicle</option>';
+
+      const source =
+        Array.isArray(list) && list.length
+          ? list
+          : Object.entries(DEFAULT_VEHICLE_LABELS).map(
+              ([number, display_name]) => ({
+                number,
+                display_name,
+              })
+            );
+
+      const seen = new Set();
+      source.forEach((item) => {
+        if (!item?.number || seen.has(item.number)) return;
+        const label = getVehicleLabel(
+          item.number,
+          item.display_name || item.number
+        );
+        VEHICLE_LABELS[item.number] = label;
+        const opt = new Option(label, item.number);
+        opt.dataset.displayName = label;
+        vehicleNumberSelect.add(opt);
+        seen.add(item.number);
+      });
+
+      if (currentValue && seen.has(currentValue)) {
+        vehicleNumberSelect.value = currentValue;
+      }
+    }
+
+    function authFetch(url, options = {}) {
+      const finalOptions = { ...options, credentials: "include" };
+      if (options.headers) {
+        finalOptions.headers = options.headers;
+      }
+      return fetch(url, finalOptions);
+    }
+
+    async function ensureAuth() {
+      try {
+        const response = await fetch(`${API_ORIGIN}/api/auth/me`, {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("Unauthorized");
+        }
+        const { user } = await response.json();
+        if (!user) {
+          throw new Error("Unauthorized");
+        }
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+        return user;
+      } catch (error) {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        window.location.href = "login.html";
+        throw error;
+      }
+    }
+
+    let mustChangePassword = false;
+
+    try {
+      currentUser = await ensureAuth();
+      mustChangePassword = !!currentUser?.must_change_password;
+      if (mustChangePassword) {
+        window.location.href = "change-password.html";
+      }
+    } catch (error) {
+      throw error;
+    }
+
+    if (!mustChangePassword) {
+    const userDisplay = document.getElementById("current-user");
     if (userDisplay && currentUser) {
       userDisplay.textContent = `👤 ${
         currentUser.full_name || currentUser.username
@@ -733,6 +828,8 @@
 
         btn.addEventListener("click", async () => {
           let label = prompt(opts.prompt || "Enter new option");
+          let vehiclePlate = null;
+          let vehicleDisplay = null;
           if (label === null) return;
           label = String(label).trim();
           if (!label && sel.id !== "vehicle-number") return;
@@ -772,33 +869,26 @@
                 return;
               }
             } else if (sel.id === "vehicle-number") {
-              const platePrompt =
-                "Vehicle plate number (e.g. 4972 YW, will be used as value)";
-              let plateNumber = label;
               let displayName = label;
-
-              // إذا أدخل المستخدم اسم المركبة أولاً، نطلب رقم اللوحة
-              if (!/[\dA-Z]/i.test(plateNumber) || plateNumber.includes(" ")) {
-                plateNumber = prompt(platePrompt, "");
-                if (plateNumber === null) return;
-                plateNumber = String(plateNumber).trim();
+              if (!displayName) {
+                displayName = prompt("Vehicle name (e.g. Unit 7)", "");
+                if (displayName === null) return;
+                displayName = String(displayName).trim();
               }
-
+              let plateNumber = prompt(
+                "Vehicle plate number (used as value)",
+                ""
+              );
+              if (plateNumber === null) return;
+              plateNumber = String(plateNumber).trim();
               if (!plateNumber) {
                 alert("Vehicle number is required.");
                 return;
               }
-
-              if (displayName === plateNumber) {
-                displayName = prompt(
-                  "Display name (e.g. Unit 1)",
-                  plateNumber
-                );
-                if (displayName === null) return;
-                displayName = String(displayName).trim() || plateNumber;
+              if (!displayName) {
+                displayName = plateNumber;
               }
 
-              // حفظ المركبة
               const response = await authFetch(
                 `${window.API_BASE || ""}/api/options/vehicles`,
                 {
@@ -813,7 +903,15 @@
 
               if (response.ok) {
                 VEHICLE_LABELS[plateNumber] = displayName;
+                vehiclePlate = plateNumber;
+                vehicleDisplay = displayName;
                 await loadOptionsFromDB();
+                if (vehicleNumberSelect) {
+                  vehicleNumberSelect.value = plateNumber;
+                  vehicleNumberSelect.dispatchEvent(
+                    new Event("change", { bubbles: true })
+                  );
+                }
               } else {
                 const err = await response.json().catch(() => ({}));
                 alert(err.error || "Failed to save vehicle");
@@ -847,10 +945,20 @@
             return;
           }
 
-          const value = opts.valueMapper ? opts.valueMapper(label) : label;
-          const option = new Option(label, value);
+          let optionValue = opts.valueMapper ? opts.valueMapper(label) : label;
+          let optionLabel = label;
+
+          if (sel.id === "vehicle-number") {
+            optionValue = vehiclePlate || label;
+            optionLabel = vehicleDisplay || label || optionValue;
+            if (optionValue) {
+              VEHICLE_LABELS[optionValue] = optionLabel;
+            }
+          }
+
+          const option = new Option(optionLabel, optionValue);
           sel.add(option);
-          sel.value = value;
+          sel.value = optionValue;
           sel.dispatchEvent(new Event("change", { bubbles: true }));
 
           if (typeof refreshPeopleOptions === "function") {
@@ -875,16 +983,7 @@
       const signatureDateNode = document.querySelector(".Signature-date");
       const callManagerNode = document.querySelector(".Call-Journey-Manager");
       const departureDateInput = document.getElementById("departure-date");
-      const vehicleNumberSelect = document.getElementById("vehicle-number");      if (vehicleNumberSelect) {
-        Array.from(vehicleNumberSelect.options).forEach((opt) => {
-          const value = opt.value ? opt.value.trim() : "";
-          if (value) {
-            const label = opt.textContent ? opt.textContent.trim() : value;
-            VEHICLE_LABELS[value] = label || VEHICLE_LABELS[value] || value;
-          }
-        });
-        renderVehicleOptions(MISSING_REVERT_STEP);
-      }
+      vehicleNumberSelect = document.getElementById("vehicle-number");
 
       let applyDriverHandler = null;
       if (driverNodes.length) {
@@ -954,11 +1053,11 @@
       }
 
       [
-        { id: "vehicle-number", title: "Add vehicle", prompt: "Vehicle display name (e.g. Unit 1)" },
+        { id: "vehicle-number", title: "Add vehicle" },
         { id: "driver-name", title: "Add driver" },
         { id: "from-locations", title: "Add origin" },
         { id: "to-locations", title: "Add destination" },
-      ].forEach((cfg) => attachAddButton(cfg.id, cfg));
+      ].forEach((cfg) => attachAddButton(cfg.id, { title: cfg.title }));
 
       // Utility: get the <span> that holds the passenger name for N=1..3
       function getPassengerNameSpan(n) {
@@ -1030,7 +1129,7 @@
           }
 
           // تحميل المركبات
-          let vehicles = [];
+          let vehiclesLoaded = false;
           try {
             const vehiclesRes = await authFetch(
               `${window.API_BASE || ""}/api/options/vehicles`
@@ -1038,32 +1137,15 @@
             if (vehiclesRes.ok) {
               const payload = await vehiclesRes.json();
               if (payload?.data && Array.isArray(payload.data)) {
-                vehicles = payload.data;
+                populateVehicleOptions(payload.data);
+                vehiclesLoaded = true;
               }
             }
           } catch (error) {
-            console.warn('Failed to fetch vehicles:', error);
+            console.warn("Failed to fetch vehicles:", error);
           }
-
-          if (!vehicles.length) {
-            renderVehicleOptions(MISSING_REVERT_STEP);
-          } else {
-            const merged = new Map();
-            MISSING_REVERT_STEP.forEach((item) => {
-              merged.set(item.number, { ...item });
-            });
-            vehicles.forEach((item) => {
-              if (item?.number) {
-                merged.set(item.number, {
-                  number: item.number,
-                  display_name:
-                    item.display_name ||
-                    VEHICLE_LABELS[item.number] ||
-                    item.number,
-                });
-              }
-            });
-            renderVehicleOptions(Array.from(merged.values()));
+          if (!vehiclesLoaded) {
+            populateVehicleOptions();
           }
 
           // تحميل الأماكن
@@ -1090,6 +1172,7 @@
           }
         } catch (error) {
           console.error("Error loading options from DB:", error);
+          populateVehicleOptions();
         }
       }
 
@@ -1279,18 +1362,26 @@
 
       // === LINK Vehicle Number to page ===
       if (vehicleNumberSelect) {
+        Array.from(vehicleNumberSelect.options).forEach((opt) => {
+          if (opt.value) {
+            VEHICLE_LABELS[opt.value] =
+              opt.textContent?.trim() || VEHICLE_LABELS[opt.value] || opt.value;
+          }
+        });
+
         const handleVehicleChange = (e) => {
           const select = e.target;
           const plate = select.value || "";
           const option = select.options[select.selectedIndex];
-          const display =
-            option?.textContent?.trim() || getVehicleLabel(plate, plate);
+          const label = plate
+            ? getVehicleLabel(
+                plate,
+                option?.textContent?.trim() || plate
+              )
+            : "";
+          const displayText = plate || label;
           const t = document.querySelector(".Vehicle-Number");
-          if (t) {
-            t.textContent = plate
-              ? `${display}${display !== plate ? ` (${plate})` : ""}`
-              : "";
-          }
+          if (t) t.textContent = displayText;
         };
         vehicleNumberSelect.addEventListener("change", handleVehicleChange);
         handleVehicleChange({ target: vehicleNumberSelect });
@@ -1503,9 +1594,11 @@
             document.getElementById("vehicle-number")?.value || null,
           vehicle_display_name: (function () {
             if (!vehicleNumberSelect) return null;
-            const option =
-              vehicleNumberSelect.options[vehicleNumberSelect.selectedIndex];
-            return option?.textContent?.trim() || null;
+            const opt =
+              vehicleNumberSelect.options[
+                vehicleNumberSelect.selectedIndex
+              ];
+            return opt?.dataset.displayName || opt?.textContent || null;
           })(),
           driver_name: driverDisplayName,
           from_location: selectedText(fromSel) || fromSel?.value || null,
@@ -2331,6 +2424,6 @@
     })();
   } else {
     window.location.href = "change-password.html";
+  }
   </script>
 </html>
-    
